@@ -119,4 +119,17 @@ export class UserModel {
             return [err]
         }
     }
+
+    static async me({ id }: { id: string }) {
+        try {
+            const result = await db.execute({
+                sql: `SELECT * FROM ${this.tableName} WHERE id = ?`,
+                args: [id],
+            })
+
+            return [undefined, result.rows[0]]
+        } catch (err) {
+            return [err]
+        }
+    }
 }

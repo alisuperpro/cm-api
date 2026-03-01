@@ -17,9 +17,6 @@ export class UserController {
             igUsername,
         } = req.body
 
-        console.log({
-            body: req.body,
-        })
         if (
             !id ||
             !fullName ||
@@ -72,5 +69,27 @@ export class UserController {
         })
     }
 
-    static async me(req: Request, res: Response) {}
+    static async me(req: Request, res: Response) {
+        const { id } = req.params
+
+        const [error, user] = await UserModel.me({ id: id.toString() })
+
+        if (error) {
+            res.status(500).json({
+                error: 'Error to get user data',
+            })
+            return
+        }
+
+        if (!user) {
+            res.status(404).json({
+                error: 'Not found',
+            })
+            return
+        }
+
+        res.json({
+            data: user,
+        })
+    }
 }
