@@ -7,7 +7,7 @@ export function setupEmailService() {
         'userRegisteredOnTraining',
         async ({ id, name, email }) => {
             console.log(
-                `[Email Service] Enviando correo con la password para el cliente ${id}`
+                `[Email Service] Enviando correo con la confirmacion de participacion al usuario ${id}`
             )
             const body = `
     <!DOCTYPE html>
