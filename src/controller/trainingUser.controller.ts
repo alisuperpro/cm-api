@@ -192,18 +192,21 @@ export class TrainingUserController {
             })
             return
         }
-
-        await sendEmail({
-            //@ts-ignore
-            to: user.email,
-            subject:
-                'Confirmación de inscripción | Master Class Edición Audiovisual',
-            body: body,
-        })
-
-        res.json({
-            data: result,
-        })
+        try {
+            await sendEmail({
+                //@ts-ignore
+                to: user.email,
+                subject:
+                    'Confirmación de inscripción | Master Class Edición Audiovisual',
+                body: body,
+            })
+        } catch (err) {
+            console.log(err)
+        } finally {
+            res.json({
+                data: result,
+            })
+        }
     }
     static async all(req: Request, res: Response) {
         const [error, result] = await TrainingUserModel.all()
