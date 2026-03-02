@@ -66,8 +66,7 @@ SELECT
     tu.is_arrived
 FROM ${this.tableName} tu
 JOIN "user" u ON tu.user_id = u.id
-JOIN training t ON tu.training_id = t.id
-WHERE u.id = ?;
+JOIN training t ON tu.training_id = t.id;
 `
             )
 
