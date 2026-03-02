@@ -20,7 +20,7 @@ const transporter = nodemailer.createTransport({
         pass: BUSSINES_DATA.supportEmailPassword,
     },
     tls: {
-        rejectUnauthorized: false, // Temporal para diagnóstico
+        rejectUnauthorized: true, // Temporal para diagnóstico
     },
 })
 export const sendEmail = async ({
