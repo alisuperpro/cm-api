@@ -81,6 +81,8 @@ export class TrainingUserController {
             name: user.full_name,
             //@ts-ignore
             email: user.email,
+            //@ts-ignore
+            trainingName: result.title,
         })
 
         res.json({

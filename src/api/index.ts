@@ -5,6 +5,7 @@ import dotenv from 'dotenv'
 import { clerkMiddleware } from '@clerk/express'
 import { apiRouter } from '../routes/api.routes'
 import { setupEmailService } from '../events/email.services'
+import { setupAdminUserService } from '../events/adminUser.event'
 
 const app = express()
 dotenv.config()
@@ -23,6 +24,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(clerkMiddleware())
 
 setupEmailService()
+setupAdminUserService()
 
 app.get('/', (req: Request, res: Response) => {
     res.send('hello world')
