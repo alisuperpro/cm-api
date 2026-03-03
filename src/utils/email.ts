@@ -11,10 +11,12 @@ export const BUSSINES_DATA = {
     emailHost: process.env.EMAIL_HOST,
 } as const
 
+const port = Number(process.env.EMAIL_PORT)
+
 const transporter = nodemailer.createTransport({
     host: BUSSINES_DATA.emailHost,
-    port: 465,
-    secure: true, // true for 465, false for other ports
+    port: port,
+    secure: port !== 465 ? false : true, // true for 465, false for other ports
     auth: {
         user: BUSSINES_DATA.supportEmail,
         pass: BUSSINES_DATA.supportEmailPassword,

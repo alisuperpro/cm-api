@@ -92,4 +92,26 @@ export class UserController {
             data: user,
         })
     }
+
+    static async all(req: Request, res: Response) {
+        const [error, user] = await UserModel.all()
+
+        if (error) {
+            res.status(500).json({
+                error: 'Error to get user data',
+            })
+            return
+        }
+
+        if (!user) {
+            res.status(404).json({
+                error: 'Not found',
+            })
+            return
+        }
+
+        res.json({
+            data: user,
+        })
+    }
 }

@@ -132,4 +132,14 @@ export class UserModel {
             return [err]
         }
     }
+
+    static async all() {
+        try {
+            const result = await db.execute(`SELECT * FROM ${this.tableName}`)
+
+            return [undefined, result.rows]
+        } catch (err) {
+            return [err]
+        }
+    }
 }

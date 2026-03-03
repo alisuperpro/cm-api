@@ -1,6 +1,5 @@
 import { Request, Response } from 'express'
 import { TrainingUserModel } from '../model/trainingUser.model'
-import { sendEmail } from '../utils/email'
 import { UserModel } from '../model/user.model'
 import { appEventEmitter } from '../events/eventEmitter'
 
@@ -89,7 +88,11 @@ export class TrainingUserController {
         })
     }
     static async all(req: Request, res: Response) {
-        const [error, result] = await TrainingUserModel.all()
+        const { name } = req.query
+
+        const [error, result] = await TrainingUserModel.all({
+            name: name?.toString(),
+        })
 
         if (error) {
             res.status(500).json({
@@ -150,7 +153,7 @@ export class TrainingUserController {
         const { id } = req.params
         const { isArrived } = req.body
 
-        if (!isArrived) {
+        if (typeof isArrived !== 'boolean') {
             res.status(400).json({
                 error: 'Missing fields',
             })

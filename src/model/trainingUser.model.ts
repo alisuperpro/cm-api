@@ -46,31 +46,62 @@ export class TrainingUserModel {
         }
     }
 
-    static async all() {
+    static async all({ name }: { name?: string }) {
         try {
-            const result = await db.execute(
-                `
-SELECT 
-    u.full_name, 
-    u.email, 
-    u.doc_id,
-  u.ig_username,
-  u.phone,
-  u.disability,
-  *,
-    t.title AS curso, 
-    tu.how_find, 
-    tu.experience, 
-    tu.pay_ref, 
-    tu.pay_img, 
-    tu.is_arrived
-FROM ${this.tableName} tu
-JOIN "user" u ON tu.user_id = u.id
-JOIN training t ON tu.training_id = t.id;
-`
-            )
+            let rows
+            if (name) {
+                const result = await db.execute({
+                    sql: `
+                    SELECT 
+                        u.full_name, 
+                        u.email, 
+                        u.doc_id,
+                    u.ig_username,
+                    u.phone,
+                    u.disability,
+                    *,
+                        t.title AS curso, 
+                        tu.how_find, 
+                        tu.experience, 
+                        tu.pay_ref, 
+                        tu.pay_img, 
+                        tu.is_arrived
+                    FROM ${this.tableName} tu
+                    JOIN "user" u ON tu.user_id = u.id
+                    JOIN training t ON tu.training_id = t.id
+                    WHERE full_name LIKE ?;
+`,
+                    args: [`%${name}%`],
+                })
 
-            return [undefined, result.rows]
+                rows = result.rows
+            } else {
+                const result = await db.execute({
+                    sql: `
+                    SELECT 
+                        u.full_name, 
+                        u.email, 
+                        u.doc_id,
+                    u.ig_username,
+                    u.phone,
+                    u.disability,
+                    *,
+                        t.title AS curso, 
+                        tu.how_find, 
+                        tu.experience, 
+                        tu.pay_ref, 
+                        tu.pay_img, 
+                        tu.is_arrived
+                    FROM ${this.tableName} tu
+                    JOIN "user" u ON tu.user_id = u.id
+                    JOIN training t ON tu.training_id = t.id;
+`,
+                    args: [],
+                })
+                rows = result.rows
+            }
+
+            return [undefined, rows]
         } catch (err) {
             return [err]
         }
