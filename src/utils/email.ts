@@ -22,7 +22,7 @@ const transporter = nodemailer.createTransport({
         pass: BUSSINES_DATA.supportEmailPassword,
     },
     tls: {
-        rejectUnauthorized: true, // Temporal para diagnóstico
+        rejectUnauthorized: false, // Temporal para diagnóstico
     },
     debug: true,
     connectionTimeout: 60000, // 1 minute

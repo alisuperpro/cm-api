@@ -20,6 +20,8 @@ export const sendPushNotification = async ({
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                Accept: 'application/json',
+                'Accept-encoding': 'gzip, deflate',
             },
             body: JSON.stringify(payload),
         })

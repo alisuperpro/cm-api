@@ -3,7 +3,7 @@ import { sendEmail } from '../utils/email'
 import { appEventEmitter } from './eventEmitter'
 
 export function setupEmailService() {
-    appEventEmitter.on(
+    /* appEventEmitter.on(
         'userRegisteredOnTraining',
         async ({ id, name, email }) => {
             console.log(
@@ -136,7 +136,7 @@ export function setupEmailService() {
                 console.log(err)
             }
         }
-    )
+    ) */
 
     console.log('[Email Service] Escuchando eventos')
 }
