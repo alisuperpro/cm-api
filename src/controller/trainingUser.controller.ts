@@ -90,10 +90,11 @@ export class TrainingUserController {
         })
     }
     static async all(req: Request, res: Response) {
-        const { name } = req.query
+        const { name, slug } = req.query
 
         const [error, result] = await TrainingUserModel.all({
             name: name?.toString(),
+            slug: slug?.toString(),
         })
 
         if (error) {

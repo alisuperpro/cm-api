@@ -1,5 +1,6 @@
 import { db } from '../db/db'
 import { randomUUID } from 'node:crypto'
+import { QueryBuilder } from '../utils/queryBuilder'
 
 export class TrainingUserModel {
     static tableName = 'training_user'
@@ -46,62 +47,42 @@ export class TrainingUserModel {
         }
     }
 
-    static async all({ name }: { name?: string }) {
+    static async all({ name, slug }: { name?: string; slug?: string }) {
         try {
-            let rows
-            if (name) {
-                const result = await db.execute({
-                    sql: `
-                    SELECT 
-                        u.full_name, 
-                        u.email, 
-                        u.doc_id,
-                    u.ig_username,
-                    u.phone,
-                    u.disability,
-                    *,
-                        t.title AS curso, 
-                        tu.how_find, 
-                        tu.experience, 
-                        tu.pay_ref, 
-                        tu.pay_img, 
-                        tu.is_arrived
-                    FROM ${this.tableName} tu
-                    JOIN "user" u ON tu.user_id = u.id
-                    JOIN training t ON tu.training_id = t.id
-                    WHERE full_name LIKE ?;
-`,
-                    args: [`%${name}%`],
-                })
+            const builder = new QueryBuilder(`${this.tableName} tu`)
+            builder
+                .select([
+                    'u.full_name',
+                    'u.email',
+                    'u.doc_id',
+                    'u.ig_username',
+                    'u.phone',
+                    'u.disability',
+                    '*',
 
-                rows = result.rows
-            } else {
-                const result = await db.execute({
-                    sql: `
-                    SELECT 
-                        u.full_name, 
-                        u.email, 
-                        u.doc_id,
-                    u.ig_username,
-                    u.phone,
-                    u.disability,
-                    *,
-                        t.title AS curso, 
-                        tu.how_find, 
-                        tu.experience, 
-                        tu.pay_ref, 
-                        tu.pay_img, 
-                        tu.is_arrived
-                    FROM ${this.tableName} tu
-                    JOIN "user" u ON tu.user_id = u.id
-                    JOIN training t ON tu.training_id = t.id;
-`,
-                    args: [],
-                })
-                rows = result.rows
+                    'tu.how_find',
+                    'tu.experience',
+                    'tu.pay_ref',
+                    'tu.pay_img',
+                    'tu.is_arrived',
+                ])
+                .join('user u', 'tu.user_id = u.id')
+                .join('training t', 'tu.training_id = t.id')
+
+            if (name) {
+                builder.where('name', `%${name}%`, 'LIKE')
             }
 
-            return [undefined, rows]
+            if (slug) {
+                builder.where('slug', slug)
+            }
+
+            const result = await db.execute({
+                sql: builder.build().sql,
+                args: builder.build().args,
+            })
+
+            return [undefined, result.rows]
         } catch (err) {
             return [err]
         }
