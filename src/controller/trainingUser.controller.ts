@@ -82,7 +82,7 @@ export class TrainingUserController {
             //@ts-ignore
             email: user.email,
             //@ts-ignore
-            trainingName: result.title,
+            trainingId,
         })
 
         res.json({
