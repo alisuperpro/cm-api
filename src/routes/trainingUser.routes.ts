@@ -6,6 +6,7 @@ import { checkAdminAuth } from '../middleware/checkAdminAuth.middleware'
 import multer from 'multer'
 import fs from 'fs'
 import path from 'path'
+
 export const paysUploadDir = 'pays/'
 const storage = multer.diskStorage({
     destination: paysUploadDir,
