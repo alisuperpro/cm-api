@@ -1,5 +1,6 @@
 import { db } from '../db/db'
 import { randomUUID } from 'node:crypto'
+import { QueryBuilder } from '../utils/queryBuilder'
 
 export class TrainingModel {
     static tableName = 'training'
@@ -7,19 +8,19 @@ export class TrainingModel {
     static async create({
         title,
         date,
-        status,
+        statusId,
         location,
     }: {
         title: string
         date: string
-        status: string
+        statusId: string
         location: string
     }) {
         try {
             const id = randomUUID()
             await db.execute({
-                sql: `INSERT INTO ${this.tableName} (id,title,date,status,location) VALUES (?,?,?,?,?)`,
-                args: [id, title, date, status, location],
+                sql: `INSERT INTO ${this.tableName} (id,title,date,status_id,location) VALUES (?,?,?,?,?)`,
+                args: [id, title, date, statusId, location],
             })
 
             return [undefined, true]
@@ -30,9 +31,18 @@ export class TrainingModel {
 
     static async byId({ id }: { id: string }) {
         try {
+            const builder = new QueryBuilder(this.tableName)
+
+            builder
+                .select('*')
+                .join(
+                    'training_status',
+                    'training.status_id = training_status.id'
+                )
+                .where('id', id)
             const result = await db.execute({
-                sql: `SELECT * FROM ${this.tableName} WHERE id = ?`,
-                args: [id],
+                sql: builder.build().sql,
+                args: builder.build().args,
             })
 
             return [undefined, result.rows[0]]
@@ -43,8 +53,16 @@ export class TrainingModel {
 
     static async all() {
         try {
+            const builder = new QueryBuilder(this.tableName)
+
+            builder
+                .select('*')
+                .join(
+                    'training_status',
+                    'training.status_id = training_status.id'
+                )
             const result = await db.execute({
-                sql: `SELECT * FROM ${this.tableName}`,
+                sql: builder.build().sql,
             })
 
             return [undefined, result.rows]

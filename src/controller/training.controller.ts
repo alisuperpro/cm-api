@@ -3,7 +3,7 @@ import { TrainingModel } from '../model/training.model'
 
 export class TrainingController {
     static async create(req: Request, res: Response) {
-        const { title, date, status, location } = req.body
+        const { title, date, statusId, location } = req.body
 
         if (!title || !date || !status || !location) {
             res.status(400).json({
@@ -15,7 +15,7 @@ export class TrainingController {
         const [error, training] = await TrainingModel.create({
             title,
             date,
-            status,
+            statusId,
             location,
         })
 
