@@ -7,6 +7,7 @@ import { apiRouter } from '../routes/api.routes'
 import { setupEmailService } from '../events/email.services'
 import { setupAdminUserService } from '../events/adminUser.event'
 import path from 'path'
+import { paysUploadDir } from '../routes/trainingUser.routes'
 
 const app = express()
 dotenv.config()
@@ -38,7 +39,7 @@ app.get('/healt', (req: Request, res: Response) => {
 app.get('/pays/:name', (req, res, next) => {
     const name = req.params.name
 
-    const filePath = 'pays/'
+    const filePath = paysUploadDir
 
     const options = {
         root: filePath,

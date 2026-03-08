@@ -6,9 +6,9 @@ import { checkAdminAuth } from '../middleware/checkAdminAuth.middleware'
 import multer from 'multer'
 import fs from 'fs'
 import path from 'path'
-const uploadDir = 'pays/'
+export const paysUploadDir = 'pays/'
 const storage = multer.diskStorage({
-    destination: uploadDir,
+    destination: paysUploadDir,
     filename: function (req, file, cb) {
         const originalname = file.originalname
         const extension = path.extname(originalname)
@@ -18,7 +18,7 @@ const storage = multer.diskStorage({
         let counter = 1
 
         // Synchronously check for file existence (or use async fs.access for better performance)
-        while (fs.existsSync(path.join(uploadDir, newFilename))) {
+        while (fs.existsSync(path.join(paysUploadDir, newFilename))) {
             newFilename = `${basename}(${counter})${extension}`
             counter++
         }
