@@ -6,6 +6,7 @@ import { clerkMiddleware } from '@clerk/express'
 import { apiRouter } from '../routes/api.routes'
 import { setupEmailService } from '../events/email.services'
 import { setupAdminUserService } from '../events/adminUser.event'
+import path from 'path'
 
 const app = express()
 dotenv.config()
@@ -32,6 +33,34 @@ app.get('/', (req: Request, res: Response) => {
 
 app.get('/healt', (req: Request, res: Response) => {
     res.send('Healt')
+})
+
+app.get('/pays/:name', (req, res, next) => {
+    const name = req.params.name
+
+    const filePath = 'pays/'
+
+    const options = {
+        root: filePath,
+        dotfiles: 'deny',
+        headers: {
+            'x-timestamp': Date.now(),
+            'x-sent': true,
+        },
+    }
+
+    res.sendFile(
+        name,
+        //@ts-ignore
+        options,
+        function (err) {
+            if (err) {
+                next(err)
+            } else {
+                console.log('Sent:', name)
+            }
+        }
+    )
 })
 
 app.use('/api', apiRouter)
