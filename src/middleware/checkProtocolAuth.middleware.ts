@@ -1,7 +1,7 @@
 import { clerkClient, getAuth } from '@clerk/express'
 import { NextFunction, Request, Response } from 'express'
 
-export const checkAdminAuth = async (
+export const checkProtocolAuth = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -15,7 +15,10 @@ export const checkAdminAuth = async (
 
     const user = await clerkClient.users.getUser(userId)
 
-    if (user.publicMetadata.role === 'Admin') {
+    if (
+        user.publicMetadata.role === 'Admin' ||
+        user.publicMetadata.role === 'Protocol'
+    ) {
         //@ts-ignore
         req.user = { ...user }
     } else {

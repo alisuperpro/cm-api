@@ -7,6 +7,7 @@ import { apiRouter } from '../routes/api.routes'
 import { setupEmailService } from '../events/email.services'
 import { setupAdminUserService } from '../events/adminUser.event'
 import { paysUploadDir } from '../routes/trainingUser.routes'
+import { videoUploadDir } from '../routes/video.routes'
 
 const app = express()
 dotenv.config()
@@ -38,6 +39,62 @@ app.get('/pays/:name', (req, res, next) => {
     const name = req.params.name
 
     const filePath = paysUploadDir
+
+    const options = {
+        root: filePath,
+        dotfiles: 'deny',
+        headers: {
+            'x-timestamp': Date.now(),
+            'x-sent': true,
+        },
+    }
+
+    res.sendFile(
+        name,
+        //@ts-ignore
+        options,
+        function (err) {
+            if (err) {
+                next(err)
+            } else {
+                console.log('Sent:', name)
+            }
+        }
+    )
+})
+
+app.get('/video/watch/:name', (req, res, next) => {
+    const name = req.params.name
+
+    const filePath = videoUploadDir
+
+    const options = {
+        root: filePath,
+        dotfiles: 'deny',
+        headers: {
+            'x-timestamp': Date.now(),
+            'x-sent': true,
+        },
+    }
+
+    res.sendFile(
+        name,
+        //@ts-ignore
+        options,
+        function (err) {
+            if (err) {
+                next(err)
+            } else {
+                console.log('Sent:', name)
+            }
+        }
+    )
+})
+
+app.get('/video/thumbnail/:name', (req, res, next) => {
+    const name = req.params.name
+
+    const filePath = videoUploadDir
 
     const options = {
         root: filePath,

@@ -6,6 +6,7 @@ import { checkAdminAuth } from '../middleware/checkAdminAuth.middleware'
 import multer from 'multer'
 import fs from 'fs'
 import path from 'path'
+import { checkProtocolAuth } from '../middleware/checkProtocolAuth.middleware'
 
 export const paysUploadDir = 'pays/'
 const storage = multer.diskStorage({
@@ -31,23 +32,24 @@ const trainingPayImg = multer({ storage })
 
 export const trainingUserRouter = Router()
 
-trainingUserRouter.get('/', checkAdminAuth, TrainingUserController.all)
+trainingUserRouter.get('/', checkProtocolAuth, TrainingUserController.all)
 trainingUserRouter.get(
     '/training/:id',
-    checkAdminAuth,
+    checkProtocolAuth,
     TrainingUserController.byTrainingId
 )
 trainingUserRouter.get(
     '/:id',
     checkId,
-    checkAdminAuth,
+    checkProtocolAuth,
     TrainingUserController.byId
 )
 
-trainingUserRouter.post('/', checkAuth, TrainingUserController.create)
+trainingUserRouter.post('/', checkAdminAuth, TrainingUserController.create)
 
 trainingUserRouter.post(
     '/upload-pay',
+    checkAuth,
     trainingPayImg.single('pay-img'),
     (req, res, next) => {
         //@ts-ignore
