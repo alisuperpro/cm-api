@@ -154,7 +154,7 @@ export class TrainingUserController {
         })
     }
     static async updateIsArrived(req: Request, res: Response) {
-        const { id } = req.params
+        const { trainingId, id } = req.params
         const { isArrived } = req.body
 
         if (typeof isArrived !== 'boolean') {
@@ -167,6 +167,7 @@ export class TrainingUserController {
         const [error, result] = await TrainingUserModel.updateIsArrived({
             id: id.toString(),
             isArrived,
+            trainingId: trainingId.toString(),
         })
 
         if (error) {

@@ -68,7 +68,7 @@ trainingUserRouter.post(
 )
 
 trainingUserRouter.put(
-    '/is-arrived/:id',
+    '/is-arrived/:trainingId/:id',
     checkAdminAuth,
     checkId,
     TrainingUserController.updateIsArrived

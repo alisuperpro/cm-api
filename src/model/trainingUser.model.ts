@@ -135,17 +135,19 @@ export class TrainingUserModel {
     static async updateIsArrived({
         id,
         isArrived,
+        trainingId,
     }: {
         id: string
         isArrived: boolean
+        trainingId: string
     }) {
         try {
-            const result = await db.execute({
-                sql: `UPDATE ${this.tableName} SET is_arrived = ? WHERE id = ?`,
-                args: [isArrived, id],
+            await db.execute({
+                sql: `UPDATE ${this.tableName} SET is_arrived = ?  WHERE user_id = ? AND training_id = ?`,
+                args: [isArrived, id, trainingId],
             })
 
-            return [undefined, result.rows]
+            return [undefined, true]
         } catch (err) {
             return [err]
         }
@@ -161,7 +163,7 @@ export class TrainingUserModel {
         trainingId: string
     }) {
         try {
-            const result = await db.execute({
+            await db.execute({
                 sql: `UPDATE ${this.tableName} SET pay_confirmed = ? WHERE user_id = ? AND training_id = ?`,
                 args: [payConfirmed, id, trainingId],
             })
