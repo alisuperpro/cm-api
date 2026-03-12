@@ -7,6 +7,12 @@ import multer from 'multer'
 import fs from 'fs'
 import path from 'path'
 import { checkProtocolAuth } from '../middleware/checkProtocolAuth.middleware'
+import {
+    validateFileSize,
+    validateFileType,
+} from '../middleware/validation.middleware'
+import fileUploadController from '../controller/fileUpload.controller'
+import { UPLOAD_FIELDS } from '../utils/const'
 
 export const paysUploadDir = 'pays/'
 const storage = multer.diskStorage({
@@ -46,7 +52,7 @@ trainingUserRouter.get(
 )
 
 trainingUserRouter.post('/', checkAdminAuth, TrainingUserController.create)
-
+/* 
 trainingUserRouter.post(
     '/upload-pay',
     checkAuth,
@@ -65,6 +71,30 @@ trainingUserRouter.post(
             res.json({ path: `https://${req.hostname}/pays/${pathToFile}` })
         }
     }
+) */
+
+trainingUserRouter.post(
+    '/upload/pay',
+    checkAuth,
+    trainingPayImg.single(UPLOAD_FIELDS.PAYS),
+    validateFileType(['image/jpeg', 'image/png', 'application/pdf']),
+    validateFileSize(5 * 1024 * 1024), // 5MB
+    fileUploadController.handleUpload({
+        basePath: 'pays',
+        includeMetadata: true,
+    })
+)
+
+trainingUserRouter.post(
+    '/upload-pay',
+    checkAuth,
+    trainingPayImg.single(UPLOAD_FIELDS.PAYS),
+    validateFileType(['image/jpeg', 'image/png', 'application/pdf']),
+    validateFileSize(5 * 1024 * 1024), // 5MB
+    fileUploadController.handleUpload({
+        basePath: 'pays',
+        includeMetadata: true,
+    })
 )
 
 trainingUserRouter.put(

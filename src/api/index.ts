@@ -9,7 +9,8 @@ import { setupAdminUserService } from '../events/adminUser.event'
 import { paysUploadDir } from '../routes/trainingUser.routes'
 import { videoUploadDir } from '../routes/video.routes'
 import { rateLimit } from 'express-rate-limit'
-
+import fileServeController from '../controller/fileServer.controller'
+import path from 'path'
 const app = express()
 dotenv.config()
 
@@ -38,6 +39,11 @@ app.use(limiter)
 setupEmailService()
 setupAdminUserService()
 
+// Definir directorios
+const PAYS_UPLOAD_DIR = path.join(__dirname, '../../pays') //paysUploadDir
+const VIDEO_UPLOAD_DIR = path.join(__dirname, '../../video')
+const THUMBNAIL_UPLOAD_DIR = path.join(__dirname, '../../video')
+
 app.get('/', (req: Request, res: Response) => {
     res.send('hello world')
 })
@@ -46,89 +52,32 @@ app.get('/healt', (req: Request, res: Response) => {
     res.send('Healt')
 })
 
-app.get('/pays/:name', (req, res, next) => {
-    const name = req.params.name
+app.get(
+    '/pays/:name',
+    fileServeController.serveFile({
+        directory: PAYS_UPLOAD_DIR,
+        maxAge: 7 * 86400000, // 7 días de caché
+        immutable: true, // Para archivos que no cambian
+    })
+)
 
-    const filePath = paysUploadDir
+app.get(
+    '/video/watch/:name',
+    fileServeController.serveFile({
+        directory: VIDEO_UPLOAD_DIR,
+        maxAge: 7 * 86400000, // 7 días de caché
+        immutable: true, // Para archivos que no cambian
+    })
+)
 
-    const options = {
-        root: filePath,
-        dotfiles: 'deny',
-        headers: {
-            'x-timestamp': Date.now(),
-            'x-sent': true,
-        },
-    }
-
-    res.sendFile(
-        name,
-        //@ts-ignore
-        options,
-        function (err) {
-            if (err) {
-                next(err)
-            } else {
-                console.log('Sent:', name)
-            }
-        }
-    )
-})
-
-app.get('/video/watch/:name', (req, res, next) => {
-    const name = req.params.name
-
-    const filePath = videoUploadDir
-
-    const options = {
-        root: filePath,
-        dotfiles: 'deny',
-        headers: {
-            'x-timestamp': Date.now(),
-            'x-sent': true,
-        },
-    }
-
-    res.sendFile(
-        name,
-        //@ts-ignore
-        options,
-        function (err) {
-            if (err) {
-                next(err)
-            } else {
-                console.log('Sent:', name)
-            }
-        }
-    )
-})
-
-app.get('/video/thumbnail/:name', (req, res, next) => {
-    const name = req.params.name
-
-    const filePath = videoUploadDir
-
-    const options = {
-        root: filePath,
-        dotfiles: 'deny',
-        headers: {
-            'x-timestamp': Date.now(),
-            'x-sent': true,
-        },
-    }
-
-    res.sendFile(
-        name,
-        //@ts-ignore
-        options,
-        function (err) {
-            if (err) {
-                next(err)
-            } else {
-                console.log('Sent:', name)
-            }
-        }
-    )
-})
+app.get(
+    '/video/thumbnail/:name',
+    fileServeController.serveFile({
+        directory: THUMBNAIL_UPLOAD_DIR,
+        maxAge: 7 * 86400000, // 7 días de caché
+        immutable: true, // Para archivos que no cambian
+    })
+)
 
 app.use('/api', apiRouter)
 

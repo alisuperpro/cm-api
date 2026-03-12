@@ -5,12 +5,17 @@ import fs from 'fs'
 import path from 'path'
 import { checkAuth } from '../middleware/checkAuth.middleware'
 import { checkAdminAuth } from '../middleware/checkAdminAuth.middleware'
+import {
+    validateFileSize,
+    validateFileType,
+} from '../middleware/validation.middleware'
+import fileUploadController from '../controller/fileUpload.controller'
+import { UPLOAD_FIELDS } from '../utils/const'
 
 export const videoUploadDir = 'video/'
 const storage = multer.diskStorage({
     destination: videoUploadDir,
     filename: function (req, file, cb) {
-        console.log(file)
         const originalname = file.originalname
         const extension = path.extname(originalname)
         const basename = path.basename(originalname, extension)
@@ -36,47 +41,25 @@ videoRouter.get('/', checkAuth, VideoController.all)
 videoRouter.post('/', checkAdminAuth, VideoController.create)
 
 videoRouter.post(
-    '/upload-video',
+    '/upload/video',
     checkAdminAuth,
-    videoStorage.single('video'),
-    (req, res, next) => {
-        console.log(req.file)
-        //@ts-ignore
-        const pathToFile = req.file.filename
-
-        if (process.env.NODE_ENV !== 'production') {
-            res.json({
-                path: `${req.protocol}://${req.hostname}:${
-                    process.env.PORT || 3500
-                }/video/watch/${pathToFile}`,
-            })
-        } else {
-            res.json({
-                path: `https://${req.hostname}/video/watch/${pathToFile}`,
-            })
-        }
-    }
+    videoStorage.single(UPLOAD_FIELDS.VIDEO),
+    validateFileType(['video/mp4', 'video/avi']),
+    validateFileSize(30 * 1024 * 1024), // 30MB
+    fileUploadController.handleUpload({
+        basePath: 'video/watch',
+        includeMetadata: true,
+    })
 )
 
 videoRouter.post(
-    '/upload-thumbnail',
+    '/upload/thumbnail',
     checkAdminAuth,
-    videoStorage.single('thumbnail'),
-    (req, res, next) => {
-        console.log(req.file)
-        //@ts-ignore
-        const pathToFile = req.file.filename
-
-        if (process.env.NODE_ENV !== 'production') {
-            res.json({
-                path: `${req.protocol}://${req.hostname}:${
-                    process.env.PORT || 3500
-                }/video/thumbnail/${pathToFile}`,
-            })
-        } else {
-            res.json({
-                path: `https://${req.hostname}/video/thumbnail/${pathToFile}`,
-            })
-        }
-    }
+    videoStorage.single(UPLOAD_FIELDS.THUMBNAIL),
+    validateFileType(['image/jpeg', 'image/png', 'application/pdf']),
+    validateFileSize(5 * 1024 * 1024), // 5MB
+    fileUploadController.handleUpload({
+        basePath: 'video/thumbnail',
+        includeMetadata: true,
+    })
 )
