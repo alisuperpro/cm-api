@@ -52,7 +52,7 @@ trainingUserRouter.get(
 )
 
 trainingUserRouter.post('/', checkAdminAuth, TrainingUserController.create)
-/* 
+
 trainingUserRouter.post(
     '/upload-pay',
     checkAuth,
@@ -71,7 +71,7 @@ trainingUserRouter.post(
             res.json({ path: `https://${req.hostname}/pays/${pathToFile}` })
         }
     }
-) */
+)
 
 trainingUserRouter.post(
     '/upload/pay',
