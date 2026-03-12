@@ -73,3 +73,10 @@ trainingUserRouter.put(
     checkId,
     TrainingUserController.updateIsArrived
 )
+
+trainingUserRouter.put(
+    '/pay-confirmed/:trainingId/:id',
+    checkAdminAuth,
+    checkId,
+    TrainingUserController.updatePayConfirmed
+)

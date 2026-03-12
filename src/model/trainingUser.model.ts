@@ -59,7 +59,6 @@ export class TrainingUserModel {
                     'u.phone',
                     'u.disability',
                     '*',
-
                     'tu.how_find',
                     'tu.experience',
                     'tu.pay_ref',
@@ -70,7 +69,7 @@ export class TrainingUserModel {
                 .join('training t', 'tu.training_id = t.id')
 
             if (name) {
-                builder.where('name', `%${name}%`, 'LIKE')
+                builder.where('u.full_name', `%${name}%`, 'LIKE')
             }
 
             if (slug) {
@@ -147,6 +146,27 @@ export class TrainingUserModel {
             })
 
             return [undefined, result.rows]
+        } catch (err) {
+            return [err]
+        }
+    }
+
+    static async updatePayConfirmed({
+        id,
+        payConfirmed,
+        trainingId,
+    }: {
+        id: string
+        payConfirmed: boolean
+        trainingId: string
+    }) {
+        try {
+            const result = await db.execute({
+                sql: `UPDATE ${this.tableName} SET pay_confirmed = ? WHERE user_id = ? AND training_id = ?`,
+                args: [payConfirmed, id, trainingId],
+            })
+
+            return [undefined, true]
         } catch (err) {
             return [err]
         }

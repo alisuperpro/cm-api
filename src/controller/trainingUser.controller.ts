@@ -98,6 +98,7 @@ export class TrainingUserController {
         })
 
         if (error) {
+            console.log(error)
             res.status(500).json({
                 error: 'Error on database',
             })
@@ -174,6 +175,39 @@ export class TrainingUserController {
             })
             return
         }
+
+        res.json({
+            data: result,
+        })
+    }
+    static async updatePayConfirmed(req: Request, res: Response) {
+        const { id, trainingId } = req.params
+        const { payConfirmed } = req.body
+
+        if (typeof payConfirmed !== 'boolean') {
+            res.status(400).json({
+                error: 'Missing fields',
+            })
+            return
+        }
+
+        const [error, result] = await TrainingUserModel.updatePayConfirmed({
+            id: id.toString(),
+            payConfirmed,
+            trainingId: trainingId.toString(),
+        })
+
+        if (error) {
+            res.status(500).json({
+                error: 'Error to update is arrived',
+            })
+            return
+        }
+
+        appEventEmitter.emit('payConfirmed', {
+            id: id,
+            trainingId: trainingId.toString(),
+        })
 
         res.json({
             data: result,

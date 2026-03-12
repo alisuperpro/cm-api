@@ -34,12 +34,21 @@ export class TrainingModel {
             const builder = new QueryBuilder(this.tableName)
 
             builder
-                .select('*')
+                .select([
+                    'title',
+                    'date',
+                    'location',
+                    'status_id',
+                    'training_status.status AS status',
+                    'slug',
+                    'description',
+                    'created_at',
+                ])
                 .join(
                     'training_status',
                     'training.status_id = training_status.id'
                 )
-                .where('id', id)
+                .where('training.id', id)
             const result = await db.execute({
                 sql: builder.build().sql,
                 args: builder.build().args,

@@ -1,15 +1,31 @@
+import { TrainingModel } from '../model/training.model'
+import { UserModel } from '../model/user.model'
 import { sendEmail } from '../utils/email'
 
 import { appEventEmitter } from './eventEmitter'
 
 export function setupEmailService() {
-    /* appEventEmitter.on(
-        'userRegisteredOnTraining',
-        async ({ id, name, email }) => {
-            console.log(
-                `[Email Service] Enviando correo con la confirmacion de participacion al usuario ${id}`
-            )
-            const body = `
+    appEventEmitter.on('payConfirmed', async ({ id, trainingId }) => {
+        console.log(
+            `[Email Service] Enviando correo con la confirmacion de participacion al usuario ${id}`
+        )
+
+        const [trainingError, training] = await TrainingModel.byId({
+            id: trainingId,
+        })
+
+        if (trainingError) {
+            console.log(trainingError)
+            return
+        }
+
+        const [userError, user] = await UserModel.me({ id })
+
+        if (userError) {
+            console.log(userError)
+            return
+        }
+        const body = `
     <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -31,7 +47,10 @@ export function setupEmailService() {
         <tr>
           <td align="center" style="background-color:#000000; padding:30px;">
             <h1 style="color:#ffffff; margin:0; font-size:22px;">
-              Master Class Edición Audiovisual
+              Master Class ${
+                  //@ts-ignore
+                  training.title
+              }
             </h1>
           </td>
         </tr>
@@ -41,7 +60,10 @@ export function setupEmailService() {
           <td style="padding:30px; color:#333333; font-size:15px; line-height:1.6;">
 
             <p style="margin-top:0;">
-              Hola <strong>${name}</strong>,
+              Hola <strong>${
+                  //@ts-ignore
+                  user.full_name
+              }</strong>,
             </p>
 
             <p>
@@ -60,7 +82,10 @@ export function setupEmailService() {
               <strong>Hora:</strong> 1:30 p. m. - 4:00 p. m.
             </p>
             <p style="margin:5px 0;">
-              <strong>Lugar:</strong> Lotería de Oriente
+              <strong>Lugar:</strong> ${
+                  //@ts-ignore
+                  training.location
+              }
             </p>
 
             <hr style="border:none; border-top:1px solid #eeeeee; margin:25px 0;">
@@ -78,18 +103,7 @@ export function setupEmailService() {
               Si deseas practicar durante la sesión, puedes llevar tu laptop (no es obligatorio).
             </p>
 
-            <!-- Botón -->
-            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:30px 0;">
-              <tr>
-                <td align="center">
-                  <a href="https://chat.whatsapp.com/CWWSP5aAnsqBWWraHhxND3?mode=gi_t"
-                  target='_blank'
-                     style="background-color:#000000; color:#ffffff; padding:12px 25px; text-decoration:none; border-radius:5px; font-size:14px; display:inline-block;">
-                     Contactar por WhatsApp
-                  </a>
-                </td>
-              </tr>
-            </table>
+           
 
             <p>
               Nos vemos pronto para vivir una jornada de aprendizaje práctico y profesional.
@@ -125,18 +139,20 @@ export function setupEmailService() {
     
     `
 
-            try {
-                await sendEmail({
-                    to: email,
-                    subject:
-                        'Confirmación de inscripción | Master Class Edición Audiovisual',
-                    body: body,
-                })
-            } catch (err) {
-                console.log(err)
-            }
+        try {
+            await sendEmail({
+                //@ts-ignore
+                to: user.email,
+                subject: `Confirmación de inscripción | ${
+                    //@ts-ignore
+                    training.title
+                }`,
+                body: body,
+            })
+        } catch (err) {
+            console.log(err)
         }
-    ) */
+    })
 
     console.log('[Email Service] Escuchando eventos')
 }
