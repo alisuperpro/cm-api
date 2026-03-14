@@ -11,8 +11,3 @@ export interface FileUploadResponse {
     filename: string
     [key: string]: any // Para metadatos adicionales
 }
-
-export interface FileRequest extends Request {
-    file?: Express.Multer.File
-    files?: Express.Multer.File[]
-}
