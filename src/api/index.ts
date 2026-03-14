@@ -18,6 +18,9 @@ const corsOptions = {
     origin: origins,
     optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
     methods: 'GET,PUT,POST,DELETE',
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    exposedHeaders: ['set-cookie'],
+    credentials: true,
 }
 
 const limiter = rateLimit({
