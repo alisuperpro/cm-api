@@ -13,9 +13,9 @@ import fileUpload from 'express-fileupload'
 const app = express()
 dotenv.config()
 
-const origins = process.env.ACCEPTED_ORIGIN?.split(',') ?? ['']
+const origins = process.env.ACCEPTED_ORIGIN?.split(',')
 const corsOptions = {
-    origin: origins,
+    origin: origins ? [origins] : '',
     optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
     methods: 'GET,PUT,POST,DELETE',
     allowedHeaders: ['Content-Type', 'Authorization'],
@@ -31,6 +31,7 @@ const limiter = rateLimit({
     ipv6Subnet: 56, // Set to 60 or 64 to be less aggressive, or 52 or 48 to be more aggressive
 })
 
+//@ts-ignore
 app.use(cors(corsOptions))
 app.use(morgan('dev'))
 app.use(express.json())
