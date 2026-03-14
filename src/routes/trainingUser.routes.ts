@@ -110,3 +110,10 @@ trainingUserRouter.put(
     checkId,
     TrainingUserController.updatePayConfirmed
 )
+
+trainingUserRouter.delete(
+    '/delete/:trainingId/:id',
+    checkAdminAuth,
+    checkId,
+    TrainingUserController.deleteUser
+)

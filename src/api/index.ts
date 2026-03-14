@@ -40,7 +40,7 @@ setupEmailService()
 setupAdminUserService()
 
 // Definir directorios
-const PAYS_UPLOAD_DIR = path.join(__dirname, '../../pays') //paysUploadDir
+export const PAYS_UPLOAD_DIR = path.join(__dirname, '../../pays') //paysUploadDir
 const VIDEO_UPLOAD_DIR = path.join(__dirname, '../../video')
 const THUMBNAIL_UPLOAD_DIR = path.join(__dirname, '../../video')
 

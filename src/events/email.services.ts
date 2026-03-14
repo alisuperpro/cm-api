@@ -99,12 +99,7 @@ export function setupEmailService() {
               <li>Recursos audiovisuales descargables</li>
             </ul>
 
-            <p>
-              Si deseas practicar durante la sesión, puedes llevar tu laptop (no es obligatorio).
-            </p>
-
-           
-
+          
             <p>
               Nos vemos pronto para vivir una jornada de aprendizaje práctico y profesional.
             </p>

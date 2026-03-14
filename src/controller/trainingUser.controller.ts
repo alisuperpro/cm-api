@@ -2,6 +2,10 @@ import { Request, Response } from 'express'
 import { TrainingUserModel } from '../model/trainingUser.model'
 import { UserModel } from '../model/user.model'
 import { appEventEmitter } from '../events/eventEmitter'
+import fs from 'fs/promises'
+import path from 'path'
+
+import { PAYS_UPLOAD_DIR } from '../api'
 
 export class TrainingUserController {
     static async create(req: Request, res: Response) {
@@ -213,5 +217,86 @@ export class TrainingUserController {
         res.json({
             data: result,
         })
+    }
+
+    static async deleteUser(req: Request, res: Response) {
+        try {
+            const { id, trainingId } = req.params
+
+            // Obtener el usuario
+            const [userError, user] =
+                await TrainingUserModel.byTrainingIdAndUserId({
+                    userId: id.toString(),
+                    trainingId: trainingId.toString(),
+                })
+
+            if (userError || !user) {
+                res.status(404).json({
+                    error: 'User not found',
+                })
+                return
+            }
+
+            // Eliminar el archivo si existe
+            //@ts-ignore
+            if (user.pay_img) {
+                try {
+                    // Convertir la URL a una ruta de archivo local
+                    //@ts-ignore
+                    const filePath = convertUrlToFilePath(user.pay_img)
+                    await fs.unlink(filePath)
+                    console.log('Archivo borrado con éxito:', filePath)
+                } catch (fileError) {
+                    // Log del error pero continuamos con la eliminación del usuario
+                    console.error('Error al borrar el archivo:', fileError)
+                    // No retornamos error al cliente para no interrumpir la eliminación del usuario
+                }
+            }
+
+            // Eliminar el usuario de la base de datos
+            const [error, result] = await TrainingUserModel.deleteUser({
+                id: id.toString(),
+                trainingId: trainingId.toString(),
+            })
+
+            if (error) {
+                res.status(500).json({
+                    error: 'Error to delete user',
+                })
+                return
+            }
+
+            res.json({
+                data: result,
+                message: 'User and associated file deleted successfully',
+            })
+        } catch (error) {
+            console.error('Unexpected error in deleteUser:', error)
+            res.status(500).json({
+                error: 'Internal server error',
+            })
+        }
+    }
+}
+
+// Función auxiliar para convertir URL a ruta de archivo
+function convertUrlToFilePath(fileUrl: string): string {
+    try {
+        // Parsear la URL
+        const parsedUrl = new URL(fileUrl)
+
+        // Obtener la ruta del pathname (ej: /pays/user_123.jpg)
+        const filePath = parsedUrl.pathname
+
+        // Asumiendo que los archivos están en el directorio 'public' o similar
+        // Ajusta esta ruta según tu estructura de directorios
+        const publicDir = path.join(__dirname, '../../') // Ajusta según tu estructura
+
+        // Combinar con el directorio base
+        return path.join(publicDir, filePath)
+    } catch (error) {
+        // Si no es una URL válida, tratar como ruta local
+        console.error('Error parsing URL:', error)
+        return fileUrl
     }
 }

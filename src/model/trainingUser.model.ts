@@ -173,4 +173,23 @@ export class TrainingUserModel {
             return [err]
         }
     }
+
+    static async deleteUser({
+        id,
+        trainingId,
+    }: {
+        id: string
+        trainingId: string
+    }) {
+        try {
+            await db.execute({
+                sql: `DELETE FROM ${this.tableName} WHERE user_id = ? AND training_id = ?`,
+                args: [id, trainingId],
+            })
+
+            return [undefined, true]
+        } catch (err) {
+            return [err]
+        }
+    }
 }
