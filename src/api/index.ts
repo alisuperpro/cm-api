@@ -20,6 +20,7 @@ const corsOptions = {
     methods: 'GET,PUT,POST,DELETE',
     allowedHeaders: ['Content-Type', 'Authorization'],
     exposedHeaders: ['set-cookie'],
+    credentials: true,
 }
 
 const limiter = rateLimit({
