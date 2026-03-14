@@ -59,6 +59,12 @@ app.use(
         tempFileDir: './uploads',
     })
 )
+app.use((req, res, next) => {
+    console.log('Request received:')
+    console.log('Method:', req.method)
+    console.log('Origin:', req.headers.origin)
+    next()
+})
 
 setupEmailService()
 setupAdminUserService()
