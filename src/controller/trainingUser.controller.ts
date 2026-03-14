@@ -4,8 +4,7 @@ import { UserModel } from '../model/user.model'
 import { appEventEmitter } from '../events/eventEmitter'
 import fs from 'fs/promises'
 import path from 'path'
-
-import { PAYS_UPLOAD_DIR } from '../api'
+import { getPresignedUrl, uploadFile } from '../services/s3'
 
 export class TrainingUserController {
     static async create(req: Request, res: Response) {
@@ -219,6 +218,37 @@ export class TrainingUserController {
         })
     }
 
+    static async uploadUserPay(req: Request, res: Response) {
+        //@ts-ignore
+        const { pay } = req.files
+        const { folder } = req.body
+        const { key } = await uploadFile(pay, `pays/${folder}`)
+
+        res.json({
+            path: key,
+        })
+    }
+
+    static async getUrl(req: Request, res: Response) {
+        const { file } = req.body
+
+        if (!file) {
+            res.status(400).json({
+                error: 'Missing fields',
+            })
+            return
+        }
+
+        const url = await getPresignedUrl({
+            filename: file,
+            expiresIn: 3600,
+        })
+
+        res.json({
+            url,
+        })
+    }
+
     static async deleteUser(req: Request, res: Response) {
         try {
             const { id, trainingId } = req.params
@@ -276,27 +306,5 @@ export class TrainingUserController {
                 error: 'Internal server error',
             })
         }
-    }
-}
-
-// Función auxiliar para convertir URL a ruta de archivo
-function convertUrlToFilePath(fileUrl: string): string {
-    try {
-        // Parsear la URL
-        const parsedUrl = new URL(fileUrl)
-
-        // Obtener la ruta del pathname (ej: /pays/user_123.jpg)
-        const filePath = parsedUrl.pathname
-
-        // Asumiendo que los archivos están en el directorio 'public' o similar
-        // Ajusta esta ruta según tu estructura de directorios
-        const publicDir = path.join(__dirname, '../../') // Ajusta según tu estructura
-
-        // Combinar con el directorio base
-        return path.join(publicDir, filePath)
-    } catch (error) {
-        // Si no es una URL válida, tratar como ruta local
-        console.error('Error parsing URL:', error)
-        return fileUrl
     }
 }

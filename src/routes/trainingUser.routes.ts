@@ -3,38 +3,7 @@ import { TrainingUserController } from '../controller/trainingUser.controller'
 import { checkId } from '../middleware/checkId.middleware'
 import { checkAuth } from '../middleware/checkAuth.middleware'
 import { checkAdminAuth } from '../middleware/checkAdminAuth.middleware'
-import multer from 'multer'
-import fs from 'fs'
-import path from 'path'
 import { checkProtocolAuth } from '../middleware/checkProtocolAuth.middleware'
-import {
-    validateFileSize,
-    validateFileType,
-} from '../middleware/validation.middleware'
-import fileUploadController from '../controller/fileUpload.controller'
-import { UPLOAD_FIELDS } from '../utils/const'
-
-export const paysUploadDir = 'pays/'
-const storage = multer.diskStorage({
-    destination: paysUploadDir,
-    filename: function (req, file, cb) {
-        const originalname = file.originalname
-        const extension = path.extname(originalname)
-        const basename = path.basename(originalname, extension)
-
-        let newFilename = originalname
-        let counter = 1
-
-        // Synchronously check for file existence (or use async fs.access for better performance)
-        while (fs.existsSync(path.join(paysUploadDir, newFilename))) {
-            newFilename = `${basename}(${counter})${extension}`
-            counter++
-        }
-
-        cb(null, newFilename)
-    },
-})
-const trainingPayImg = multer({ storage })
 
 export const trainingUserRouter = Router()
 
@@ -54,48 +23,12 @@ trainingUserRouter.get(
 trainingUserRouter.post('/', checkAdminAuth, TrainingUserController.create)
 
 trainingUserRouter.post(
-    '/upload-pay',
-    checkAuth,
-    trainingPayImg.single('pay-img'),
-    (req, res, next) => {
-        //@ts-ignore
-        const pathToFile = req.file.filename
-
-        if (process.env.NODE_ENV !== 'production') {
-            res.json({
-                path: `${req.protocol}://${req.hostname}:${
-                    process.env.PORT || 3500
-                }/pays/${pathToFile}`,
-            })
-        } else {
-            res.json({ path: `https://${req.hostname}/pays/${pathToFile}` })
-        }
-    }
-)
-
-trainingUserRouter.post(
     '/upload/pay',
     checkAuth,
-    trainingPayImg.single(UPLOAD_FIELDS.PAYS),
-    validateFileType(['image/jpeg', 'image/png', 'application/pdf']),
-    validateFileSize(5 * 1024 * 1024), // 5MB
-    fileUploadController.handleUpload({
-        basePath: 'pays',
-        includeMetadata: true,
-    })
+    TrainingUserController.uploadUserPay
 )
 
-trainingUserRouter.post(
-    '/upload-pay',
-    checkAuth,
-    trainingPayImg.single(UPLOAD_FIELDS.PAYS),
-    validateFileType(['image/jpeg', 'image/png', 'application/pdf']),
-    validateFileSize(5 * 1024 * 1024), // 5MB
-    fileUploadController.handleUpload({
-        basePath: 'pays',
-        includeMetadata: true,
-    })
-)
+trainingUserRouter.post('/file', checkAuth, TrainingUserController.getUrl)
 
 trainingUserRouter.put(
     '/is-arrived/:trainingId/:id',
@@ -110,10 +43,10 @@ trainingUserRouter.put(
     checkId,
     TrainingUserController.updatePayConfirmed
 )
-
+/* 
 trainingUserRouter.delete(
     '/delete/:trainingId/:id',
     checkAdminAuth,
     checkId,
     TrainingUserController.deleteUser
-)
+) */

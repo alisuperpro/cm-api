@@ -6,11 +6,10 @@ import { clerkMiddleware } from '@clerk/express'
 import { apiRouter } from '../routes/api.routes'
 import { setupEmailService } from '../events/email.services'
 import { setupAdminUserService } from '../events/adminUser.event'
-import { paysUploadDir } from '../routes/trainingUser.routes'
-import { videoUploadDir } from '../routes/video.routes'
 import { rateLimit } from 'express-rate-limit'
-import fileServeController from '../controller/fileServer.controller'
-import path from 'path'
+
+import fileUpload from 'express-fileupload'
+
 const app = express()
 dotenv.config()
 
@@ -21,11 +20,6 @@ const corsOptions = {
     methods: 'GET,PUT,POST,DELETE',
 }
 
-app.use(cors(corsOptions))
-app.use(morgan('dev'))
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
-app.use(clerkMiddleware())
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
     limit: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes).
@@ -34,15 +28,21 @@ const limiter = rateLimit({
     ipv6Subnet: 56, // Set to 60 or 64 to be less aggressive, or 52 or 48 to be more aggressive
 })
 
+app.use(cors(corsOptions))
+app.use(morgan('dev'))
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+app.use(clerkMiddleware())
 app.use(limiter)
+app.use(
+    fileUpload({
+        useTempFiles: true,
+        tempFileDir: './uploads',
+    })
+)
 
 setupEmailService()
 setupAdminUserService()
-
-// Definir directorios
-export const PAYS_UPLOAD_DIR = path.join(__dirname, '../../pays') //paysUploadDir
-const VIDEO_UPLOAD_DIR = path.join(__dirname, '../../video')
-const THUMBNAIL_UPLOAD_DIR = path.join(__dirname, '../../video')
 
 app.get('/', (req: Request, res: Response) => {
     res.send('hello world')
@@ -51,33 +51,6 @@ app.get('/', (req: Request, res: Response) => {
 app.get('/healt', (req: Request, res: Response) => {
     res.send('Healt')
 })
-
-app.get(
-    '/pays/:name',
-    fileServeController.serveFile({
-        directory: PAYS_UPLOAD_DIR,
-        maxAge: 7 * 86400000, // 7 días de caché
-        immutable: true, // Para archivos que no cambian
-    })
-)
-
-app.get(
-    '/video/watch/:name',
-    fileServeController.serveFile({
-        directory: VIDEO_UPLOAD_DIR,
-        maxAge: 7 * 86400000, // 7 días de caché
-        immutable: true, // Para archivos que no cambian
-    })
-)
-
-app.get(
-    '/video/thumbnail/:name',
-    fileServeController.serveFile({
-        directory: THUMBNAIL_UPLOAD_DIR,
-        maxAge: 7 * 86400000, // 7 días de caché
-        immutable: true, // Para archivos que no cambian
-    })
-)
 
 app.use('/api', apiRouter)
 
