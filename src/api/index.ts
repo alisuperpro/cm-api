@@ -48,7 +48,7 @@ app.use(morgan('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(clerkMiddleware())
-app.use(limiter)
+//app.use(limiter)
 app.use(
     fileUpload({
         useTempFiles: true,
