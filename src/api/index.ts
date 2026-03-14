@@ -6,7 +6,6 @@ import { clerkMiddleware } from '@clerk/express'
 import { apiRouter } from '../routes/api.routes'
 import { setupEmailService } from '../events/email.services'
 import { setupAdminUserService } from '../events/adminUser.event'
-import { rateLimit } from 'express-rate-limit'
 
 import fileUpload from 'express-fileupload'
 
@@ -21,10 +20,6 @@ const corsOptions = {
             ? process.env.ACCEPTED_ORIGIN.split(',').map((o) => o.trim())
             : []
 
-        // Log para depuración
-        console.log('Origin solicitado:', origin)
-        console.log('Orígenes permitidos:', allowedOrigins)
-
         if (allowedOrigins.indexOf(origin) !== -1) {
             callback(null, true)
         } else {
@@ -34,18 +29,17 @@ const corsOptions = {
     methods: 'GET,PUT,POST,DELETE,OPTIONS', // Añadido OPTIONS explícitamente
     allowedHeaders: ['Content-Type', 'Authorization'],
     exposedHeaders: ['set-cookie'],
-    credentials: true,
     preflightContinue: false,
     optionsSuccessStatus: 204, // Mejor usar 204 para preflight
 }
 
-const limiter = rateLimit({
+/* const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
     limit: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes).
     standardHeaders: 'draft-8', // draft-6: `RateLimit-*` headers; draft-7 & draft-8: combined `RateLimit` header
     legacyHeaders: false, // Disable the `X-RateLimit-*` headers.
     ipv6Subnet: 56, // Set to 60 or 64 to be less aggressive, or 52 or 48 to be more aggressive
-})
+}) */
 
 app.use(cors(corsOptions))
 app.use(morgan('dev'))
