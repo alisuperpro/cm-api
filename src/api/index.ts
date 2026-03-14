@@ -21,10 +21,6 @@ const corsOptions = {
             ? process.env.ACCEPTED_ORIGIN.split(',').map((o) => o.trim())
             : []
 
-        // Log para depuración
-        console.log('Origin solicitado:', origin)
-        console.log('Orígenes permitidos:', allowedOrigins)
-
         if (allowedOrigins.indexOf(origin) !== -1) {
             callback(null, true)
         } else {
@@ -59,12 +55,6 @@ app.use(
         tempFileDir: './uploads',
     })
 )
-app.use((req, res, next) => {
-    console.log('Request received:')
-    console.log('Method:', req.method)
-    console.log('Origin:', req.headers.origin)
-    next()
-})
 
 setupEmailService()
 setupAdminUserService()
