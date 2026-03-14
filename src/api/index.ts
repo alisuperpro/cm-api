@@ -21,6 +21,10 @@ const corsOptions = {
             ? process.env.ACCEPTED_ORIGIN.split(',').map((o) => o.trim())
             : []
 
+        // Log para depuración
+        console.log('Origin solicitado:', origin)
+        console.log('Orígenes permitidos:', allowedOrigins)
+
         if (allowedOrigins.indexOf(origin) !== -1) {
             callback(null, true)
         } else {
