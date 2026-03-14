@@ -13,7 +13,9 @@ import fileUpload from 'express-fileupload'
 const app = express()
 dotenv.config()
 
-const origins = process.env.ACCEPTED_ORIGIN?.split(',') ?? ''
+const origins = process.env.ACCEPTED_ORIGIN
+    ? process.env.ACCEPTED_ORIGIN.split(',').map((origin) => origin.trim())
+    : []
 const corsOptions = {
     origin: origins,
     optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
