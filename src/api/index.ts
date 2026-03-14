@@ -12,17 +12,31 @@ import fileUpload from 'express-fileupload'
 
 const app = express()
 dotenv.config()
-
-const origins = process.env.ACCEPTED_ORIGIN
-    ? process.env.ACCEPTED_ORIGIN.split(',').map((origin) => origin.trim())
-    : []
 const corsOptions = {
-    origin: origins,
-    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
-    methods: 'GET,PUT,POST,DELETE',
+    origin: function (origin: any, callback: any) {
+        // Permitir requests sin origen (como apps móviles o curl)
+        if (!origin) return callback(null, true)
+
+        const allowedOrigins = process.env.ACCEPTED_ORIGIN
+            ? process.env.ACCEPTED_ORIGIN.split(',').map((o) => o.trim())
+            : []
+
+        // Log para depuración
+        console.log('Origin solicitado:', origin)
+        console.log('Orígenes permitidos:', allowedOrigins)
+
+        if (allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true)
+        } else {
+            callback(new Error(`Origen ${origin} no permitido por CORS`))
+        }
+    },
+    methods: 'GET,PUT,POST,DELETE,OPTIONS', // Añadido OPTIONS explícitamente
     allowedHeaders: ['Content-Type', 'Authorization'],
     exposedHeaders: ['set-cookie'],
     credentials: true,
+    preflightContinue: false,
+    optionsSuccessStatus: 204, // Mejor usar 204 para preflight
 }
 
 const limiter = rateLimit({
