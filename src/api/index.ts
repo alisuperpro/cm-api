@@ -29,7 +29,6 @@ const corsOptions = {
     methods: 'GET,PUT,POST,DELETE,OPTIONS', // Añadido OPTIONS explícitamente
     allowedHeaders: ['Content-Type', 'Authorization'],
     exposedHeaders: ['set-cookie'],
-    preflightContinue: false,
     optionsSuccessStatus: 204, // Mejor usar 204 para preflight
     credentials: true,
 }
