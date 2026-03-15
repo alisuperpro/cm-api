@@ -6,6 +6,7 @@ import { checkAdminAuth } from '../middleware/checkAdminAuth.middleware'
 export const videoRouter = Router()
 
 videoRouter.get('/', checkAuth, VideoController.all)
+videoRouter.get('/:slug', checkAuth, VideoController.bySlug)
 
 videoRouter.post('/', checkAdminAuth, VideoController.create)
 

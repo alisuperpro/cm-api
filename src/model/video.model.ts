@@ -91,4 +91,17 @@ export class VideoModel {
             return [err]
         }
     }
+
+    static async bySlug({ slug }: { slug: string }) {
+        try {
+            const result = await db.execute({
+                sql: `SELECT * FROM ${this.tableName} WHERE slug = ?`,
+                args: [slug],
+            })
+
+            return [undefined, result.rows[0]]
+        } catch (err) {
+            return [err]
+        }
+    }
 }

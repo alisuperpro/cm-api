@@ -115,4 +115,30 @@ export class VideoController {
             url,
         })
     }
+
+    static async bySlug(req: Request, res: Response) {
+        const { slug } = req.params
+
+        if (!slug) {
+            res.status(400).json({
+                error: 'Missing fields',
+            })
+            return
+        }
+
+        const [error, video] = await VideoModel.bySlug({
+            slug: slug.toString(),
+        })
+
+        if (error) {
+            res.status(500).json({
+                error: 'Error to get video by slug',
+            })
+            return
+        }
+
+        res.json({
+            data: video,
+        })
+    }
 }
