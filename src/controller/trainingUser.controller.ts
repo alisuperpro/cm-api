@@ -3,7 +3,6 @@ import { TrainingUserModel } from '../model/trainingUser.model'
 import { UserModel } from '../model/user.model'
 import { appEventEmitter } from '../events/eventEmitter'
 import fs from 'fs/promises'
-import path from 'path'
 import { getPresignedUrl, uploadFile } from '../services/s3'
 
 export class TrainingUserController {
@@ -16,7 +15,6 @@ export class TrainingUserController {
             additionalInfo,
             payRef,
             payImg,
-            certificateReceived,
         } = req.body
 
         if (
