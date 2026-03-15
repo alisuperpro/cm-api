@@ -31,6 +31,7 @@ const corsOptions = {
     exposedHeaders: ['set-cookie'],
     preflightContinue: false,
     optionsSuccessStatus: 204, // Mejor usar 204 para preflight
+    credentials: true,
 }
 
 /* const limiter = rateLimit({
