@@ -1,6 +1,8 @@
 import nodemailer from 'nodemailer'
 import dotenv from 'dotenv'
-dotenv.config()
+dotenv.config({
+    quiet: true,
+})
 
 export const BUSSINES_DATA = {
     name: 'Cache Marketing',

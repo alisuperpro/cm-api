@@ -15,7 +15,9 @@ const origins = process.env.ACCEPTED_ORIGIN
     ? process.env.ACCEPTED_ORIGIN.split(',').map((o) => o.trim())
     : []
 
-dotenv.config()
+dotenv.config({
+    quiet: true,
+})
 const corsOptions = {
     origin: origins,
     methods: 'GET,PUT,POST,DELETE,OPTIONS', // Añadido OPTIONS explícitamente
