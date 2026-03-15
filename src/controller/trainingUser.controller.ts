@@ -16,6 +16,7 @@ export class TrainingUserController {
             additionalInfo,
             payRef,
             payImg,
+            certificateReceived,
         } = req.body
 
         if (
@@ -51,6 +52,8 @@ export class TrainingUserController {
             return
         }
 
+        const createdAt = new Date().getTime()
+
         const [error, result] = await TrainingUserModel.create({
             trainingId,
             userId,
@@ -60,6 +63,8 @@ export class TrainingUserController {
             payRef,
             payImg,
             isArrived: false,
+            certificateReceived: false,
+            createdAt: createdAt,
         })
 
         if (error) {

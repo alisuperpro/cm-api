@@ -13,6 +13,8 @@ export class TrainingUserModel {
         payRef,
         payImg,
         isArrived,
+        certificateReceived,
+        createdAt,
     }: {
         trainingId: string
         userId: string
@@ -22,12 +24,15 @@ export class TrainingUserModel {
         payRef: string
         payImg: string
         isArrived: boolean
+        certificateReceived: boolean
+        createdAt: number
     }) {
         try {
             const id = randomUUID()
             await db.execute({
-                sql: `INSERT INTO ${this.tableName} (id, training_id, user_id, how_find, experience, additional_info, pay_ref, pay_img, is_arrived)
-                VALUES (?,?,?,?,?,?,?,?,?)`,
+                sql: `INSERT INTO ${this.tableName}
+                (id, training_id, user_id, how_find, experience, additional_info, pay_ref, pay_img, is_arrived, certificate_received, created_at)
+                VALUES (?,?,?,?,?,?,?,?,?,?,?)`,
                 args: [
                     id,
                     trainingId,
@@ -38,6 +43,8 @@ export class TrainingUserModel {
                     payRef,
                     payImg,
                     isArrived,
+                    certificateReceived,
+                    createdAt,
                 ],
             })
 
