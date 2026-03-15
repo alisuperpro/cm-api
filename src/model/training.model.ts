@@ -12,6 +12,7 @@ export class TrainingModel {
         location,
         startTime,
         endTime,
+        banner,
     }: {
         title: string
         date: string
@@ -19,12 +20,22 @@ export class TrainingModel {
         location: string
         startTime: string
         endTime: string
+        banner: string
     }) {
         try {
             const id = randomUUID()
             await db.execute({
-                sql: `INSERT INTO ${this.tableName} (id,title,date,status_id,location,start_time,end_time) VALUES (?,?,?,?,?,?,?)`,
-                args: [id, title, date, statusId, location, startTime, endTime],
+                sql: `INSERT INTO ${this.tableName} (id,title,date,status_id,location,start_time,end_time,banner) VALUES (?,?,?,?,?,?,?,?)`,
+                args: [
+                    id,
+                    title,
+                    date,
+                    statusId,
+                    location,
+                    startTime,
+                    endTime,
+                    banner,
+                ],
             })
 
             return [undefined, true]
@@ -49,6 +60,7 @@ export class TrainingModel {
                     'created_at',
                     'start_time',
                     'end_time',
+                    'banner',
                 ])
                 .join(
                     'training_status',

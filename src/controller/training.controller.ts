@@ -3,7 +3,8 @@ import { TrainingModel } from '../model/training.model'
 
 export class TrainingController {
     static async create(req: Request, res: Response) {
-        const { title, date, statusId, location, startTime, endTime } = req.body
+        const { title, date, statusId, location, startTime, endTime, banner } =
+            req.body
 
         if (
             !title ||
@@ -11,7 +12,8 @@ export class TrainingController {
             !statusId ||
             !location ||
             !startTime ||
-            !endTime
+            !endTime ||
+            !banner
         ) {
             res.status(400).json({
                 error: 'Missing data',
@@ -26,6 +28,7 @@ export class TrainingController {
             location,
             startTime,
             endTime,
+            banner,
         })
 
         if (error) {
