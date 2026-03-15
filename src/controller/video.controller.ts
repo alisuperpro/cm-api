@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import { VideoModel } from '../model/video.model'
+import { getPresignedUrl, uploadFile } from '../services/s3'
 
 export class VideoController {
     static async create(req: Request, res: Response) {
@@ -71,6 +72,47 @@ export class VideoController {
 
         res.json({
             data: video,
+        })
+    }
+
+    static async uploadVideo(req: Request, res: Response) {
+        //@ts-ignore
+        const { video } = req.files
+        //const { folder } = req.body
+        const { key } = await uploadFile(video, `video`)
+
+        res.json({
+            path: key,
+        })
+    }
+
+    static async uploadThumbnail(req: Request, res: Response) {
+        //@ts-ignore
+        const { thumbnail } = req.files
+        const { key } = await uploadFile(thumbnail, `thumbnail`)
+
+        res.json({
+            path: key,
+        })
+    }
+
+    static async getUrl(req: Request, res: Response) {
+        const { file } = req.body
+
+        if (!file) {
+            res.status(400).json({
+                error: 'Missing fields',
+            })
+            return
+        }
+
+        const url = await getPresignedUrl({
+            filename: file,
+            expiresIn: 3600 * 24,
+        })
+
+        res.json({
+            url,
         })
     }
 }
