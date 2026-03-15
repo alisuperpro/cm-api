@@ -10,22 +10,14 @@ import { setupAdminUserService } from '../events/adminUser.event'
 import fileUpload from 'express-fileupload'
 
 const app = express()
+
+const origins = process.env.ACCEPTED_ORIGIN
+    ? process.env.ACCEPTED_ORIGIN.split(',').map((o) => o.trim())
+    : []
+
 dotenv.config()
 const corsOptions = {
-    origin: function (origin: any, callback: any) {
-        // Permitir requests sin origen (como apps móviles o curl)
-        if (!origin) return callback(null, true)
-
-        const allowedOrigins = process.env.ACCEPTED_ORIGIN
-            ? process.env.ACCEPTED_ORIGIN.split(',').map((o) => o.trim())
-            : []
-
-        if (allowedOrigins.indexOf(origin) !== -1) {
-            callback(null, true)
-        } else {
-            callback(new Error(`Origen ${origin} no permitido por CORS`))
-        }
-    },
+    origin: origins,
     methods: 'GET,PUT,POST,DELETE,OPTIONS', // Añadido OPTIONS explícitamente
     allowedHeaders: ['Content-Type', 'Authorization'],
     exposedHeaders: ['set-cookie'],
