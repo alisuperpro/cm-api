@@ -63,13 +63,13 @@ export class TrainingController {
         const [error, training] = await TrainingModel.all()
 
         if (error) {
-            console.log(error)
             res.status(500).json({
                 error: 'Error to get all training',
             })
             return
         }
 
+        console.log(training)
         //@ts-ignore
         if (training.length <= 0) {
             res.status(404).json({
