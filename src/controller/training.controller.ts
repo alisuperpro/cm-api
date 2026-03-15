@@ -69,7 +69,6 @@ export class TrainingController {
             return
         }
 
-        console.log(training)
         //@ts-ignore
         if (training.length <= 0) {
             res.status(404).json({
