@@ -6,6 +6,7 @@ import { adminUserRouter } from './adminUser.routes'
 import { videoRouter } from './video.routes'
 import { videoCategoryRouter } from './videoCategory.routes'
 import { visibilityTypeRouter } from './visibilityType.routes'
+import { videoUserRouter } from './videoUser.routes'
 
 export const apiRouter = Router()
 
@@ -16,3 +17,4 @@ apiRouter.use('/admin-user', adminUserRouter)
 apiRouter.use('/video', videoRouter)
 apiRouter.use('/video-category', videoCategoryRouter)
 apiRouter.use('/visibility-type', visibilityTypeRouter)
+apiRouter.use('/video-user', videoUserRouter)
