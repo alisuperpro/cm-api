@@ -13,6 +13,8 @@ export class TrainingModel {
         startTime,
         endTime,
         banner,
+        capacity,
+        typeId,
     }: {
         title: string
         date: string
@@ -21,11 +23,13 @@ export class TrainingModel {
         startTime: string
         endTime: string
         banner: string
+        capacity: number
+        typeId: string
     }) {
         try {
             const id = randomUUID()
             await db.execute({
-                sql: `INSERT INTO ${this.tableName} (id,title,date,status_id,location,start_time,end_time,banner) VALUES (?,?,?,?,?,?,?,?)`,
+                sql: `INSERT INTO ${this.tableName} (id,title,date,status_id,location,start_time,end_time,banner,capacity, type_id) VALUES (?,?,?,?,?,?,?,?,?,?)`,
                 args: [
                     id,
                     title,
@@ -35,6 +39,8 @@ export class TrainingModel {
                     startTime,
                     endTime,
                     banner,
+                    capacity,
+                    typeId,
                 ],
             })
 
@@ -61,11 +67,15 @@ export class TrainingModel {
                     'start_time',
                     'end_time',
                     'banner',
+                    'capacity',
+                    'type',
+                    'training_type.slug AS training_type_slug',
                 ])
                 .join(
                     'training_status',
                     'training.status_id = training_status.id'
                 )
+                .join('training_type', 'training.type_id = training_type.id')
                 .where('training.id', id)
             const result = await db.execute({
                 sql: builder.build().sql,
@@ -83,7 +93,15 @@ export class TrainingModel {
             const builder = new QueryBuilder(this.tableName)
 
             builder
-                .select('*')
+                .select([
+                    '*',
+                    'type',
+                    'training_type.slug AS training_type_slug',
+                ])
+                .join(
+                    'training_status',
+                    'training.status_id = training_status.id'
+                )
                 .join(
                     'training_status',
                     'training.status_id = training_status.id'
