@@ -47,7 +47,7 @@ export function setupEmailService() {
         <tr>
           <td align="center" style="background-color:#000000; padding:30px;">
             <h1 style="color:#ffffff; margin:0; font-size:22px;">
-              Master Class ${
+              ${
                   //@ts-ignore
                   training.title
               }
@@ -76,10 +76,19 @@ export function setupEmailService() {
             <h3 style="margin-bottom:10px;">📍 Detalles del Evento</h3>
 
             <p style="margin:5px 0;">
-              <strong>Fecha:</strong> viernes, 13 de marzo
+              <strong>Fecha:</strong> ${
+                  //@ts-ignore
+                  training.date
+              }
             </p>
             <p style="margin:5px 0;">
-              <strong>Hora:</strong> 1:30 p. m. - 4:00 p. m.
+              <strong>Hora:</strong> ${
+                  //@ts-ignore
+                  training.start_time
+              } - ${
+                  //@ts-ignore
+                  training.end_time
+              }
             </p>
             <p style="margin:5px 0;">
               <strong>Lugar:</strong> ${
@@ -89,16 +98,6 @@ export function setupEmailService() {
             </p>
 
             <hr style="border:none; border-top:1px solid #eeeeee; margin:25px 0;">
-
-            <h3 style="margin-bottom:10px;">🎁 Recuerda que tu inscripción incluye:</h3>
-
-            <ul style="padding-left:18px; margin-top:0;">
-              <li>Certificado de participación</li>
-              <li>Guía digital de apoyo</li>
-              <li>Acceso a CapCut Pro por 1 mes</li>
-              <li>Recursos audiovisuales descargables</li>
-            </ul>
-
           
             <p>
               Nos vemos pronto para vivir una jornada de aprendizaje práctico y profesional.
