@@ -61,7 +61,7 @@ export class TrainingModel {
                     'location',
                     'status_id',
                     'training_status.status AS status',
-                    'slug',
+                    'training.slug AS training_slug',
                     'description',
                     'created_at',
                     'start_time',

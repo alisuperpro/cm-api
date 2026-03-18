@@ -71,6 +71,7 @@ export class TrainingUserModel {
                     'tu.pay_ref',
                     'tu.pay_img',
                     'tu.is_arrived',
+                    't.slug AS training_slug',
                 ])
                 .join('user u', 'tu.user_id = u.id')
                 .join('training t', 'tu.training_id = t.id')

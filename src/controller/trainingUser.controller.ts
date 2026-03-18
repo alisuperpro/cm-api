@@ -36,6 +36,7 @@ export class TrainingUserController {
                 userId,
                 trainingId,
             })
+
         if (verifyError) {
             res.status(500).json({
                 error: 'Error to create training user',
