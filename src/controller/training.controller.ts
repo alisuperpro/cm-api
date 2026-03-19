@@ -79,6 +79,7 @@ export class TrainingController {
         const [error, training] = await TrainingModel.all()
 
         if (error) {
+            console.log(error)
             res.status(500).json({
                 error: 'Error to get all training',
             })

@@ -94,18 +94,26 @@ export class TrainingModel {
 
             builder
                 .select([
-                    '*',
-                    'type',
+                    'title',
+                    'date',
+                    'location',
+                    'status_id',
+                    'training_status.status AS status',
+                    'training.slug AS training_slug',
+                    'description',
+                    'created_at',
+                    'start_time',
+                    'end_time',
+                    'banner',
+                    'capacity',
+                    'training_type.type',
                     'training_type.slug AS training_type_slug',
                 ])
                 .join(
                     'training_status',
                     'training.status_id = training_status.id'
                 )
-                .join(
-                    'training_status',
-                    'training.status_id = training_status.id'
-                )
+                .join('training_type', 'training.type_id = training_type.id')
             const result = await db.execute({
                 sql: builder.build().sql,
             })
