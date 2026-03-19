@@ -10,3 +10,11 @@ trainingRouter.get('/', checkAuth, TrainingController.all)
 trainingRouter.get('/:id', checkId, checkAuth, TrainingController.byId)
 
 trainingRouter.post('/', checkAdminAuth, TrainingController.create)
+
+trainingRouter.post(
+    '/upload/banner',
+    checkAuth,
+    TrainingController.uploadBanner
+)
+
+trainingRouter.post('/file', checkAuth, TrainingController.getUrl)

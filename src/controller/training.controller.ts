@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import { TrainingModel } from '../model/training.model'
+import { getPresignedUrl, uploadFile } from '../services/s3'
 
 export class TrainingController {
     static async create(req: Request, res: Response) {
@@ -97,6 +98,37 @@ export class TrainingController {
 
         res.json({
             data: training,
+        })
+    }
+
+    static async uploadBanner(req: Request, res: Response) {
+        //@ts-ignore
+        const { banner } = req.files
+        const { folder } = req.body
+        const { key } = await uploadFile(banner, `training/${folder}`)
+
+        res.json({
+            path: key,
+        })
+    }
+
+    static async getUrl(req: Request, res: Response) {
+        const { file } = req.body
+
+        if (!file) {
+            res.status(400).json({
+                error: 'Missing fields',
+            })
+            return
+        }
+
+        const url = await getPresignedUrl({
+            filename: file,
+            expiresIn: 3600 * 24,
+        })
+
+        res.json({
+            url,
         })
     }
 }
