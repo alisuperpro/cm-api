@@ -7,6 +7,7 @@ import { videoRouter } from './video.routes'
 import { videoCategoryRouter } from './videoCategory.routes'
 import { visibilityTypeRouter } from './visibilityType.routes'
 import { videoUserRouter } from './videoUser.routes'
+import { trainingTypeRouter } from './trainingType.routes'
 
 export const apiRouter = Router()
 
@@ -18,3 +19,4 @@ apiRouter.use('/video', videoRouter)
 apiRouter.use('/video-category', videoCategoryRouter)
 apiRouter.use('/visibility-type', visibilityTypeRouter)
 apiRouter.use('/video-user', videoUserRouter)
+apiRouter.use('/training-type', trainingTypeRouter)
