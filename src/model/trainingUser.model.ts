@@ -81,7 +81,7 @@ export class TrainingUserModel {
             }
 
             if (slug) {
-                builder.where('slug', slug)
+                builder.where('t.slug', slug)
             }
 
             const result = await db.execute({
