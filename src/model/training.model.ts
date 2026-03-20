@@ -15,6 +15,9 @@ export class TrainingModel {
         banner,
         capacity,
         typeId,
+        slug,
+        description,
+        createdAt,
     }: {
         title: string
         date: string
@@ -25,11 +28,14 @@ export class TrainingModel {
         banner: string
         capacity: number
         typeId: string
+        slug: string
+        description?: string
+        createdAt: string
     }) {
         try {
             const id = randomUUID()
             await db.execute({
-                sql: `INSERT INTO ${this.tableName} (id,title,date,status_id,location,start_time,end_time,banner,capacity, type_id) VALUES (?,?,?,?,?,?,?,?,?,?)`,
+                sql: `INSERT INTO ${this.tableName} (id,title,date,status_id,location,start_time,end_time,banner,capacity, type_id, slug, description, created_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)`,
                 args: [
                     id,
                     title,
@@ -41,6 +47,9 @@ export class TrainingModel {
                     banner,
                     capacity,
                     typeId,
+                    slug,
+                    description ? description : null,
+                    createdAt,
                 ],
             })
 

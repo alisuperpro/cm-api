@@ -14,6 +14,8 @@ export class TrainingController {
             banner,
             typeId,
             capacity,
+            slug,
+            description,
         } = req.body
 
         if (
@@ -25,13 +27,16 @@ export class TrainingController {
             !endTime ||
             !banner ||
             !typeId ||
-            !capacity
+            !capacity ||
+            !slug
         ) {
             res.status(400).json({
                 error: 'Missing data',
             })
             return
         }
+
+        const createdAt = new Date().toISOString()
 
         const [error, training] = await TrainingModel.create({
             title,
@@ -43,6 +48,9 @@ export class TrainingController {
             banner,
             typeId,
             capacity,
+            slug,
+            description,
+            createdAt,
         })
 
         if (error) {
