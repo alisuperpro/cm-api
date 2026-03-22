@@ -40,5 +40,5 @@ export async function setupAdminUserService() {
         }
     )
 
-    console.log('[User Services] Escuchando eventos')
+    console.log('[Admin User Services] Escuchando eventos')
 }
