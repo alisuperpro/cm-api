@@ -1,13 +1,16 @@
 import nodemailer from 'nodemailer'
 import dotenv from 'dotenv'
+import hbs from 'nodemailer-express-handlebars'
+import path from 'path'
+
 dotenv.config({
     quiet: true,
 })
 
 export const BUSSINES_DATA = {
     name: 'Cache Marketing',
-    web: 'masterclass.cachemarketing.net',
-    supportEmail: 'soporte@cachemarketing.net',
+    web: 'cachemarketing.net',
+    supportEmail: process.env.EMAIL,
     supportEmailPassword: process.env.EMAIL_PASSWORD,
     supportEmailName: 'Cache Marketing',
     emailHost: process.env.EMAIL_HOST,
@@ -15,7 +18,7 @@ export const BUSSINES_DATA = {
 
 const port = Number(process.env.EMAIL_PORT)
 
-const transporter = nodemailer.createTransport({
+export const transporter = nodemailer.createTransport({
     host: BUSSINES_DATA.emailHost,
     port: port,
     secure: port !== 465 ? false : true, // true for 465, false for other ports
@@ -31,22 +34,18 @@ const transporter = nodemailer.createTransport({
     greetingTimeout: 30000, // 30 seconds
     socketTimeout: 300000, // 5 minutes
 })
-export const sendEmail = async ({
-    to,
-    subject,
-    body,
-}: {
-    to: string
-    subject: string
-    body: string
-}) => {
-    const info = await transporter.sendMail({
-        from: BUSSINES_DATA.supportEmail,
-        to,
-        subject,
-        html: body,
-    })
 
-    console.log('Message sent:', info.messageId)
-    return info
-}
+transporter.use(
+    'compile',
+    hbs({
+        viewEngine: {
+            layoutsDir: path.join(__dirname, 'templates/layouts'),
+            partialsDir: path.join(__dirname, 'templates/partials'),
+            extname: '.hbs',
+            defaultLayout: 'main',
+        },
+        // 'viewPath' es donde Nodemailer buscará el archivo 'main.handlebars'
+        viewPath: path.join(__dirname, 'templates'),
+        extName: '.hbs',
+    })
+)
