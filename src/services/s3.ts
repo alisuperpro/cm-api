@@ -3,6 +3,7 @@ import {
     PutObjectCommand,
     ListObjectsCommand,
     GetObjectCommand,
+    DeleteObjectCommand,
 } from '@aws-sdk/client-s3'
 import { AWS } from '../utils/const'
 import fs from 'fs'
@@ -87,4 +88,15 @@ export async function getPresignedUrl({
 
     const url = await getSignedUrl(client, command, { expiresIn })
     return url
+}
+
+export async function deleteFile(filename: string) {
+    const command = new DeleteObjectCommand({
+        Bucket: AWS.BUCKET_NAME,
+        Key: filename,
+    })
+
+    const result = await client.send(command)
+
+    return result
 }

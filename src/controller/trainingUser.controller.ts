@@ -2,8 +2,7 @@ import { Request, Response } from 'express'
 import { TrainingUserModel } from '../model/trainingUser.model'
 import { UserModel } from '../model/user.model'
 import { appEventEmitter } from '../events/eventEmitter'
-import fs from 'fs/promises'
-import { getPresignedUrl, uploadFile } from '../services/s3'
+import { deleteFile, getPresignedUrl, uploadFile } from '../services/s3'
 
 export class TrainingUserController {
     static async create(req: Request, res: Response) {
@@ -254,61 +253,64 @@ export class TrainingUserController {
     }
 
     static async deleteUser(req: Request, res: Response) {
-        try {
-            const { id, trainingId } = req.params
-
-            // Obtener el usuario
-            const [userError, user] =
-                await TrainingUserModel.byTrainingIdAndUserId({
-                    userId: id.toString(),
-                    trainingId: trainingId.toString(),
-                })
-
-            if (userError || !user) {
-                res.status(404).json({
-                    error: 'User not found',
-                })
-                return
-            }
-
-            // Eliminar el archivo si existe
-            //@ts-ignore
-            if (user.pay_img) {
-                try {
-                    // Convertir la URL a una ruta de archivo local
-                    //@ts-ignore
-                    const filePath = convertUrlToFilePath(user.pay_img)
-                    await fs.unlink(filePath)
-                    console.log('Archivo borrado con éxito:', filePath)
-                } catch (fileError) {
-                    // Log del error pero continuamos con la eliminación del usuario
-                    console.error('Error al borrar el archivo:', fileError)
-                    // No retornamos error al cliente para no interrumpir la eliminación del usuario
-                }
-            }
-
-            // Eliminar el usuario de la base de datos
-            const [error, result] = await TrainingUserModel.deleteUser({
-                id: id.toString(),
+        const { id, trainingId } = req.params
+        const { reason } = req.body
+        // Obtener el usuario
+        const [userError, user] = await TrainingUserModel.byTrainingIdAndUserId(
+            {
+                userId: id.toString(),
                 trainingId: trainingId.toString(),
-            })
-
-            if (error) {
-                res.status(500).json({
-                    error: 'Error to delete user',
-                })
-                return
             }
+        )
 
-            res.json({
-                data: result,
-                message: 'User and associated file deleted successfully',
+        if (userError || !user) {
+            res.status(404).json({
+                error: 'User not found',
             })
-        } catch (error) {
-            console.error('Unexpected error in deleteUser:', error)
-            res.status(500).json({
-                error: 'Internal server error',
-            })
+            return
         }
+
+        // Eliminar el archivo si existe
+        //@ts-ignore
+        if (!user.pay_img) {
+            res.status(400).json({
+                error: 'Error to get pay_img to user',
+            })
+            return
+        }
+
+        //@ts-ignore
+        const deletedFile = await deleteFile(user.pay_img)
+        if (!deletedFile.$metadata) {
+            res.status(400).json({
+                error: 'Error to delete file',
+            })
+            return
+        }
+
+        // Eliminar el usuario de la base de datos
+        const [error, result] = await TrainingUserModel.deleteUser({
+            id: id.toString(),
+            trainingId: trainingId.toString(),
+        })
+
+        if (error) {
+            res.status(500).json({
+                error: 'Error to delete user',
+            })
+            return
+        }
+
+        appEventEmitter.emit('userRemoveForTraining', {
+            id: id.toString(),
+            //@ts-ignore
+            trainingId,
+            reason: reason ? reason : 'Diversos motivos',
+        })
+
+        res.json({
+            data: result,
+            message: 'User and associated file deleted successfully',
+        })
     }
 }
