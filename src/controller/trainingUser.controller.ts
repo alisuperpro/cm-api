@@ -313,4 +313,34 @@ export class TrainingUserController {
             message: 'User and associated file deleted successfully',
         })
     }
+
+    static async updateCertificateReceived(req: Request, res: Response) {
+        const { id, trainingId } = req.params
+        const { isReceived } = req.body
+
+        if (typeof isReceived !== 'boolean') {
+            res.status(400).json({
+                error: 'Missing fields',
+            })
+            return
+        }
+
+        const [error, result] =
+            await TrainingUserModel.updateCertificateReceived({
+                id: id.toString(),
+                isReceived,
+                trainingId: trainingId.toString(),
+            })
+
+        if (error) {
+            res.status(500).json({
+                error: 'Error to update is certificate received',
+            })
+            return
+        }
+
+        res.json({
+            data: result,
+        })
+    }
 }

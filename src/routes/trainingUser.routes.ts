@@ -49,6 +49,15 @@ trainingUserRouter.put(
     TrainingUserController.updatePayConfirmed
 )
 
+trainingUserRouter.put(
+    '/certificate-received/:trainingId/:id',
+    checkAdminAuth,
+    checkTrainingId,
+    checkId,
+    checkTrainingDate,
+    TrainingUserController.updateCertificateReceived
+)
+
 trainingUserRouter.delete(
     '/delete/:trainingId/:id',
     checkAdminAuth,

@@ -182,6 +182,27 @@ export class TrainingUserModel {
         }
     }
 
+    static async updateCertificateReceived({
+        id,
+        isReceived,
+        trainingId,
+    }: {
+        id: string
+        isReceived: boolean
+        trainingId: string
+    }) {
+        try {
+            await db.execute({
+                sql: `UPDATE ${this.tableName} SET certificate_received = ?  WHERE user_id = ? AND training_id = ?`,
+                args: [isReceived, id, trainingId],
+            })
+
+            return [undefined, true]
+        } catch (err) {
+            return [err]
+        }
+    }
+
     static async deleteUser({
         id,
         trainingId,
