@@ -83,11 +83,6 @@ export class TrainingUserController {
 
         appEventEmitter.emit('userRegisteredOnTraining', {
             userId: userId,
-            //@ts-ignore
-            name: user.full_name,
-            //@ts-ignore
-            email: user.email,
-            //@ts-ignore
             trainingId,
         })
 
@@ -303,7 +298,7 @@ export class TrainingUserController {
 
         appEventEmitter.emit('userRemoveForTraining', {
             id: id.toString(),
-            //@ts-ignore
+
             trainingId,
             reason: reason ? reason : 'Diversos motivos',
         })
