@@ -6,3 +6,5 @@ dist
 pays
 video
 uploads
+
+*.log

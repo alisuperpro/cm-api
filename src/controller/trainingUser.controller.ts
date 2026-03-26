@@ -82,7 +82,7 @@ export class TrainingUserController {
         }
 
         appEventEmitter.emit('userRegisteredOnTraining', {
-            id: userId,
+            userId: userId,
             //@ts-ignore
             name: user.full_name,
             //@ts-ignore
@@ -212,7 +212,7 @@ export class TrainingUserController {
         }
 
         appEventEmitter.emit('payConfirmed', {
-            id: id,
+            id: id.toString(),
             trainingId: trainingId.toString(),
         })
 

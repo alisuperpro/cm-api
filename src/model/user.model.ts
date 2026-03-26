@@ -1,4 +1,5 @@
 import { db } from '../db/db'
+import { UserType } from '../types/user.types'
 
 export class UserModel {
     static tableName = 'user'
@@ -120,15 +121,21 @@ export class UserModel {
         }
     }
 
-    static async me({ id }: { id: string }) {
+    static async me({
+        id,
+    }: {
+        id: string
+    }): Promise<[any, UserType | undefined]> {
         try {
             const result = await db.execute({
                 sql: `SELECT * FROM ${this.tableName} WHERE id = ?`,
                 args: [id],
             })
 
+            //@ts-ignore
             return [undefined, result.rows[0]]
         } catch (err) {
+            //@ts-ignore
             return [err]
         }
     }

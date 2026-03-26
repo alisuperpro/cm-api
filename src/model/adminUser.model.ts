@@ -1,4 +1,6 @@
 import { db } from '../db/db'
+import { AdminUserType } from '../types/admin.types'
+import { DbResult } from '../types/utils.types'
 
 export class AdminUserModel {
     static tableName = 'admin_user'
@@ -36,16 +38,26 @@ export class AdminUserModel {
         }
     }
 
-    static async byId({ id }: { id: string }) {
+    static async byId({
+        id,
+    }: {
+        id: string
+    }): Promise<DbResult<AdminUserType>> {
         try {
             const result = await db.execute({
                 sql: `SELECT * FROM ${this.tableName} WHERE id = ?`,
                 args: [id],
             })
 
-            return [undefined, result.rows[0]]
-        } catch (err) {
-            return [err]
+            if (!result.rows || result.rows.length === 0) {
+                return [null, null] // No encontrado, pero sin error
+            }
+
+            const admin = this.mapToAdminUser(result.rows[0])
+            return [null, admin]
+        } catch (error) {
+            console.error('Error in AdminUserModel.byId:', error)
+            return [error as Error, null]
         }
     }
 
@@ -65,6 +77,15 @@ export class AdminUserModel {
             return [undefined, true]
         } catch (err) {
             return [err]
+        }
+    }
+
+    private static mapToAdminUser(row: any): AdminUserType {
+        return {
+            id: row.id,
+            notification_token: row.notification_token,
+            role: row.role, // TypeScript inferirá el tipo
+            name: row.name,
         }
     }
 }

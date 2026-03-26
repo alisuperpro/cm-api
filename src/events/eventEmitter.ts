@@ -1,4 +1,24 @@
 import EventEmitter from 'events'
+import { EventMap, EventName } from '../types/events'
 
-// Creamos una única instancia de EventEmitter para usarla en toda la aplicación.
-export const appEventEmitter = new EventEmitter()
+class TypedEventEmitter extends EventEmitter {
+    emit<K extends EventName>(event: K, payload: EventMap[K]): boolean {
+        return super.emit(event, payload)
+    }
+
+    on<K extends EventName>(
+        event: K,
+        listener: (payload: EventMap[K]) => void
+    ): this {
+        return super.on(event, listener)
+    }
+
+    once<K extends EventName>(
+        event: K,
+        listener: (payload: EventMap[K]) => void
+    ): this {
+        return super.once(event, listener)
+    }
+}
+
+export const appEventEmitter = new TypedEventEmitter()

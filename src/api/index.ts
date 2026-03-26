@@ -4,8 +4,8 @@ import morgan from 'morgan'
 import dotenv from 'dotenv'
 import { clerkMiddleware } from '@clerk/express'
 import { apiRouter } from '../routes/api.routes'
-import { setupEmailService } from '../events/email.services'
-import { setupAdminUserService } from '../events/adminUser.event'
+import { emailService } from '../events/email.services'
+import { adminNotificationService } from '../events/adminNotification.event'
 
 import fileUpload from 'express-fileupload'
 
@@ -48,8 +48,8 @@ app.use(
     })
 )
 
-setupEmailService()
-setupAdminUserService()
+emailService
+adminNotificationService
 
 app.get('/', (req: Request, res: Response) => {
     res.send('hello world')
