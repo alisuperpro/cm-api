@@ -1,6 +1,6 @@
 import { db } from '../db/db'
 import { AdminUserType } from '../types/admin.types'
-import { DbResult } from '../types/utils.types'
+import { DbResult, DbResultArray } from '../types/utils.types'
 
 export class AdminUserModel {
     static tableName = 'admin_user'
@@ -26,15 +26,23 @@ export class AdminUserModel {
         }
     }
 
-    static async all() {
+    static async all(): Promise<DbResultArray<AdminUserType>> {
         try {
             const result = await db.execute({
                 sql: `SELECT * FROM ${this.tableName}`,
             })
 
-            return [undefined, result.rows]
-        } catch (err) {
-            return [err]
+            if (!result.rows) {
+                return [null, []]
+            }
+
+            const admins = result.rows.map((row: any) =>
+                this.mapToAdminUser(row)
+            )
+            return [null, admins]
+        } catch (error) {
+            console.error('Error in AdminUserModel.all:', error)
+            return [error as Error, null]
         }
     }
 
@@ -84,7 +92,7 @@ export class AdminUserModel {
         return {
             id: row.id,
             notification_token: row.notification_token,
-            role: row.role, // TypeScript inferirá el tipo
+            role: row.role,
             name: row.name,
         }
     }

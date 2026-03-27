@@ -298,8 +298,7 @@ export class TrainingUserController {
 
         appEventEmitter.emit('userRemoveForTraining', {
             id: id.toString(),
-
-            trainingId,
+            trainingId: trainingId.toString(),
             reason: reason ? reason : 'Diversos motivos',
         })
 

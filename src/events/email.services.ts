@@ -51,7 +51,7 @@ class EmailService {
                 subject: 'Confirmación de inscripción',
                 template: 'user-register-training',
                 context: {
-                    training_title: training.title,
+                    training_banner_url: `https://cachemarketing.net/images/banners/${training.training_slug}.png`,
                     user_full_name: user.full_name,
                     training_date: training.date,
                     training_start: training.start_time,
