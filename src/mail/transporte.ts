@@ -1,6 +1,5 @@
 import nodemailer from 'nodemailer'
 import dotenv from 'dotenv'
-import hbs from 'nodemailer-express-handlebars'
 import path from 'path'
 
 dotenv.config({
@@ -34,18 +33,27 @@ export const transporter = nodemailer.createTransport({
     greetingTimeout: 30000, // 30 seconds
     socketTimeout: 300000, // 5 minutes
 })
+// 1. Elimina el import de arriba:
+// import hbs from 'nodemailer-express-handlebars' <-- BORRA ESTO
 
-transporter.use(
-    'compile',
-    hbs({
-        viewEngine: {
-            layoutsDir: path.join(__dirname, 'templates/layouts'),
-            partialsDir: path.join(__dirname, 'templates/partials'),
-            extname: '.hbs',
-            defaultLayout: 'main',
-        },
-        // 'viewPath' es donde Nodemailer buscará el archivo 'main.handlebars'
-        viewPath: path.join(__dirname, 'templates'),
-        extName: '.hbs',
-    })
-)
+// 2. Crea una función para configurar el Handlebars de forma asíncrona
+const setupHbs = async () => {
+    const hbs = (await import('nodemailer-express-handlebars')).default
+
+    transporter.use(
+        'compile',
+        hbs({
+            viewEngine: {
+                layoutsDir: path.join(__dirname, 'templates/layouts'),
+                partialsDir: path.join(__dirname, 'templates/partials'),
+                extname: '.hbs',
+                defaultLayout: 'main',
+            },
+            viewPath: path.join(__dirname, 'templates'),
+            extName: '.hbs',
+        })
+    )
+}
+
+// 3. Ejecuta la configuración
+setupHbs().catch((err) => console.error('Error cargando hbs:', err))
