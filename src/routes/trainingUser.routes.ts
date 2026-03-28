@@ -22,7 +22,7 @@ trainingUserRouter.get(
     TrainingUserController.byId
 )
 
-trainingUserRouter.post('/', checkAdminAuth, TrainingUserController.create)
+trainingUserRouter.post('/', checkAuth, TrainingUserController.create)
 
 trainingUserRouter.post(
     '/upload/pay',
