@@ -209,6 +209,7 @@ export class TrainingUserController {
         appEventEmitter.emit('payConfirmed', {
             id: id.toString(),
             trainingId: trainingId.toString(),
+            configId: '465a827f-cd27-4896-a241-1b65ee25de35',
         })
 
         res.json({
@@ -300,6 +301,7 @@ export class TrainingUserController {
             id: id.toString(),
             trainingId: trainingId.toString(),
             reason: reason ? reason : 'Diversos motivos',
+            configId: 'c95b7909-2eb1-480f-90b0-351a014e8ee0',
         })
 
         res.json({

@@ -7,11 +7,13 @@ export interface EventMap {
     payConfirmed: {
         id: string
         trainingId: string
+        configId: string
     }
     userRemoveForTraining: {
         id: string
         trainingId: string
         reason: string
+        configId: string
     }
     userRegisteredOnTraining: {
         trainingId: string
@@ -26,6 +28,14 @@ export interface EventMap {
         trainingId: string
         userId: string
         certificateUrl: string
+    }
+
+    userContact: {
+        name: string
+        email: string
+        service: string
+        description: string
+        configId: string
     }
 
     // Eventos de video
