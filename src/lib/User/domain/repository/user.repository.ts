@@ -3,6 +3,6 @@ import { UserId } from '../value-objects/userId.vo'
 
 export interface UserRepository {
     create(user: User): Promise<void>
-    all(): Promise<User[]>
+    getAll(): Promise<User[]>
     findById(id: UserId): Promise<User | null>
 }
