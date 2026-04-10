@@ -11,37 +11,26 @@ import { UserIgUsername } from '../../domain/value-objects/userIgUsername.vo'
 import { UserOccupationStatus } from '../../domain/value-objects/userOccupationStatus.vo'
 import { UserPhone } from '../../domain/value-objects/userPhone.vo'
 import { UserUniversity } from '../../domain/value-objects/userUniversity.vo'
+import { CreateUserDTO } from '../dto/createUser.dto'
 
 export class UserCreate {
     constructor(private repository: UserRepository) {}
 
-    async run(
-        id: string,
-        fullName: string,
-        docId: string,
-        email: string,
-        phone: string,
-        birthDate: string,
-        occupationStatus: string,
-        university: string,
-        howFindUs: string,
-        disability: string,
-        igUsername: string
-    ) {
+    async run(dto: CreateUserDTO) {
         const user = new User(
-            new UserId(id),
-            new UserFullName(fullName),
-            new UserDocId(docId),
-            new UserEmail(email),
-            new UserPhone(phone),
-            new UserBirthDate(birthDate),
-            new UserOccupationStatus(occupationStatus),
-            new UserUniversity(university),
-            new UserHowFindUs(howFindUs),
-            new UserDisability(disability),
-            new UserIgUsername(igUsername)
+            new UserId(dto.id),
+            new UserFullName(dto.fullName),
+            new UserDocId(dto.docId),
+            new UserEmail(dto.email),
+            new UserPhone(dto.phone),
+            new UserBirthDate(dto.birthDate),
+            new UserOccupationStatus(dto.occupationStatus),
+            new UserUniversity(dto.university),
+            new UserHowFindUs(dto.howFindUs),
+            new UserDisability(dto.disability),
+            new UserIgUsername(dto.igUsername)
         )
 
-        return this.repository.create(user)
+        return await this.repository.create(user)
     }
 }
