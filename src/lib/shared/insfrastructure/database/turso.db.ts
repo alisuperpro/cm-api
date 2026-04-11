@@ -1,5 +1,5 @@
 import { createClient, Client } from '@libsql/client'
-import { connection } from './config/turso.config'
+import { connection } from '../config/turso.config'
 
 export class TursoDatabase {
     private static instance: TursoDatabase
