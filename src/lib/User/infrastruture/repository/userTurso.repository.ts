@@ -1,4 +1,3 @@
-import { Client, createClient } from '@libsql/client'
 import { UserRepository } from '../../domain/repository/user.repository'
 import { User } from '../../domain/entity/user.entity'
 import { UserId } from '../../domain/value-objects/userId.vo'
@@ -12,6 +11,7 @@ import { UserUniversity } from '../../domain/value-objects/userUniversity.vo'
 import { UserHowFindUs } from '../../domain/value-objects/userHowFindUs.vo'
 import { UserDisability } from '../../domain/value-objects/userDisability.vo'
 import { UserIgUsername } from '../../domain/value-objects/userIgUsername.vo'
+import { TursoDatabase } from '../../../shared/insfrastructure/database/turso.db'
 
 type UserTurso = {
     id: string
@@ -28,15 +28,8 @@ type UserTurso = {
 }
 
 export class UserTursoRepository implements UserRepository {
-    private client: Client
+    private db = TursoDatabase.getInstance().getClient()
     private tableName = 'user'
-
-    constructor(url: string, authToken: string) {
-        this.client = createClient({
-            url: url,
-            authToken,
-        })
-    }
 
     async create(user: User): Promise<void> {
         const query = {
@@ -57,14 +50,14 @@ export class UserTursoRepository implements UserRepository {
                 user.igUsername.value,
             ],
         }
-        await this.client.execute(query)
+        await this.db.execute(query)
     }
     async getAll(): Promise<User[]> {
         const query = {
             sql: `SELECT * FROM ${this.tableName}`,
         }
 
-        const result = await this.client.execute(query)
+        const result = await this.db.execute(query)
         return result.rows.map((row) =>
             this.mapToDomain(row as unknown as UserTurso)
         )
@@ -75,7 +68,7 @@ export class UserTursoRepository implements UserRepository {
             args: [id.value],
         }
 
-        const result = await this.client.execute(query)
+        const result = await this.db.execute(query)
 
         const row: UserTurso = result.rows[0] as unknown as UserTurso
 
