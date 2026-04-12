@@ -5,7 +5,6 @@ import { checkId } from '../../../../../shared/insfrastructure/http/middleware/c
 import { checkAuth } from '../../../../../shared/insfrastructure/http/middleware/checkAuth.middleware'
 import { checkAdminAuth } from '../../../../../shared/insfrastructure/http/middleware/checkAdminAuth.middleware'
 import { checkTrainingId } from '../../../../../shared/insfrastructure/http/middleware/checkTrainingId.middleware'
-import { checkTrainingDate } from '../../../../../shared/insfrastructure/http/middleware/checkTrainingDate.middleware'
 
 export const trainingUserRouter = Router()
 
