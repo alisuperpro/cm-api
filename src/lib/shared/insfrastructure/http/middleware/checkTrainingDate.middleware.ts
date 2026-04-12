@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import { hasDatePassed } from '../../utils/hasDatePassed'
-import { TrainingModel } from '../../../../../model/training.model'
+import { serviceContainer } from '../../services/serviceContainer'
 
 export const checkTrainingDate = async (
     req: Request,
@@ -9,16 +9,9 @@ export const checkTrainingDate = async (
 ) => {
     const { trainingId } = req.params
 
-    const [error, training] = await TrainingModel.byId({
-        id: trainingId.toString(),
-    })
-
-    if (error) {
-        res.status(500).json({
-            error: 'Error to get training',
-        })
-        return
-    }
+    const training = await serviceContainer.training.findById.run(
+        trainingId.toString()
+    )
 
     if (!training) {
         res.status(404).json({
