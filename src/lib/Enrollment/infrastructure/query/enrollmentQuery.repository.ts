@@ -147,6 +147,23 @@ export class EnrollmentQueryRepositoryImpl implements EnrollmentQueryRepository 
         )
     }
 
+    async getById(id: string): Promise<EnrollmentDetailDTO[]> {
+        const query = {
+            sql: `
+            SELECT * FROM ${this.tableName} e
+            INNER JOIN user u ON u.id = e.user_id
+            INNER JOIN training t ON t.id = e.training_id
+            WHERE e.id = ?`,
+            args: [id],
+        }
+
+        const result = await this.db.execute(query)
+
+        return result.rows.map((row) =>
+            this.mapToDTO(row as unknown as EnrollmentTursoRaw)
+        )
+    }
+
     private mapToDTO(row: EnrollmentTursoRaw): EnrollmentDetailDTO {
         return {
             id: row.id,

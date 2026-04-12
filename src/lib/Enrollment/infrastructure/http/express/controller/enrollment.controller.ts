@@ -28,4 +28,14 @@ export class EnrollmentController {
             data: enrollment,
         })
     }
+
+    async getById(req: Request, res: Response) {
+        const { id } = req.params
+
+        const enrollment = await serviceContainer.enrollment.getById.run(
+            id.toString()
+        )
+
+        return res.status(200).json({ data: enrollment })
+    }
 }

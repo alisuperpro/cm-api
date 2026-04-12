@@ -14,15 +14,16 @@ const enrollmentController = new EnrollmentController()
 trainingUserRouter.get('/', checkProtocolAuth, enrollmentController.getAll)
 trainingUserRouter.get(
     '/training/:id',
+    checkId,
     checkProtocolAuth,
     enrollmentController.getByTrainingId
 )
-/* trainingUserRouter.get(
+trainingUserRouter.get(
     '/:id',
     checkId,
     checkProtocolAuth,
-    enrollmentController.byId
-) */
+    enrollmentController.getById
+)
 
 trainingUserRouter.post('/', checkAuth, enrollmentController.create)
 /* 
