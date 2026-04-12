@@ -11,18 +11,24 @@ export class TrainingController {
     }
 
     async getAll(req: Request, res: Response) {
-        const training = await serviceContainer.training.getAll.run()
+        const trainings = await serviceContainer.training.getAll.run()
+
+        const data = trainings.map((training) => training.toPrimitives())
 
         return res.status(200).json({
-            data: training,
+            data,
         })
     }
 
     async findById(req: Request, res: Response) {
         try {
-            return await serviceContainer.training.findById.run(
+            const training = await serviceContainer.training.findById.run(
                 req.params.id.toString()
             )
+
+            return res.status(200).json({
+                data: training.toPrimitives(),
+            })
         } catch (err) {
             if (err instanceof TrainingNotFoundError) {
                 return res.status(404).json({

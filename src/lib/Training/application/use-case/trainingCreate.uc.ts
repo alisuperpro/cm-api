@@ -1,4 +1,6 @@
 import { Training } from '../../domain/entity/training.entity'
+import { TrainingStatus } from '../../domain/entity/trainingStatus.entity'
+import { TrainingType } from '../../domain/entity/trainingType.entity'
 import { TrainingRepository } from '../../domain/repository/training.repository'
 import { TrainingBanner } from '../../domain/value-objects/trainingBanner.vo'
 import { TrainingCapacity } from '../../domain/value-objects/trainingCapacity.vo'
@@ -24,7 +26,7 @@ export class TrainingCreate {
             title: new TrainingTitle(training.title),
             description: new TrainingDescription(training.description),
             date: new TrainingDate(training.date),
-            statusId: new TrainingStatusId(training.statusId),
+            status: new TrainingStatus(new TrainingStatusId(training.statusId)),
             location: new TrainingLocation(training.location),
             slug: new TrainingSlug(training.slug),
             createdAt: new TrainingCreatedAt(training.createdAt),
@@ -32,7 +34,7 @@ export class TrainingCreate {
             endTime: new TrainingEndTime(training.endTime),
             banner: new TrainingBanner(training.banner),
             capacity: new TrainingCapacity(training.capacity),
-            typeId: new TrainingTypeId(training.typeId),
+            type: new TrainingType(new TrainingTypeId(training.typeId)),
         })
 
         return await this.repository.create(trainingObject)

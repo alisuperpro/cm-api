@@ -9,7 +9,7 @@ export class TrainingId {
         if (!this.value) {
             throw new Error('Training ID not valid')
         }
-        if (this.value.length > 5) {
+        if (this.value.length <= 5) {
             throw new Error('Training ID must be at least 5 characters long')
         }
     }

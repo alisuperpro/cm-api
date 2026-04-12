@@ -5,7 +5,15 @@ import { TrainingTypeId } from '../value-objects/trainingTypeId.vo'
 export class TrainingType {
     constructor(
         public readonly id: TrainingTypeId,
-        public readonly type: TrainingTypeType,
-        public readonly slug: TrainingTypeSlug
+        public readonly type?: TrainingTypeType,
+        public readonly slug?: TrainingTypeSlug
     ) {}
+
+    toPrimitives() {
+        return {
+            id: this.id.value,
+            type: this.type?.value,
+            slug: this.slug?.value,
+        }
+    }
 }

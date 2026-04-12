@@ -11,7 +11,7 @@ export class TrainingStatusId {
             throw new Error('Trainig status id not valid')
         }
 
-        if (this.value.length > 5) {
+        if (this.value.length < 5) {
             throw new Error(
                 'Training status id must be at least 5 characters long'
             )

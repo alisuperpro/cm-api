@@ -3,11 +3,12 @@ import cors from 'cors'
 import morgan from 'morgan'
 import dotenv from 'dotenv'
 import { clerkMiddleware } from '@clerk/express'
-import { apiRouter } from '../routes/api.routes'
 import { emailService } from '../events/email.services'
 import { adminNotificationService } from '../events/adminNotification.event'
 
 import fileUpload from 'express-fileupload'
+import { TursoDatabase } from '../lib/shared/insfrastructure/database/turso.db'
+import { apiRouter } from '../lib/shared/insfrastructure/http/routes/api.routes'
 
 const app = express()
 
@@ -47,6 +48,8 @@ app.use(
         tempFileDir: './uploads',
     })
 )
+
+TursoDatabase.getInstance().initialize()
 
 emailService
 adminNotificationService

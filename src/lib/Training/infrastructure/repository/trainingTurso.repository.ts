@@ -114,7 +114,6 @@ export class TrainingTursoRepository implements TrainingRepository {
         }
 
         const result = await this.db.execute(query)
-
         return result.rows.map((row) =>
             this.mapToDomain(row as unknown as TrainingTurso)
         )

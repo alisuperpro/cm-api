@@ -6,7 +6,13 @@ import { AdminUserTursoRepository } from '../../../AdminUser/infrastructure/repo
 import { TrainingCreate } from '../../../Training/application/use-case/trainingCreate.uc'
 import { TrainingFindById } from '../../../Training/application/use-case/trainingFindById.uc'
 import { TrainingGetAll } from '../../../Training/application/use-case/trainingGetAll.uc'
+import { TrainingStatusCreate } from '../../../Training/application/use-case/trainingStatus/trainingStatusCreate.uc'
+import { TrainingStatusGetAll } from '../../../Training/application/use-case/trainingStatus/trainingStatusGetAll.uc'
+import { TrainingTypeCreate } from '../../../Training/application/use-case/trainingType/trainingTypeCreate.uc'
+import { TrainingTypeGetAll } from '../../../Training/application/use-case/trainingType/trainingTypeGetAll.uc'
+import { TrainingStatusTursoRepository } from '../../../Training/infrastructure/repository/trainingStatus.repository'
 import { TrainingTursoRepository } from '../../../Training/infrastructure/repository/trainingTurso.repository'
+import { TrainingTypeTursoRepository } from '../../../Training/infrastructure/repository/trainingType.repository'
 import { UserCreate } from '../../../User/application/use-case/userCreate.uc'
 import { UserFindById } from '../../../User/application/use-case/userFindById.uc'
 import { UserGetAll } from '../../../User/application/use-case/userGetAll.uc'
@@ -15,6 +21,8 @@ import { UserTursoRepository } from '../../../User/infrastructure/repository/use
 const userRepository = new UserTursoRepository()
 const trainingRepository = new TrainingTursoRepository()
 const adminUserRepository = new AdminUserTursoRepository()
+const trainingStatusRepository = new TrainingStatusTursoRepository()
+const TrainingTypeRepository = new TrainingTypeTursoRepository()
 
 export const serviceContainer = {
     user: {
@@ -34,5 +42,13 @@ export const serviceContainer = {
         updateNotificationToken: new AdminUserUpdateNotoficationToken(
             adminUserRepository
         ),
+    },
+    trainingStatus: {
+        create: new TrainingStatusCreate(trainingStatusRepository),
+        getAll: new TrainingStatusGetAll(trainingStatusRepository),
+    },
+    trainingType: {
+        create: new TrainingTypeCreate(TrainingTypeRepository),
+        getAll: new TrainingTypeGetAll(TrainingTypeRepository),
     },
 }

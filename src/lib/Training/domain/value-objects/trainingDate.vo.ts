@@ -10,8 +10,5 @@ export class TrainingDate {
         if (!this.value) {
             throw new Error('Training date not valid')
         }
-        if (new Date(this.value) > new Date()) {
-            throw new Error('Training date not has been pas')
-        }
     }
 }

@@ -8,9 +8,7 @@ import { TrainingId } from '../value-objects/trainingId.vo'
 import { TrainingLocation } from '../value-objects/trainingLocation.vo'
 import { TrainingSlug } from '../value-objects/trainingSlug.vo'
 import { TrainingStartTime } from '../value-objects/trainingStartTime.vo'
-import { TrainingStatusId } from '../value-objects/trainingStatusId.vo'
 import { TrainingTitle } from '../value-objects/trainingTitle.vo'
-import { TrainingTypeId } from '../value-objects/trainingTypeId.vo'
 import { TrainingStatus } from './trainingStatus.entity'
 import { TrainingType } from './trainingType.entity'
 
@@ -59,5 +57,30 @@ export class Training {
         this.banner = training.banner
         this.capacity = training.capacity
         this.type = training.type
+    }
+
+    toPrimitives() {
+        return {
+            id: this.id.value,
+            title: this.title.value,
+            description: this.description.value,
+            date: this.date.value,
+            status: {
+                id: this.status.id.value,
+                name: this.status.status?.value ?? null,
+            },
+            location: this.location.value,
+            slug: this.slug.value,
+            createdAt: this.createdAt.value,
+            startTime: this.startTime.value,
+            endTime: this.endTime.value,
+            banner: this.banner.value,
+            capacity: this.capacity.value,
+            type: {
+                id: this.type.id.value,
+                name: this.type.type?.value ?? null,
+                slug: this.type.slug?.value ?? null,
+            },
+        }
     }
 }
