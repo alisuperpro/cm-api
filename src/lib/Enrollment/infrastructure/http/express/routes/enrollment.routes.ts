@@ -55,14 +55,6 @@ trainingUserRouter.put(
 )
 /* 
 
-trainingUserRouter.put(
-    '/certificate-received/:trainingId/:id',
-    checkAdminAuth,
-    checkTrainingId,
-    checkId,
-    checkTrainingDate,
-    enrollmentController.updateCertificateReceived
-)
 
 trainingUserRouter.delete(
     '/delete/:trainingId/:id',
