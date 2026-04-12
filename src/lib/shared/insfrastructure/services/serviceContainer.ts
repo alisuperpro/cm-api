@@ -3,6 +3,11 @@ import { AdminUserFindById } from '../../../AdminUser/application/use-case/admin
 import { AdminUserGetAll } from '../../../AdminUser/application/use-case/adminUserGetAll.uc'
 import { AdminUserUpdateNotoficationToken } from '../../../AdminUser/application/use-case/adminUserUpdateNotificationToken.uc'
 import { AdminUserTursoRepository } from '../../../AdminUser/infrastructure/repository/adminUserTurso.repository'
+import { EnrollmentCreate } from '../../../Enrollment/application/use-cases/enrollemntCreate.uc'
+import { EnrollmentGetAll } from '../../../Enrollment/application/use-cases/enrollmentGetAll.uc'
+import { EnrollmentGetByTraining } from '../../../Enrollment/application/use-cases/enrollmentGetByTraining.uc'
+import { EnrollmentQueryRepositoryImpl } from '../../../Enrollment/infrastructure/query/enrollmentQuery.repository'
+import { EnrollmentQueryTursoRepository } from '../../../Enrollment/infrastructure/repository/enrollment.repository'
 import { TrainingCreate } from '../../../Training/application/use-case/trainingCreate.uc'
 import { TrainingFindById } from '../../../Training/application/use-case/trainingFindById.uc'
 import { TrainingGetAll } from '../../../Training/application/use-case/trainingGetAll.uc'
@@ -23,7 +28,7 @@ const trainingRepository = new TrainingTursoRepository()
 const adminUserRepository = new AdminUserTursoRepository()
 const trainingStatusRepository = new TrainingStatusTursoRepository()
 const TrainingTypeRepository = new TrainingTypeTursoRepository()
-
+const enrollmentRepository = new EnrollmentQueryTursoRepository()
 export const serviceContainer = {
     user: {
         create: new UserCreate(userRepository),
@@ -50,5 +55,13 @@ export const serviceContainer = {
     trainingType: {
         create: new TrainingTypeCreate(TrainingTypeRepository),
         getAll: new TrainingTypeGetAll(TrainingTypeRepository),
+    },
+    enrollment: {
+        create: new EnrollmentCreate(enrollmentRepository),
+
+        getByTraining: new EnrollmentGetByTraining(
+            new EnrollmentQueryRepositoryImpl()
+        ),
+        getAll: new EnrollmentGetAll(new EnrollmentQueryRepositoryImpl()),
     },
 }

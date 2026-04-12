@@ -4,6 +4,7 @@ import { trainingRouter } from '../../../../Training/infrastructure/http/express
 import { adminUserRouter } from '../../../../AdminUser/infrastructure/http/express/routes/adminUser.routes'
 import { trainingStatusRouter } from '../../../../Training/infrastructure/http/express/routes/trainingStatus.routes'
 import { trainingTypeRouter } from '../../../../Training/infrastructure/http/express/routes/trainingType.routes'
+import { trainingUserRouter } from '../../../../Enrollment/infrastructure/http/express/routes/enrollment.routes'
 
 export const apiRouter = Router()
 
@@ -11,7 +12,7 @@ apiRouter.use('/user', userRouter)
 apiRouter.use('/training', trainingRouter)
 apiRouter.use('/training-type', trainingTypeRouter)
 apiRouter.use('/training-status', trainingStatusRouter)
-//apiRouter.use('/training-user', trainingUserRouter)
+apiRouter.use('/training-user', trainingUserRouter)
 apiRouter.use('/admin-user', adminUserRouter)
 //apiRouter.use('/video', videoRouter)
 //apiRouter.use('/video-category', videoCategoryRouter)
