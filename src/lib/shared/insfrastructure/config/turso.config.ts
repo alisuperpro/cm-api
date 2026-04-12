@@ -1,6 +1,8 @@
 import dotenv from 'dotenv'
 
-dotenv.config()
+dotenv.config({
+    quiet: true,
+})
 
 export const connection = {
     url: process.env.TURSO_DATABASE_URL!,
