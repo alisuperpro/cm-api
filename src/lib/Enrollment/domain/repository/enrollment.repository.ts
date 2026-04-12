@@ -1,4 +1,5 @@
 import { Enrollment } from '../entity/enrollment.entity'
+import { EnrollmentCertificateReceived } from '../value-objects/enrollmentCertificateReceived.vo'
 import { EnrollmentIsArrived } from '../value-objects/enrollmentIsArrived.vo'
 import { EnrollmentPayConfirmed } from '../value-objects/enrollmentPayConfirmed.vo'
 import { EnrollmentTrainingId } from '../value-objects/enrollmentTrainingId.vo'
@@ -16,5 +17,10 @@ export interface EnrollmentRepository {
         userId: EnrollmentUserId,
         trainingId: EnrollmentTrainingId,
         payConfirmed: EnrollmentPayConfirmed
+    ): Promise<void>
+    updateCertificateReceived(
+        userId: EnrollmentUserId,
+        trainingId: EnrollmentTrainingId,
+        certificareReceived: EnrollmentCertificateReceived
     ): Promise<void>
 }

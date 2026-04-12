@@ -96,4 +96,17 @@ export class EnrollmentController {
 
         return res.status(201).send()
     }
+
+    async updateCertificateReceived(req: Request, res: Response) {
+        const { userId, trainingId } = req.params
+        const { certificateReceived } = req.body
+
+        await serviceContainer.enrollment.updateCertificateReceived.run({
+            userId: userId.toString(),
+            trainingId: trainingId.toString(),
+            certificateReceived,
+        })
+
+        return res.status(201).send()
+    }
 }

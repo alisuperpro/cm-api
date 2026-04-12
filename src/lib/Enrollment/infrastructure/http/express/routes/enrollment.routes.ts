@@ -46,6 +46,13 @@ trainingUserRouter.put(
     checkTrainingDate,
     enrollmentController.updatePayConfirmed
 )
+trainingUserRouter.put(
+    '/certificate-received/:trainingId/:userId',
+    checkAdminAuth,
+    checkTrainingId,
+    checkTrainingDate,
+    enrollmentController.updateCertificateReceived
+)
 /* 
 
 trainingUserRouter.put(

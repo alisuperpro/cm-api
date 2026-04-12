@@ -3,10 +3,11 @@ import { AdminUserFindById } from '../../../AdminUser/application/use-case/admin
 import { AdminUserGetAll } from '../../../AdminUser/application/use-case/adminUserGetAll.uc'
 import { AdminUserUpdateNotoficationToken } from '../../../AdminUser/application/use-case/adminUserUpdateNotificationToken.uc'
 import { AdminUserTursoRepository } from '../../../AdminUser/infrastructure/repository/adminUserTurso.repository'
-import { EnrollmentCreate } from '../../../Enrollment/application/use-cases/enrollemntCreate.uc'
+import { EnrollmentCreate } from '../../../Enrollment/application/use-cases/enrollmentCreate.uc'
 import { EnrollmentGetAll } from '../../../Enrollment/application/use-cases/enrollmentGetAll.uc'
 import { EnrollmentGetById } from '../../../Enrollment/application/use-cases/enrollmentGetById.uc'
 import { EnrollmentGetByTraining } from '../../../Enrollment/application/use-cases/enrollmentGetByTraining.uc'
+import { EnrollmentUpdateCertificateReceived } from '../../../Enrollment/application/use-cases/enrollmentUpdateCertificateReceived.uc'
 import { EnrollmentUpdateIsArrived } from '../../../Enrollment/application/use-cases/enrollmentUpdateIsArrived.uc'
 import { EnrollmentUpdatePayConfirmed } from '../../../Enrollment/application/use-cases/enrollmentUpdatePayConfirmed.uc'
 import { EnrollmentQueryRepositoryImpl } from '../../../Enrollment/infrastructure/query/enrollmentQuery.repository'
@@ -69,6 +70,9 @@ export const serviceContainer = {
         getById: new EnrollmentGetById(enrollmentQueryRepository),
         updateIsArrived: new EnrollmentUpdateIsArrived(enrollmentRepository),
         updatePayConfirmed: new EnrollmentUpdatePayConfirmed(
+            enrollmentRepository
+        ),
+        updateCertificateReceived: new EnrollmentUpdateCertificateReceived(
             enrollmentRepository
         ),
     },

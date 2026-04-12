@@ -96,6 +96,19 @@ export class EnrollmentQueryTursoRepository implements EnrollmentRepository {
         await this.db.execute(query)
     }
 
+    async updateCertificateReceived(
+        userId: EnrollmentUserId,
+        trainingId: EnrollmentTrainingId,
+        certificareReceived: EnrollmentCertificateReceived
+    ): Promise<void> {
+        const query = {
+            sql: `UPDATE ${this.tableName} SET certificate_received = ?  WHERE user_id = ? AND training_id = ?`,
+            args: [certificareReceived.value, userId.value, trainingId.value],
+        }
+
+        await this.db.execute(query)
+    }
+
     private mapToDomain(row: EnrollmentTurso) {
         return new Enrollment(
             new EnrollmentId(row.id),
