@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { serviceContainer } from '../../../../../shared/insfrastructure/services/serviceContainer'
 import { generateUUID } from '../../../../../shared/insfrastructure/utils/generateUUID'
+import { uploadFile } from '../../../../../../services/s3'
 
 export class EnrollmentController {
     async create(req: Request, res: Response) {
@@ -37,5 +38,16 @@ export class EnrollmentController {
         )
 
         return res.status(200).json({ data: enrollment })
+    }
+
+    async uploadUserPay(req: Request, res: Response) {
+        //@ts-ignore
+        const { pay } = req.files
+        const { folder } = req.body
+        const { key } = await uploadFile(pay, `pays/${folder}`)
+
+        res.status(200).json({
+            path: key,
+        })
     }
 }

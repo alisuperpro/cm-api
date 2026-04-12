@@ -26,12 +26,12 @@ trainingUserRouter.get(
 )
 
 trainingUserRouter.post('/', checkAuth, enrollmentController.create)
-/* 
 trainingUserRouter.post(
     '/upload/pay',
     checkAuth,
     enrollmentController.uploadUserPay
 )
+/* 
 
 trainingUserRouter.post('/file', checkAuth, enrollmentController.getUrl)
 
