@@ -31,9 +31,9 @@ trainingUserRouter.post(
     checkAuth,
     enrollmentController.uploadUserPay
 )
+trainingUserRouter.post('/file', checkAuth, enrollmentController.getUrl)
 /* 
 
-trainingUserRouter.post('/file', checkAuth, enrollmentController.getUrl)
 
 trainingUserRouter.put(
     '/is-arrived/:trainingId/:id',

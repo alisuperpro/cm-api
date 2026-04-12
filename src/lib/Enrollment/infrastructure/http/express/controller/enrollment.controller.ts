@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { serviceContainer } from '../../../../../shared/insfrastructure/services/serviceContainer'
 import { generateUUID } from '../../../../../shared/insfrastructure/utils/generateUUID'
-import { uploadFile } from '../../../../../../services/s3'
+import { getPresignedUrl, uploadFile } from '../../../../../../services/s3'
 
 export class EnrollmentController {
     async create(req: Request, res: Response) {
@@ -48,6 +48,26 @@ export class EnrollmentController {
 
         res.status(200).json({
             path: key,
+        })
+    }
+
+    async getUrl(req: Request, res: Response) {
+        const { file } = req.body
+
+        if (!file) {
+            res.status(400).json({
+                error: 'Missing fields',
+            })
+            return
+        }
+
+        const url = await getPresignedUrl({
+            filename: file,
+            expiresIn: 3600,
+        })
+
+        res.json({
+            url,
         })
     }
 }
