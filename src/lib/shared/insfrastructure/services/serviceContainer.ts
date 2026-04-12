@@ -8,6 +8,7 @@ import { EnrollmentGetAll } from '../../../Enrollment/application/use-cases/enro
 import { EnrollmentGetById } from '../../../Enrollment/application/use-cases/enrollmentGetById.uc'
 import { EnrollmentGetByTraining } from '../../../Enrollment/application/use-cases/enrollmentGetByTraining.uc'
 import { EnrollmentUpdateIsArrived } from '../../../Enrollment/application/use-cases/enrollmentUpdateIsArrived.uc'
+import { EnrollmentUpdatePayConfirmed } from '../../../Enrollment/application/use-cases/enrollmentUpdatePayConfirmed.uc'
 import { EnrollmentQueryRepositoryImpl } from '../../../Enrollment/infrastructure/query/enrollmentQuery.repository'
 import { EnrollmentQueryTursoRepository } from '../../../Enrollment/infrastructure/repository/enrollment.repository'
 import { TrainingCreate } from '../../../Training/application/use-case/trainingCreate.uc'
@@ -67,5 +68,8 @@ export const serviceContainer = {
         getAll: new EnrollmentGetAll(enrollmentQueryRepository),
         getById: new EnrollmentGetById(enrollmentQueryRepository),
         updateIsArrived: new EnrollmentUpdateIsArrived(enrollmentRepository),
+        updatePayConfirmed: new EnrollmentUpdatePayConfirmed(
+            enrollmentRepository
+        ),
     },
 }

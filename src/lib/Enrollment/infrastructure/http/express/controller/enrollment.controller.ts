@@ -83,4 +83,17 @@ export class EnrollmentController {
 
         return res.status(201).send()
     }
+
+    async updatePayConfirmed(req: Request, res: Response) {
+        const { userId, trainingId } = req.params
+        const { payConfirmed } = req.body
+
+        await serviceContainer.enrollment.updatePayConfirmed.run({
+            userId: userId.toString(),
+            trainingId: trainingId.toString(),
+            payConfirmed,
+        })
+
+        return res.status(201).send()
+    }
 }

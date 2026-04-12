@@ -7,6 +7,7 @@ import { EnrollmentExperience } from '../../domain/value-objects/enrollmentExper
 import { EnrollmentHowFind } from '../../domain/value-objects/enrollmentHowFind.vo'
 import { EnrollmentId } from '../../domain/value-objects/enrollmentId.vo'
 import { EnrollmentIsArrived } from '../../domain/value-objects/enrollmentIsArrived.vo'
+import { EnrollmentPayConfirmed } from '../../domain/value-objects/enrollmentPayConfirmed.vo'
 import { EnrollmentPayImg } from '../../domain/value-objects/enrollmentPayImg.vo'
 import { EnrollmentPayRef } from '../../domain/value-objects/enrollmentPayRef.vo'
 import { EnrollmentTrainingId } from '../../domain/value-objects/enrollmentTrainingId.vo'
@@ -27,6 +28,7 @@ export class EnrollmentCreate {
             new EnrollmentPayImg(input.payImg),
             new EnrollmentIsArrived(input.isArrived),
             new EnrollmentCertificateReceived(input.certificateReceived),
+            new EnrollmentPayConfirmed(input.payConfirmed),
             new EnrollmentCreatedAt(input.createdAt)
         )
 

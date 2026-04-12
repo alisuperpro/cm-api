@@ -39,17 +39,14 @@ trainingUserRouter.put(
     checkTrainingId,
     enrollmentController.updateIsArrived
 )
-/* 
-
-
 trainingUserRouter.put(
-    '/pay-confirmed/:trainingId/:id',
+    '/pay-confirmed/:trainingId/:userId',
     checkAdminAuth,
     checkTrainingId,
-    checkId,
     checkTrainingDate,
     enrollmentController.updatePayConfirmed
 )
+/* 
 
 trainingUserRouter.put(
     '/certificate-received/:trainingId/:id',

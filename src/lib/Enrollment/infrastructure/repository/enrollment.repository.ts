@@ -12,6 +12,7 @@ import { EnrollmentPayImg } from '../../domain/value-objects/enrollmentPayImg.vo
 import { EnrollmentIsArrived } from '../../domain/value-objects/enrollmentIsArrived.vo'
 import { EnrollmentCertificateReceived } from '../../domain/value-objects/enrollmentCertificateReceived.vo'
 import { EnrollmentCreatedAt } from '../../domain/value-objects/enrollmentCreatedAt.vo'
+import { EnrollmentPayConfirmed } from '../../domain/value-objects/enrollmentPayConfirmed.vo'
 
 type EnrollmentTurso = {
     id: string
@@ -24,6 +25,7 @@ type EnrollmentTurso = {
     pay_img: string
     is_arrived: boolean
     certificate_received: boolean
+    pay_confirmed: boolean
     created_at: string
 }
 
@@ -81,6 +83,19 @@ export class EnrollmentQueryTursoRepository implements EnrollmentRepository {
         await this.db.execute(query)
     }
 
+    async updatePayConfirmed(
+        userId: EnrollmentUserId,
+        trainingId: EnrollmentTrainingId,
+        payConfirmed: EnrollmentPayConfirmed
+    ): Promise<void> {
+        const query = {
+            sql: `UPDATE ${this.tableName} SET pay_confirmed = ?  WHERE user_id = ? AND training_id = ?`,
+            args: [payConfirmed.value, userId.value, trainingId.value],
+        }
+
+        await this.db.execute(query)
+    }
+
     private mapToDomain(row: EnrollmentTurso) {
         return new Enrollment(
             new EnrollmentId(row.id),
@@ -93,6 +108,7 @@ export class EnrollmentQueryTursoRepository implements EnrollmentRepository {
             new EnrollmentPayImg(row.pay_img),
             new EnrollmentIsArrived(row.is_arrived),
             new EnrollmentCertificateReceived(row.certificate_received),
+            new EnrollmentPayConfirmed(row.pay_confirmed),
             new EnrollmentCreatedAt(row.created_at)
         )
     }

@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
-import { TrainingModel } from '../model/training.model'
 import { hasDatePassed } from '../../utils/hasDatePassed'
+import { TrainingModel } from '../../../../../model/training.model'
 
 export const checkTrainingDate = async (
     req: Request,

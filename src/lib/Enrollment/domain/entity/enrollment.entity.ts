@@ -5,6 +5,7 @@ import { EnrollmentExperience } from '../value-objects/enrollmentExperience.vo'
 import { EnrollmentHowFind } from '../value-objects/enrollmentHowFind.vo'
 import { EnrollmentId } from '../value-objects/enrollmentId.vo'
 import { EnrollmentIsArrived } from '../value-objects/enrollmentIsArrived.vo'
+import { EnrollmentPayConfirmed } from '../value-objects/enrollmentPayConfirmed.vo'
 import { EnrollmentPayImg } from '../value-objects/enrollmentPayImg.vo'
 import { EnrollmentPayRef } from '../value-objects/enrollmentPayRef.vo'
 import { EnrollmentTrainingId } from '../value-objects/enrollmentTrainingId.vo'
@@ -22,6 +23,7 @@ export class Enrollment {
         public readonly payImg: EnrollmentPayImg,
         public isArrived: EnrollmentIsArrived,
         public certificateReceived: EnrollmentCertificateReceived,
+        public payConfirmed: EnrollmentPayConfirmed,
         public readonly createdAt: EnrollmentCreatedAt
     ) {}
 
