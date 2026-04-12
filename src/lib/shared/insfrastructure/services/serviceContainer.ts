@@ -7,6 +7,7 @@ import { EnrollmentCreate } from '../../../Enrollment/application/use-cases/enro
 import { EnrollmentGetAll } from '../../../Enrollment/application/use-cases/enrollmentGetAll.uc'
 import { EnrollmentGetById } from '../../../Enrollment/application/use-cases/enrollmentGetById.uc'
 import { EnrollmentGetByTraining } from '../../../Enrollment/application/use-cases/enrollmentGetByTraining.uc'
+import { EnrollmentUpdateIsArrived } from '../../../Enrollment/application/use-cases/enrollmentUpdateIsArrived.uc'
 import { EnrollmentQueryRepositoryImpl } from '../../../Enrollment/infrastructure/query/enrollmentQuery.repository'
 import { EnrollmentQueryTursoRepository } from '../../../Enrollment/infrastructure/repository/enrollment.repository'
 import { TrainingCreate } from '../../../Training/application/use-case/trainingCreate.uc'
@@ -62,9 +63,9 @@ export const serviceContainer = {
     },
     enrollment: {
         create: new EnrollmentCreate(enrollmentRepository),
-
         getByTraining: new EnrollmentGetByTraining(enrollmentQueryRepository),
         getAll: new EnrollmentGetAll(enrollmentQueryRepository),
         getById: new EnrollmentGetById(enrollmentQueryRepository),
+        updateIsArrived: new EnrollmentUpdateIsArrived(enrollmentRepository),
     },
 }

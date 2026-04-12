@@ -32,16 +32,15 @@ trainingUserRouter.post(
     enrollmentController.uploadUserPay
 )
 trainingUserRouter.post('/file', checkAuth, enrollmentController.getUrl)
-/* 
-
 
 trainingUserRouter.put(
-    '/is-arrived/:trainingId/:id',
+    '/is-arrived/:trainingId/:userId',
     checkAdminAuth,
     checkTrainingId,
-    checkId,
     enrollmentController.updateIsArrived
 )
+/* 
+
 
 trainingUserRouter.put(
     '/pay-confirmed/:trainingId/:id',

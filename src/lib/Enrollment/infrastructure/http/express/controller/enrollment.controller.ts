@@ -70,4 +70,17 @@ export class EnrollmentController {
             url,
         })
     }
+
+    async updateIsArrived(req: Request, res: Response) {
+        const { userId, trainingId } = req.params
+        const { isArrived } = req.body
+
+        await serviceContainer.enrollment.updateIsArrived.run({
+            userId: userId.toString(),
+            trainingId: trainingId.toString(),
+            isArrived,
+        })
+
+        return res.status(201).send()
+    }
 }
