@@ -43,14 +43,12 @@ trainingUserRouter.put(
     '/pay-confirmed/:trainingId/:userId',
     checkAdminAuth,
     checkTrainingId,
-    checkTrainingDate,
     enrollmentController.updatePayConfirmed
 )
 trainingUserRouter.put(
     '/certificate-received/:trainingId/:userId',
     checkAdminAuth,
     checkTrainingId,
-    checkTrainingDate,
     enrollmentController.updateCertificateReceived
 )
 /* 
