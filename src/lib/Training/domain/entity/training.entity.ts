@@ -11,13 +11,15 @@ import { TrainingStartTime } from '../value-objects/trainingStartTime.vo'
 import { TrainingStatusId } from '../value-objects/trainingStatusId.vo'
 import { TrainingTitle } from '../value-objects/trainingTitle.vo'
 import { TrainingTypeId } from '../value-objects/trainingTypeId.vo'
+import { TrainingStatus } from './trainingStatus.entity'
+import { TrainingType } from './trainingType.entity'
 
 export interface ITraining {
     id: TrainingId
     title: TrainingTitle
     description: TrainingDescription
     date: TrainingDate
-    statusId: TrainingStatusId
+    status: TrainingStatus
     location: TrainingLocation
     slug: TrainingSlug
     createdAt: TrainingCreatedAt
@@ -25,7 +27,7 @@ export interface ITraining {
     endTime: TrainingEndTime
     banner: TrainingBanner
     capacity: TrainingCapacity
-    typeId: TrainingTypeId
+    type: TrainingType
 }
 
 export class Training {
@@ -33,7 +35,7 @@ export class Training {
     public readonly title: TrainingTitle
     public readonly description: TrainingDescription
     public readonly date: TrainingDate
-    public readonly statusId: TrainingStatusId
+    public readonly status: TrainingStatus
     public readonly location: TrainingLocation
     public readonly slug: TrainingSlug
     public readonly createdAt: TrainingCreatedAt
@@ -41,14 +43,14 @@ export class Training {
     public readonly endTime: TrainingEndTime
     public readonly banner: TrainingBanner
     public readonly capacity: TrainingCapacity
-    public readonly typeId: TrainingTypeId
+    public readonly type: TrainingType
 
     constructor(training: ITraining) {
         this.id = training.id
         this.title = training.title
         this.description = training.description
         this.date = training.date
-        this.statusId = training.statusId
+        this.status = training.status
         this.location = training.location
         this.slug = training.slug
         this.createdAt = training.createdAt
@@ -56,6 +58,6 @@ export class Training {
         this.endTime = training.endTime
         this.banner = training.banner
         this.capacity = training.capacity
-        this.typeId = training.typeId
+        this.type = training.type
     }
 }

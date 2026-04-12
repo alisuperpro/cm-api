@@ -1,8 +1,8 @@
-export class TrainingSlug {
-    value: string
+export class TrainingTypeSlug {
+    public readonly value: string
 
     constructor(value: string) {
-        this.value = TrainingSlug.toSlug(value)
+        this.value = TrainingTypeSlug.toSlug(value)
         this.validate(this.value)
     }
 
