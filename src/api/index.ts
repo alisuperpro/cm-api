@@ -5,10 +5,10 @@ import dotenv from 'dotenv'
 import { clerkMiddleware } from '@clerk/express'
 
 import fileUpload from 'express-fileupload'
-import { TursoDatabase } from '../lib/shared/insfrastructure/database/turso.db'
-import { apiRouter } from '../lib/shared/insfrastructure/http/routes/api.routes'
-import { adminNotificationService } from '../lib/shared/insfrastructure/events/adminNotification.event'
-import { emailService } from '../lib/shared/insfrastructure/events/email.services'
+import { TursoDatabase } from '@/lib/shared/insfrastructure/database/turso.db'
+import { apiRouter } from '@/lib/shared/insfrastructure/http/routes/api.routes'
+import { adminNotificationService } from '@/lib/shared/insfrastructure/events/adminNotification.event'
+import { emailService } from '@/lib/shared/insfrastructure/events/email.services'
 
 const app = express()
 
