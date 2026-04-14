@@ -1,4 +1,4 @@
-import { UserRepository } from '../../domain/repository/user.repository'
+import { UserRepository } from '@/User/domain/repository/user.repository'
 
 export class UserGetAll {
     constructor(private repository: UserRepository) {}

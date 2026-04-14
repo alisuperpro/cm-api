@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
-import { serviceContainer } from '../../../../../shared/insfrastructure/services/serviceContainer'
-import { UserNotFoundError } from '../../../../domain/errors/userNotFoundError.error'
+import { serviceContainer } from '@/shared/insfrastructure/services/serviceContainer'
+import { UserNotFoundError } from '@/User/domain/errors/userNotFoundError.error'
 
 export class UserController {
     async create(req: Request, res: Response) {

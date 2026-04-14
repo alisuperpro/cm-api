@@ -1,7 +1,7 @@
-import { UserNotFoundError } from '../../domain/errors/userNotFoundError.error'
-import { UserRepository } from '../../domain/repository/user.repository'
-import { UserId } from '../../domain/value-objects/userId.vo'
-import { UserFindByIdDTO } from '../dto/userFindById.dto'
+import { UserNotFoundError } from '@/User/domain/errors/userNotFoundError.error'
+import { UserRepository } from '@/User/domain/repository/user.repository'
+import { UserId } from '@/User/domain/value-objects/userId.vo'
+import { UserFindByIdDTO } from '@/User/application/dto/userFindById.dto'
 
 export class UserFindById {
     constructor(private repository: UserRepository) {}

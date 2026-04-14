@@ -1,5 +1,5 @@
-import { User } from '../entity/user.entity'
-import { UserId } from '../value-objects/userId.vo'
+import { User } from '@/User/domain/entity/user.entity'
+import { UserId } from '@/User/domain/value-objects/userId.vo'
 
 export interface UserRepository {
     create(user: User): Promise<void>
