@@ -1,7 +1,7 @@
-import { AdminUserId } from '../value-objects/adminUserId.vo'
-import { AdminUserName } from '../value-objects/adminUserName.vo'
-import { AdminUserNotificationToken } from '../value-objects/adminUserNotificationToken.vo'
-import { AdminUserRole } from '../value-objects/adminUserRole.vo'
+import { AdminUserId } from '@/lib/AdminUser/domain/value-objects/adminUserId.vo'
+import { AdminUserName } from '@/lib/AdminUser/domain/value-objects/adminUserName.vo'
+import { AdminUserNotificationToken } from '@/lib/AdminUser/domain/value-objects/adminUserNotificationToken.vo'
+import { AdminUserRole } from '@/lib/AdminUser/domain/value-objects/adminUserRole.vo'
 
 export interface IAdminUser {
     id: AdminUserId

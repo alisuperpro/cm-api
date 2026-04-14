@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
-import { serviceContainer } from '../../../../../shared/insfrastructure/services/serviceContainer'
-import { AdminUserNotFoundError } from '../../../../domain/errors/adminUserNotFoundError.error'
+import { serviceContainer } from '@/lib/shared/insfrastructure/services/serviceContainer'
+import { AdminUserNotFoundError } from '@/lib/AdminUser/domain/errors/adminUserNotFoundError.error'
 
 export class AdminUserController {
     async create(req: Request, res: Response, next: NextFunction) {

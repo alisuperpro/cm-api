@@ -1,6 +1,6 @@
-import { AdminUser } from '../entity/adminUser.entity'
-import { AdminUserId } from '../value-objects/adminUserId.vo'
-import { AdminUserNotificationToken } from '../value-objects/adminUserNotificationToken.vo'
+import { AdminUser } from '@/lib/AdminUser/domain/entity/adminUser.entity'
+import { AdminUserId } from '@/lib/AdminUser/domain/value-objects/adminUserId.vo'
+import { AdminUserNotificationToken } from '@/lib/AdminUser/domain/value-objects/adminUserNotificationToken.vo'
 
 export interface AdminUserRepository {
     create(adminUser: AdminUser): Promise<void>

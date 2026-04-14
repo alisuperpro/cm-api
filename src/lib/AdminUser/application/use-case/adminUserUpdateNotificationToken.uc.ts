@@ -1,7 +1,7 @@
-import { AdminUserRepository } from '../../domain/repository/adminUser.repository'
-import { AdminUserId } from '../../domain/value-objects/adminUserId.vo'
-import { AdminUserNotificationToken } from '../../domain/value-objects/adminUserNotificationToken.vo'
-import { AdminUserUpdateNotoficationTokenDTO } from '../dto/adminUserUpdateNotificationToken.dto'
+import { AdminUserRepository } from '@/lib/AdminUser/domain/repository/adminUser.repository'
+import { AdminUserId } from '@/lib/AdminUser/domain/value-objects/adminUserId.vo'
+import { AdminUserNotificationToken } from '@/lib/AdminUser/domain/value-objects/adminUserNotificationToken.vo'
+import { AdminUserUpdateNotoficationTokenDTO } from '@/lib/AdminUser/application/dto/adminUserUpdateNotificationToken.dto'
 
 export class AdminUserUpdateNotoficationToken {
     constructor(private repository: AdminUserRepository) {}

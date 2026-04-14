@@ -1,4 +1,4 @@
-import { AdminUserRepository } from '../../domain/repository/adminUser.repository'
+import { AdminUserRepository } from '@/lib/AdminUser/domain/repository/adminUser.repository'
 
 export class AdminUserGetAll {
     constructor(private repository: AdminUserRepository) {}

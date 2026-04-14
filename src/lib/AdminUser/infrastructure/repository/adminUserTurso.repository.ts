@@ -1,10 +1,10 @@
-import { TursoDatabase } from '../../../shared/insfrastructure/database/turso.db'
-import { AdminUser } from '../../domain/entity/adminUser.entity'
-import { AdminUserRepository } from '../../domain/repository/adminUser.repository'
-import { AdminUserId } from '../../domain/value-objects/adminUserId.vo'
-import { AdminUserName } from '../../domain/value-objects/adminUserName.vo'
-import { AdminUserNotificationToken } from '../../domain/value-objects/adminUserNotificationToken.vo'
-import { AdminUserRole } from '../../domain/value-objects/adminUserRole.vo'
+import { TursoDatabase } from '@/lib/shared/insfrastructure/database/turso.db'
+import { AdminUser } from '@/lib/AdminUser/domain/entity/adminUser.entity'
+import { AdminUserRepository } from '@/lib/AdminUser/domain/repository/adminUser.repository'
+import { AdminUserId } from '@/lib/AdminUser/domain/value-objects/adminUserId.vo'
+import { AdminUserName } from '@/lib/AdminUser/domain/value-objects/adminUserName.vo'
+import { AdminUserNotificationToken } from '@/lib/AdminUser/domain/value-objects/adminUserNotificationToken.vo'
+import { AdminUserRole } from '@/lib/AdminUser/domain/value-objects/adminUserRole.vo'
 
 type AdminUserTurso = {
     id: string
