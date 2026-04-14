@@ -127,17 +127,34 @@ export class TrainingTursoRepository implements TrainingRepository {
     }
 
     async getAll(): Promise<Training[]> {
+        const builder = new QueryBuilder(this.tableName)
+
+        builder
+            .select([
+                'training.id',
+                'title',
+                'date',
+                'location',
+                'status_id',
+                'training_status.status AS status_name',
+                'training.slug AS training_slug',
+                'training.id AS training_id',
+                'description',
+                'created_at',
+                'start_time',
+                'end_time',
+                'banner',
+                'capacity',
+                'type',
+                'training.slug',
+                'training_type.id AS type_id',
+                'training_type.type AS type_type',
+                'training_type.slug AS type_slug',
+            ])
+            .join('training_status', 'training.status_id = training_status.id')
+            .join('training_type', 'training.type_id = training_type.id')
         const query = {
-            sql: `
-                SELECT 
-                    t.*,
-                    ts.status as status_name,
-                    tt.type as type_name,
-                    tt.slug as type_slug
-                FROM ${this.tableName} t
-                JOIN training_status ts ON ts.id = t.status_id
-                JOIN training_type tt ON tt.id = t.type_id
-            `,
+            sql: builder.build().sql,
         }
 
         const result = await this.db.execute(query)

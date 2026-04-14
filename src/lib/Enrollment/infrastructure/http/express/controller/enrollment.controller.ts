@@ -56,7 +56,13 @@ export class EnrollmentController {
     }
 
     async getAll(req: Request, res: Response) {
-        const enrollment = await serviceContainer.enrollment.getAll.run()
+        const { slug } = req.query
+
+        const enrollment = await serviceContainer.enrollment.getAll.run({
+            filters: {
+                slug: slug?.toString(),
+            },
+        })
 
         return res.status(200).json({
             data: enrollment,
@@ -86,7 +92,6 @@ export class EnrollmentController {
 
     async getUrl(req: Request, res: Response) {
         const { file } = req.body
-
         if (!file) {
             res.status(400).json({
                 error: 'Missing fields',

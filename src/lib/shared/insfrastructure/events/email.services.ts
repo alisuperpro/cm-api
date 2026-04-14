@@ -128,7 +128,7 @@ class EmailService {
             ig_username: user.igUsername.value,
         }
 
-        return { training, user: toUser }
+        return { training: training.toPrimitives(), user: toUser }
     }
 
     private prepareContext(eventName: string, source: any, payload: any) {

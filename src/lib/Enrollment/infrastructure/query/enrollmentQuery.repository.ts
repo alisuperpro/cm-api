@@ -1,6 +1,10 @@
+import { QueryBuilder } from '@/lib/shared/insfrastructure/utils/queryBuilder'
 import { TursoDatabase } from '../../../shared/insfrastructure/database/turso.db'
 import { EnrollmentDetailDTO } from '../../application/dto/enrollmentDetail.dto'
-import { EnrollmentQueryRepository } from '../../application/query/enrollmentQuery.repository'
+import {
+    EnrollmentGetAllParams,
+    EnrollmentQueryRepository,
+} from '../../application/query/enrollmentQuery.repository'
 
 type EnrollmentTursoRaw = {
     // Enrollment fields
@@ -98,50 +102,60 @@ export class EnrollmentQueryRepositoryImpl implements EnrollmentQueryRepository 
         )
     }
 
-    async getAllDetailed(): Promise<EnrollmentDetailDTO[]> {
+    async getAllDetailed(
+        params: EnrollmentGetAllParams
+    ): Promise<EnrollmentDetailDTO[]> {
+        const builder = new QueryBuilder(`${this.tableName} e`)
+
+        builder
+            .select([
+                'e.id',
+                'e.training_id',
+                'e.user_id',
+                'e.how_find',
+                'e.experience',
+                'e.additional_info',
+                'e.pay_ref',
+                'e.pay_img',
+                'e.is_arrived',
+                'e.certificate_received',
+                'e.created_at',
+                'u.full_name',
+                'u.email',
+                'u.doc_id',
+                'u.phone',
+                'u.birthdate',
+                'u.occupation_status',
+                'u.university',
+                'u.how_find_us',
+                'u.disability',
+                'u.ig_username',
+                't.title',
+                't.description',
+                't.date',
+                't.status_id',
+                't.location',
+                't.slug',
+                't.start_time',
+                't.end_time',
+                't.banner',
+                't.capacity',
+                't.type_id',
+            ])
+            .join('user u', 'u.id = e.user_id', 'INNER')
+            .join('training t', 't.id = e.training_id', 'INNER')
+
+        if (params.filters.slug) {
+            builder.where('t.slug', params.filters.slug)
+        }
+
         const query = {
-            sql: `
-                SELECT 
-                    e.id,
-                    e.training_id,
-                    e.user_id,
-                    e.how_find,
-                    e.experience,
-                    e.additional_info,
-                    e.pay_ref,
-                    e.pay_img,
-                    e.is_arrived,
-                    e.certificate_received,
-                    e.created_at,
-                    u.full_name,
-                    u.email,
-                    u.doc_id,
-                    u.phone,
-                    u.birthdate,
-                    u.occupation_status,
-                    u.university,
-                    u.how_find_us,
-                    u.disability,
-                    u.ig_username,
-                    t.title,
-                    t.description,
-                    t.date,
-                    t.status_id,
-                    t.location,
-                    t.slug,
-                    t.start_time,
-                    t.end_time,
-                    t.banner,
-                    t.capacity,
-                    t.type_id
-                FROM ${this.tableName} e
-                INNER JOIN user u ON u.id = e.user_id
-                INNER JOIN training t ON t.id = e.training_id
-            
-            `,
+            sql: builder.build().sql,
+            args: builder.build().args,
         }
 
         const result = await this.db.execute(query)
+
         return result.rows.map((row) =>
             this.mapToDTO(row as unknown as EnrollmentTursoRaw)
         )
