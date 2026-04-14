@@ -22,4 +22,13 @@ export class AdminUser {
         this.role = adminUser.role
         this.name = adminUser.name
     }
+
+    toPrimitives() {
+        return {
+            id: this.id.value,
+            notificationToken: this.notificationToken.value,
+            role: this.role.value,
+            name: this.name.value,
+        }
+    }
 }

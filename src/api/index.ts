@@ -3,12 +3,12 @@ import cors from 'cors'
 import morgan from 'morgan'
 import dotenv from 'dotenv'
 import { clerkMiddleware } from '@clerk/express'
-import { emailService } from '../events/email.services'
-import { adminNotificationService } from '../events/adminNotification.event'
 
 import fileUpload from 'express-fileupload'
 import { TursoDatabase } from '../lib/shared/insfrastructure/database/turso.db'
 import { apiRouter } from '../lib/shared/insfrastructure/http/routes/api.routes'
+import { adminNotificationService } from '../lib/shared/insfrastructure/events/adminNotification.event'
+import { emailService } from '../lib/shared/insfrastructure/events/email.services'
 
 const app = express()
 

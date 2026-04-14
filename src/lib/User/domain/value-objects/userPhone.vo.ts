@@ -10,10 +10,10 @@ export class UserPhone {
         const phone = this.value.replace(/[\s\-\(\)\.]/g, '')
 
         const internationalRegex = /^\+\d{1,3}\d{6,14}$/
-
         const nationalRegex = /^\d{9,15}$/
 
-        if (!internationalRegex.test(phone) || !nationalRegex.test(phone)) {
+        if (internationalRegex.test(phone) || nationalRegex.test(phone)) {
+        } else {
             throw new Error('User phone not valid')
         }
     }

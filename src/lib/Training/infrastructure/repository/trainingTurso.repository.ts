@@ -22,6 +22,7 @@ import { TrainingType } from '../../domain/entity/trainingType.entity'
 import { TrainingStatusStatus } from '../../domain/value-objects/trainingStatus/trainingStatusStatus.vo'
 import { TrainingTypeType } from '../../domain/value-objects/trainingType/trainingTypeType.vo'
 import { TrainingTypeSlug } from '../../domain/value-objects/trainingType/trainingTypeSlug.vo'
+import { QueryBuilder } from '../../../shared/insfrastructure/utils/queryBuilder'
 
 type TrainingTurso = {
     id: string
@@ -38,7 +39,7 @@ type TrainingTurso = {
     banner: string
     capacity: number
     type_id: string
-    type_name: string
+    type_type: string
     type_slug: string
 }
 
@@ -76,27 +77,53 @@ export class TrainingTursoRepository implements TrainingRepository {
     }
 
     async findById(id: TrainingId): Promise<Training | null> {
-        const query = {
-            sql: `
-                SELECT 
-                    t.*,
-                    ts.status as status_name,
-                    tt.type as type_name,
-                    tt.slug as type_slug
-                FROM ${this.tableName} t
-                JOIN training_status ts ON ts.id = t.status_id
-                JOIN training_type tt ON tt.id = t.type_id
-                WHERE t.id = ?
-            `,
-            args: [id.value],
+        try {
+            const builder = new QueryBuilder(this.tableName)
+
+            builder
+                .select([
+                    'training.id',
+                    'title',
+                    'date',
+                    'location',
+                    'status_id',
+                    'training_status.status AS status_name',
+                    'training.slug AS training_slug',
+                    'training.id AS training_id',
+                    'description',
+                    'created_at',
+                    'start_time',
+                    'end_time',
+                    'banner',
+                    'capacity',
+                    'type',
+                    'training.slug',
+                    'training_type.id AS type_id',
+                    'training_type.type AS type_type',
+                    'training_type.slug AS type_slug',
+                ])
+                .join(
+                    'training_status',
+                    'training.status_id = training_status.id'
+                )
+                .join('training_type', 'training.type_id = training_type.id')
+                .where('training.id', id.value)
+
+            const query = {
+                sql: builder.build().sql,
+                args: builder.build().args,
+            }
+
+            const result = await this.db.execute(query)
+            const row = result.rows[0]
+
+            if (!row) return null
+
+            return this.mapToDomain(row as unknown as TrainingTurso)
+        } catch (err) {
+            console.log(err)
+            return null
         }
-
-        const result = await this.db.execute(query)
-        const row = result.rows[0]
-
-        if (!row) return null
-
-        return this.mapToDomain(row as unknown as TrainingTurso)
     }
 
     async getAll(): Promise<Training[]> {
@@ -131,7 +158,7 @@ export class TrainingTursoRepository implements TrainingRepository {
             ),
             type: new TrainingType(
                 new TrainingTypeId(row.type_id),
-                new TrainingTypeType(row.type_name),
+                new TrainingTypeType(row.type_type),
                 new TrainingTypeSlug(row.type_slug)
             ),
             location: new TrainingLocation(row.location),

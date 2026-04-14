@@ -3,6 +3,13 @@ import { AdminUserFindById } from '../../../AdminUser/application/use-case/admin
 import { AdminUserGetAll } from '../../../AdminUser/application/use-case/adminUserGetAll.uc'
 import { AdminUserUpdateNotoficationToken } from '../../../AdminUser/application/use-case/adminUserUpdateNotificationToken.uc'
 import { AdminUserTursoRepository } from '../../../AdminUser/infrastructure/repository/adminUserTurso.repository'
+import { EmailSystemCreate } from '../../../Email/application/use-case/emailSystemCreate.uc'
+import { EmailSystemFindById } from '../../../Email/application/use-case/emailSystemFindById.uc'
+import { EmailSystemGetAll } from '../../../Email/application/use-case/emailSystemGetAll.uc'
+import { EmailTemplateCreate } from '../../../Email/application/use-case/emailTemplateCreate.uc'
+import { EmailTemplateGetAll } from '../../../Email/application/use-case/emailTemplateGetAll.uc'
+import { EmailSystemTursoRepository } from '../../../Email/infrastructure/repository/emailSystem.repository'
+import { EmailTemplateTursoRepository } from '../../../Email/infrastructure/repository/emailTemplate.repository'
 import { EnrollmentCreate } from '../../../Enrollment/application/use-cases/enrollmentCreate.uc'
 import { EnrollmentGetAll } from '../../../Enrollment/application/use-cases/enrollmentGetAll.uc'
 import { EnrollmentGetById } from '../../../Enrollment/application/use-cases/enrollmentGetById.uc'
@@ -33,8 +40,9 @@ const adminUserRepository = new AdminUserTursoRepository()
 const trainingStatusRepository = new TrainingStatusTursoRepository()
 const TrainingTypeRepository = new TrainingTypeTursoRepository()
 const enrollmentRepository = new EnrollmentQueryTursoRepository()
-
 const enrollmentQueryRepository = new EnrollmentQueryRepositoryImpl()
+const emailSystemRepository = new EmailSystemTursoRepository()
+const emailTemplateRepository = new EmailTemplateTursoRepository()
 
 export const serviceContainer = {
     user: {
@@ -75,5 +83,14 @@ export const serviceContainer = {
         updateCertificateReceived: new EnrollmentUpdateCertificateReceived(
             enrollmentRepository
         ),
+    },
+    emailSystem: {
+        create: new EmailSystemCreate(emailSystemRepository),
+        getAll: new EmailSystemGetAll(emailSystemRepository),
+        findById: new EmailSystemFindById(emailSystemRepository),
+    },
+    emailTemplate: {
+        create: new EmailTemplateCreate(emailTemplateRepository),
+        getAll: new EmailTemplateGetAll(emailTemplateRepository),
     },
 }

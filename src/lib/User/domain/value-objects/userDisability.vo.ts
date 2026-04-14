@@ -7,7 +7,7 @@ export class UserDisability {
     }
 
     private validate() {
-        if (this.value.length >= 2) {
+        if (this.value.length < 2) {
             throw new Error(
                 'User Disability must be at least 2 characters long'
             )

@@ -27,7 +27,7 @@ export class UserBirthDate {
         const currentDate = new Date()
         currentDate.setHours(0, 0, 0, 0)
 
-        if (birthDate <= currentDate) {
+        if (birthDate >= currentDate) {
             throw new Error('User Birth Date can not a future date')
         }
     }

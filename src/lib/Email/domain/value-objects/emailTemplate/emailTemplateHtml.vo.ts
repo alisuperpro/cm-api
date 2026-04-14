@@ -1,4 +1,4 @@
-export class UserFullName {
+export class EmailTemplateHtml {
     value: string
 
     constructor(value: string) {
@@ -7,8 +7,8 @@ export class UserFullName {
     }
 
     private validate() {
-        if (this.value.length < 3) {
-            throw new Error('User full name must be at least 3 characters long')
+        if (!this.value) {
+            throw new Error('Email template html is required')
         }
     }
 }

@@ -47,7 +47,9 @@ export class EnrollmentQueryTursoRepository implements EnrollmentRepository {
                 enrollment.userId.value,
                 enrollment.howFind.value,
                 enrollment.experience.value,
-                enrollment.additionalInfo.value,
+                enrollment.additionalInfo.value
+                    ? enrollment.additionalInfo.value
+                    : null,
                 enrollment.payRef.value,
                 enrollment.payImg.value,
                 enrollment.isArrived.value,

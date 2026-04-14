@@ -1,15 +1,48 @@
-import { Request, Response } from 'express'
+import { Request, Response, NextFunction } from 'express'
 import { serviceContainer } from '../../../../../shared/insfrastructure/services/serviceContainer'
 import { generateUUID } from '../../../../../shared/insfrastructure/utils/generateUUID'
 import { getPresignedUrl, uploadFile } from '../../../../../../services/s3'
+import { appEventEmitter } from '../../../../../shared/insfrastructure/events/eventEmitter'
 
 export class EnrollmentController {
-    async create(req: Request, res: Response) {
-        const id = generateUUID()
+    async create(req: Request, res: Response, next: NextFunction) {
+        try {
+            const {
+                trainingId,
+                userId,
+                howFind,
+                experience,
+                additionalInfo,
+                payRef,
+                payImg,
+            } = req.body
 
-        await serviceContainer.enrollment.create.run({ id, ...req.body })
+            if (
+                !trainingId ||
+                !userId ||
+                !howFind ||
+                !experience ||
+                !payRef ||
+                !payImg
+            ) {
+                res.status(400).json({
+                    error: 'Missing fields',
+                })
+                return
+            }
+            const id = generateUUID()
 
-        return res.status(201).send()
+            await serviceContainer.enrollment.create.run({ id, ...req.body })
+
+            appEventEmitter.emit('userRegisteredOnTraining', {
+                userId: req.body.userId,
+                trainingId: req.body.trainingId,
+            })
+
+            return res.status(201).send()
+        } catch (err) {
+            next(err)
+        }
     }
 
     async getByTrainingId(req: Request, res: Response) {
@@ -92,6 +125,12 @@ export class EnrollmentController {
             userId: userId.toString(),
             trainingId: trainingId.toString(),
             payConfirmed,
+        })
+
+        appEventEmitter.emit('payConfirmed', {
+            id: userId.toString(),
+            trainingId: trainingId.toString(),
+            configId: '465a827f-cd27-4896-a241-1b65ee25de35',
         })
 
         return res.status(201).send()

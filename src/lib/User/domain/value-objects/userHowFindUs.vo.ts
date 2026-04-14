@@ -7,7 +7,7 @@ export class UserHowFindUs {
     }
 
     private validate() {
-        if (this.value.length > 5) {
+        if (this.value.length < 5) {
             throw new Error(
                 'User how find us must be at least 5 characters long'
             )
