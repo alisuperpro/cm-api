@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express'
+import express, { NextFunction, Request, Response } from 'express'
 import cors from 'cors'
 import morgan from 'morgan'
 import dotenv from 'dotenv'
@@ -48,6 +48,15 @@ app.use(
         tempFileDir: './uploads',
     })
 )
+
+app.use((err: unknown, req: Request, res: Response, next: NextFunction) => {
+    if (err instanceof Error) {
+        console.error(err.stack)
+        return res.status(500).json({ message: err.message })
+    }
+    console.error(err)
+    return res.status(500).json({ message: 'Something went wrong' })
+})
 
 TursoDatabase.getInstance().initialize()
 
