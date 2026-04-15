@@ -32,7 +32,14 @@ export class EnrollmentController {
             }
             const id = generateUUID()
 
-            await serviceContainer.enrollment.create.run({ id, ...req.body })
+            await serviceContainer.enrollment.create.run({
+                id,
+                isArrived: false,
+                certificateReceived: false,
+                payConfirmed: false,
+                createdAt: new Date(),
+                ...req.body,
+            })
 
             appEventEmitter.emit('userRegisteredOnTraining', {
                 userId: req.body.userId,
