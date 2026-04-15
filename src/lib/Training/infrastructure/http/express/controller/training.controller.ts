@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
-import { serviceContainer } from '../../../../../shared/insfrastructure/services/serviceContainer'
-import { TrainingNotFoundError } from '../../../../domain/error/trainingNotFoundError.error'
-import { getPresignedUrl, uploadFile } from '../../../../../../services/s3'
+import { serviceContainer } from '@/lib/shared/insfrastructure/services/serviceContainer'
+import { TrainingNotFoundError } from '@/lib/Training/domain/error/trainingNotFoundError.error'
+import { getPresignedUrl, uploadFile } from '@/services/s3'
 
 export class TrainingController {
     async create(req: Request, res: Response) {

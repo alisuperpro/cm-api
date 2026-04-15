@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { serviceContainer } from '../../../../../shared/insfrastructure/services/serviceContainer'
+import { serviceContainer } from '@/lib/shared/insfrastructure/services/serviceContainer'
 
 export class TrainingStatusController {
     async create(req: Request, res: Response) {

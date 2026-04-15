@@ -1,5 +1,5 @@
-import { TrainingStatusStatus } from '../value-objects/trainingStatus/trainingStatusStatus.vo'
-import { TrainingStatusId } from '../value-objects/trainingStatusId.vo'
+import { TrainingStatusStatus } from '@/lib/Training/domain/value-objects/trainingStatus/trainingStatusStatus.vo'
+import { TrainingStatusId } from '@/lib/Training/domain/value-objects/trainingStatusId.vo'
 
 export class TrainingStatus {
     constructor(

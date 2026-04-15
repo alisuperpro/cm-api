@@ -1,8 +1,8 @@
 import { Router } from 'express'
-import { TrainingController } from '../controller/training.controller'
-import { checkAuth } from '../../../../../shared/insfrastructure/http/middleware/checkAuth.middleware'
-import { checkId } from '../../../../../shared/insfrastructure/http/middleware/checkId.middleware'
-import { checkAdminAuth } from '../../../../../shared/insfrastructure/http/middleware/checkAdminAuth.middleware'
+import { TrainingController } from '@/lib/Training/infrastructure/http/express/controller/training.controller'
+import { checkAuth } from '@/lib/shared/insfrastructure/http/middleware/checkAuth.middleware'
+import { checkId } from '@/lib/shared/insfrastructure/http/middleware/checkId.middleware'
+import { checkAdminAuth } from '@/lib/shared/insfrastructure/http/middleware/checkAdminAuth.middleware'
 
 export const trainingRouter = Router()
 

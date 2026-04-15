@@ -1,8 +1,8 @@
-import { TrainingStatus } from '../../../domain/entity/trainingStatus.entity'
-import { TrainingStatusRepository } from '../../../domain/repository/trainingStatus.repository'
-import { TrainingStatusStatus } from '../../../domain/value-objects/trainingStatus/trainingStatusStatus.vo'
-import { TrainingStatusId } from '../../../domain/value-objects/trainingStatusId.vo'
-import { TrainingStatusCreateDTO } from '../../dto/trainingStatusCreate.dto'
+import { TrainingStatus } from '@/lib/Training/domain/entity/trainingStatus.entity'
+import { TrainingStatusRepository } from '@/lib/Training/domain/repository/trainingStatus.repository'
+import { TrainingStatusStatus } from '@/lib/Training/domain/value-objects/trainingStatus/trainingStatusStatus.vo'
+import { TrainingStatusId } from '@/lib/Training/domain/value-objects/trainingStatusId.vo'
+import { TrainingStatusCreateDTO } from '@/lib/Training/application/dto/trainingStatusCreate.dto'
 
 export class TrainingStatusCreate {
     constructor(private repository: TrainingStatusRepository) {}

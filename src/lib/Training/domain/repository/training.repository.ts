@@ -1,5 +1,5 @@
-import { Training } from '../entity/training.entity'
-import { TrainingId } from '../value-objects/trainingId.vo'
+import { Training } from '@/lib/Training/domain/entity/training.entity'
+import { TrainingId } from '@/lib/Training/domain/value-objects/trainingId.vo'
 
 export interface TrainingRepository {
     create(training: Training): Promise<void>

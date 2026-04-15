@@ -1,7 +1,7 @@
 import { Router } from 'express'
-import { TrainingTypeController } from '../controller/trainingType.controller'
-import { checkAuth } from '../../../../../shared/insfrastructure/http/middleware/checkAuth.middleware'
-import { checkAdminAuth } from '../../../../../shared/insfrastructure/http/middleware/checkAdminAuth.middleware'
+import { TrainingTypeController } from '@/lib/Training/infrastructure/http/express/controller/trainingType.controller'
+import { checkAuth } from '@/lib/shared/insfrastructure/http/middleware/checkAuth.middleware'
+import { checkAdminAuth } from '@/lib/shared/insfrastructure/http/middleware/checkAdminAuth.middleware'
 
 export const trainingTypeRouter = Router()
 

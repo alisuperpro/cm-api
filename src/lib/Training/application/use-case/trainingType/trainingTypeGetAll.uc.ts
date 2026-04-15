@@ -1,4 +1,4 @@
-import { TrainingTypeRepository } from '../../../domain/repository/trainingType.repository'
+import { TrainingTypeRepository } from '@/lib/Training/domain/repository/trainingType.repository'
 
 export class TrainingTypeGetAll {
     constructor(private repository: TrainingTypeRepository) {}

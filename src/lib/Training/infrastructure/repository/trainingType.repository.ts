@@ -1,10 +1,10 @@
-import { TursoDatabase } from '../../../shared/insfrastructure/database/turso.db'
-import { generateUUID } from '../../../shared/insfrastructure/utils/generateUUID'
-import { TrainingTypeRepository } from '../../domain/repository/trainingType.repository'
-import { TrainingType } from '../../domain/entity/trainingType.entity'
-import { TrainingTypeId } from '../../domain/value-objects/trainingTypeId.vo'
-import { TrainingTypeType } from '../../domain/value-objects/trainingType/trainingTypeType.vo'
-import { TrainingTypeSlug } from '../../domain/value-objects/trainingType/trainingTypeSlug.vo'
+import { TursoDatabase } from '@/lib/shared/insfrastructure/database/turso.db'
+import { generateUUID } from '@/lib/shared/insfrastructure/utils/generateUUID'
+import { TrainingTypeRepository } from '@/lib/Training/domain/repository/trainingType.repository'
+import { TrainingType } from '@/lib/Training/domain/entity/trainingType.entity'
+import { TrainingTypeId } from '@/lib/Training/domain/value-objects/trainingTypeId.vo'
+import { TrainingTypeType } from '@/lib/Training/domain/value-objects/trainingType/trainingTypeType.vo'
+import { TrainingTypeSlug } from '@/lib/Training/domain/value-objects/trainingType/trainingTypeSlug.vo'
 
 type TrainingTypeTurso = {
     id: string

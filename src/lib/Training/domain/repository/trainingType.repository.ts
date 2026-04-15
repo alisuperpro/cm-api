@@ -1,4 +1,4 @@
-import { TrainingType } from '../entity/trainingType.entity'
+import { TrainingType } from '@/lib/Training/domain/entity/trainingType.entity'
 
 export interface TrainingTypeRepository {
     create(type: TrainingType): Promise<void>

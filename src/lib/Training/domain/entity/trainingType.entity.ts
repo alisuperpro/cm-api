@@ -1,6 +1,6 @@
-import { TrainingTypeSlug } from '../value-objects/trainingType/trainingTypeSlug.vo'
-import { TrainingTypeType } from '../value-objects/trainingType/trainingTypeType.vo'
-import { TrainingTypeId } from '../value-objects/trainingTypeId.vo'
+import { TrainingTypeSlug } from '@/lib/Training/domain/value-objects/trainingType/trainingTypeSlug.vo'
+import { TrainingTypeType } from '@/lib/Training/domain/value-objects/trainingType/trainingTypeType.vo'
+import { TrainingTypeId } from '@/lib/Training/domain/value-objects/trainingTypeId.vo'
 
 export class TrainingType {
     constructor(
