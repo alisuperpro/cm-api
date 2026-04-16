@@ -19,7 +19,7 @@ type EnrollmentTursoRaw = {
     is_arrived: number | boolean
     certificate_received: number | boolean
     created_at: string
-
+    pay_confirmed: boolean
     // User fields
     full_name: string
     email: string
@@ -120,6 +120,7 @@ export class EnrollmentQueryRepositoryImpl implements EnrollmentQueryRepository 
                 'e.is_arrived',
                 'e.certificate_received',
                 'e.created_at',
+                'e.pay_confirmed',
                 'u.full_name',
                 'u.email',
                 'u.doc_id',
@@ -192,7 +193,7 @@ export class EnrollmentQueryRepositoryImpl implements EnrollmentQueryRepository 
             isArrived: Boolean(row.is_arrived),
             certificateReceived: Boolean(row.certificate_received),
             createdAt: row.created_at,
-
+            payConfirmed: row.pay_confirmed,
             user: {
                 id: row.user_id,
                 full_name: row.full_name,
