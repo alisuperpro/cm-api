@@ -148,6 +148,9 @@ export class EnrollmentQueryRepositoryImpl implements EnrollmentQueryRepository 
         if (params.filters.slug) {
             builder.where('t.slug', params.filters.slug)
         }
+        if (params.filters.name) {
+            builder.where('u.full_name', params.filters.name)
+        }
 
         const query = {
             sql: builder.build().sql,

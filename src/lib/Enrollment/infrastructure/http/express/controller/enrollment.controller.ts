@@ -63,10 +63,11 @@ export class EnrollmentController {
     }
 
     async getAll(req: Request, res: Response) {
-        const { slug } = req.query
+        const { slug, name } = req.query
 
         const enrollment = await serviceContainer.enrollment.getAll.run({
             filters: {
+                name: name?.toString(),
                 slug: slug?.toString(),
             },
         })

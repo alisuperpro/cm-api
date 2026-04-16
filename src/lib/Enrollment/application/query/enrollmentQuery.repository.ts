@@ -2,6 +2,7 @@ import { EnrollmentDetailDTO } from '../dto/enrollmentDetail.dto'
 
 export interface EnrollmentGetAllParams {
     filters: {
+        name?: string
         slug?: string
     }
 }
