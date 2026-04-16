@@ -5,6 +5,7 @@ import logger from '../../../../utils/logger'
 import { serviceContainer } from '../services/serviceContainer'
 import { UserType } from '../../../../types/user.types'
 import { sendEmail } from '../../../../mail/mailer.service'
+import { formatDate } from '../utils/formatDate'
 
 dotenv.config({
     quiet: true,
@@ -142,15 +143,15 @@ class EmailService {
         if (eventName === 'payConfirmed') {
             return {
                 ...baseContext,
-                training: { ...training },
-                training_banner_url: `https://cachemarketing.net/images/banners/${training.training_slug}.png`,
+                training: { ...training, date: formatDate(training.date) },
+                training_banner_url: `https://cachemarketing.net/images/banners/${training.slug}.png`,
             }
         }
 
         if (eventName === 'userRemoveForTraining') {
             return {
                 ...baseContext,
-                training: { ...training },
+                training: { ...training, date: formatDate(training.date) },
                 reason: payload.reason,
             }
         }
