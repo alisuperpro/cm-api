@@ -8,7 +8,7 @@ export interface EnrollmentDetailDTO {
     isArrived: boolean
     certificateReceived: boolean
     createdAt: string
-
+    payConfirmed: boolean
     user: {
         id: string
         full_name: string
