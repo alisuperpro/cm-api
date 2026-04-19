@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import { serviceContainer } from '@/lib/shared/insfrastructure/services/serviceContainer'
 import { TrainingNotFoundError } from '@/lib/Training/domain/error/trainingNotFoundError.error'
 import { getPresignedUrl, uploadFile } from '@/services/s3'
+import { S3Client } from '@/lib/shared/insfrastructure/storage/s3Client'
 
 export class TrainingController {
     async create(req: Request, res: Response) {
@@ -43,10 +44,20 @@ export class TrainingController {
         //@ts-ignore
         const { banner } = req.files
         const { folder } = req.body
-        const { key } = await uploadFile(banner, `training/${folder}`)
+
+        const s3 = S3Client.getInstance()
+
+        const key = `banners/${folder}/${Date.now()}-${banner.name}`
+
+        const cloudfrontUrl = await s3.uploadFile(
+            key,
+            banner, // Buffer del archivo
+            banner.mimetype // Content-Type
+        )
 
         res.json({
             path: key,
+            url: cloudfrontUrl, // URL de CloudFront directo
         })
     }
 
