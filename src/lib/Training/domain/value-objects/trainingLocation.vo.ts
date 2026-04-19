@@ -8,7 +8,7 @@ export class TrainingLocation {
 
     private validate() {
         if (!this.value) {
-            throw new Error('Training location not valid')
+            throw new Error('Training location is required')
         }
         if (this.value.length < 5) {
             throw new Error(

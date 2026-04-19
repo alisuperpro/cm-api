@@ -168,7 +168,25 @@ describe('Training Entity', () => {
         })
     })
 
-    describe('Test Location', () => {})
+    describe('Test Location', () => {
+        it('Should be valid location', () => {
+            const location = new TrainingLocation('Bogotá')
+
+            expect(location.value).toBe('Bogotá')
+        })
+
+        it('Should be return an error if passed void string', () => {
+            expect(() => {
+                new TrainingLocation('')
+            }).toThrow('Training location is required')
+        })
+
+        it('Should be return an error if passed string < 5 characters long', () => {
+            expect(() => {
+                new TrainingLocation('Cali')
+            }).toThrow('Training location must be at least 5 characters long')
+        })
+    })
 
     describe('Test Slug', () => {})
 
