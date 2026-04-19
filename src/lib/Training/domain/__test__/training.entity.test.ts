@@ -24,7 +24,7 @@ describe('Training Entity', () => {
             id: new TrainingId('123e4567-e89b-12d3-a456-426614174000'),
             title: new TrainingTitle('Test Training'),
             description: new TrainingDescription('Una descripción válida'),
-            date: new TrainingDate('2025-06-01'),
+            date: new TrainingDate('01/06/2027'),
             status: new TrainingStatus(
                 new TrainingStatusId('123456'),
                 new TrainingStatusStatus('active')
@@ -79,7 +79,81 @@ describe('Training Entity', () => {
 
             expect(description.value).toBe(null)
         })
+
+        it('Should be return error if passing other type (string | null)', () => {
+            expect(() => {
+                //@ts-ignore
+                new TrainingDescription(undefined)
+            }).toThrow(
+                'Training description type not valid, valid (string | null)'
+            )
+        })
     })
+
+    describe('Test Date', () => {
+        const day = new Date().getDate()
+        const month = `${new Date().getMonth() + 1}`.padStart(2, '0')
+        const year = new Date().getFullYear() + 1
+
+        it('Is valid date', () => {
+            const dateFormat = `${day}/${month}/${year}`
+
+            const date = new TrainingDate(dateFormat)
+
+            expect(date.value).toBe(dateFormat)
+        })
+
+        it('should be return an error if it is passed a type other than string ', () => {
+            expect(() => {
+                //@ts-ignore
+                new TrainingDate(undefined)
+            }).toThrow('Training date is required')
+        })
+
+        it('Should be return an error if passed a past date', () => {
+            const dateFormat = `${day}/${month}/${year - 5}`
+
+            expect(() => {
+                new TrainingDate(dateFormat)
+            }).toThrow('Training date could not be past')
+        })
+
+        it('Should be return an error if passed a invalid day', () => {
+            expect(() => {
+                new TrainingDate(`40/${month}/${year}`)
+            }).toThrow('Training Date not valid date')
+        })
+
+        it('Should be return an error if passed a invalid month', () => {
+            expect(() => {
+                new TrainingDate(`${day}/15/${year}`)
+            }).toThrow('Training Date date range not valid')
+        })
+
+        it('Should be return an error if passed a invalid year', () => {
+            expect(() => {
+                new TrainingDate(`${day}/${month}/999`)
+            }).toThrow('Training Date not valid format')
+        })
+    })
+
+    describe('Test Status', () => {})
+
+    describe('Test Location', () => {})
+
+    describe('Test Slug', () => {})
+
+    describe('Test CreatedAt', () => {})
+
+    describe('Test StartTime', () => {})
+
+    describe('Test EndTime', () => {})
+
+    describe('Test Banner', () => {})
+
+    describe('Test Capacity', () => {})
+
+    describe('Test Type', () => {})
 
     describe('toPrimitives()', () => {
         it('should return a plain object with correct shape', () => {
