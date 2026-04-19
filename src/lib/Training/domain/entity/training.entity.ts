@@ -57,6 +57,24 @@ export class Training {
         this.banner = training.banner
         this.capacity = training.capacity
         this.type = training.type
+        this.validateTimeRange()
+    }
+
+    private validateTimeRange(): void {
+        const start = this.startTime.value
+        const end = this.endTime.value
+
+        if (!start || !end) return
+
+        const [startHour, startMin] = start.split(':').map(Number)
+        const [endHour, endMin] = end.split(':').map(Number)
+
+        const startMinutes = startHour * 60 + startMin
+        const endMinutes = endHour * 60 + endMin
+
+        if (startMinutes >= endMinutes) {
+            throw new Error('Training start time must be before end time')
+        }
     }
 
     toPrimitives() {

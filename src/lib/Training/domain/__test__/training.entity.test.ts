@@ -98,6 +98,24 @@ describe('Training Entity', () => {
             expect(training.title.value).toBe(FIXTURES.title)
             expect(training.capacity.value).toBe(FIXTURES.capacity)
         })
+
+        it('throws when startTime is equal to endTime', () => {
+            expect(() =>
+                makeTraining({
+                    startTime: new TrainingStartTime('09:00'),
+                    endTime: new TrainingEndTime('09:00'),
+                })
+            ).toThrow('Training start time must be before end time')
+        })
+
+        it('throws when startTime is after endTime', () => {
+            expect(() =>
+                makeTraining({
+                    startTime: new TrainingStartTime('11:00'),
+                    endTime: new TrainingEndTime('09:00'),
+                })
+            ).toThrow('Training start time must be before end time')
+        })
     })
 
     describe('toPrimitives()', () => {
