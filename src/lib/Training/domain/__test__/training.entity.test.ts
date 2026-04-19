@@ -225,7 +225,25 @@ describe('Training Entity', () => {
         })
     })
 
-    describe('Test StartTime', () => {})
+    describe('Test StartTime', () => {
+        it('Should be valid', () => {
+            const startTime = new TrainingStartTime('09:00')
+
+            expect(startTime.value).toBe('09:00')
+        })
+
+        it('Should be return an error if passed not valid format', () => {
+            expect(() => {
+                new TrainingStartTime('9:00')
+            }).toThrow('Training start time not valid format')
+        })
+
+        it('Should be return an error if passed void string', () => {
+            expect(() => {
+                new TrainingStartTime('')
+            }).toThrow('Training start time is required')
+        })
+    })
 
     describe('Test EndTime', () => {})
 
