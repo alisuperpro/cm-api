@@ -38,7 +38,7 @@ describe('Training Entity', () => {
             banner: new TrainingBanner('https://cdn.example.com/banner.jpg'),
             capacity: new TrainingCapacity(30),
             type: new TrainingType(
-                new TrainingTypeId('1234567'),
+                new TrainingTypeId('123e4567-e89b-12d3-a456-426614174011'),
                 new TrainingTypeType('workshop'),
                 new TrainingTypeSlug('workshop')
             ),
@@ -309,7 +309,22 @@ describe('Training Entity', () => {
         })
     })
 
-    describe('Test Type', () => {})
+    describe('Test Type', () => {
+        it('Should be a valid type', () => {
+            const id = '123e4567-e89b-12d3-a456-426614174011'
+            const tType = 'Workshop'
+            const slug = 'workshop'
+            const type = new TrainingType(
+                new TrainingTypeId(id),
+                new TrainingTypeType(tType),
+                new TrainingTypeSlug(slug)
+            )
+
+            expect(type.id.value).toBe(id)
+            expect(type.type?.value).toBe(tType)
+            expect(type.slug?.value).toBe(slug)
+        })
+    })
 
     describe('toPrimitives()', () => {
         it('should return a plain object with correct shape', () => {
@@ -324,7 +339,11 @@ describe('Training Entity', () => {
                     id: '123e4567-e89b-12d3-a456-426614174010',
                     name: 'active',
                 },
-                type: { id: '1234567', name: 'workshop', slug: 'workshop' },
+                type: {
+                    id: '123e4567-e89b-12d3-a456-426614174011',
+                    name: 'workshop',
+                    slug: 'workshop',
+                },
             })
         })
 
@@ -344,7 +363,9 @@ describe('Training Entity', () => {
             expect(
                 () =>
                     new TrainingType(
-                        new TrainingTypeId('1234567'),
+                        new TrainingTypeId(
+                            '123e4567-e89b-12d3-a456-426614174011'
+                        ),
                         new TrainingTypeType('workshop'),
                         new TrainingTypeSlug('')
                     )

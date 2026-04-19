@@ -1,14 +1,7 @@
-export class TrainingTypeId {
-    value: string
+import { Uuid } from '@/lib/shared/domain/value-objects/uuid.vo'
 
+export class TrainingTypeId extends Uuid {
     constructor(value: string) {
-        this.value = value
-        this.validate()
-    }
-
-    private validate() {
-        if (!this.value) {
-            throw new Error('Training type id not valid')
-        }
+        super(value)
     }
 }
