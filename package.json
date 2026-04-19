@@ -9,6 +9,7 @@
         "build": "tsc && tsc-alias",
         "test": "jest",
         "test:unit": "jest --selectProjects unit",
+        "test:unit:watch": "jest --watch --selectProjects unit",
         "test:integration": "jest --selectProjects integration",
         "test:watch": "jest --watch"
     },
