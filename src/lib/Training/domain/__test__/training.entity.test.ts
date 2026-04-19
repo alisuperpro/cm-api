@@ -265,7 +265,30 @@ describe('Training Entity', () => {
         })
     })
 
-    describe('Test Banner', () => {})
+    describe('Test Banner', () => {
+        it('Should be valid format', () => {
+            const url = 'https://cdn.example.com/banner.jpg'
+            const banner = new TrainingBanner(url)
+
+            expect(banner.value).toBe(url)
+        })
+
+        it('Should be return an error if passed a void string', () => {
+            const url = ''
+
+            expect(() => {
+                new TrainingBanner(url)
+            }).toThrow('Training banner is required')
+        })
+
+        it('Should be return an error if passed a url not secure', () => {
+            const url = 'http://cdn.example.com/banner.jpg'
+
+            expect(() => {
+                new TrainingBanner(url)
+            }).toThrow('Training banner url not secure')
+        })
+    })
 
     describe('Test Capacity', () => {})
 

@@ -8,7 +8,13 @@ export class TrainingBanner {
 
     private validate() {
         if (!this.value) {
-            throw new Error('Training banner not valid')
+            throw new Error('Training banner is required')
+        }
+
+        const url = new URL(this.value)
+
+        if (url.protocol !== 'https:') {
+            throw new Error('Training banner url not secure')
         }
     }
 }
