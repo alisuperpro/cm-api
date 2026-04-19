@@ -35,9 +35,5 @@ export class TrainingDate {
         if (inValidDate === false) {
             throw new Error('Training Date not valid date')
         }
-
-        if (date < new Date()) {
-            throw new Error('Training date could not be past')
-        }
     }
 }
