@@ -8,10 +8,10 @@ export class TrainingCreatedAt {
 
     private validate() {
         if (!this.value) {
-            throw new Error('Training created at not valid')
+            throw new Error('Training created at is required')
         }
         if (new Date(this.value) > new Date()) {
-            throw new Error('Training created at can not pas')
+            throw new Error('Training created at can not be past')
         }
     }
 }

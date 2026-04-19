@@ -208,7 +208,22 @@ describe('Training Entity', () => {
         })
     })
 
-    describe('Test CreatedAt', () => {})
+    describe('Test CreatedAt', () => {
+        it('Should be valid', () => {
+            const date = new Date().toISOString()
+            const createdAt = new TrainingCreatedAt(date)
+
+            expect(createdAt.value).toBe(date)
+        })
+
+        it('Should be return an error if passed void string', () => {
+            const date = ''
+
+            expect(() => {
+                new TrainingCreatedAt(date)
+            }).toThrow('Training created at is required')
+        })
+    })
 
     describe('Test StartTime', () => {})
 
