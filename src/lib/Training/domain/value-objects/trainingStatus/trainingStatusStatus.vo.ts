@@ -8,7 +8,7 @@ export class TrainingStatusStatus {
 
     private validate() {
         if (!this.value) {
-            throw new Error('Training status not valid')
+            throw new Error('Training status is required')
         }
     }
 }

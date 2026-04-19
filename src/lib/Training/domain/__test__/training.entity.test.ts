@@ -17,6 +17,7 @@ import { TrainingType } from '../entity/trainingType.entity'
 import { TrainingTypeId } from '../value-objects/trainingTypeId.vo'
 import { TrainingTypeType } from '../value-objects/trainingType/trainingTypeType.vo'
 import { TrainingTypeSlug } from '../value-objects/trainingType/trainingTypeSlug.vo'
+import { generateUUID } from '@/lib/shared/insfrastructure/utils/generateUUID'
 
 describe('Training Entity', () => {
     const makeTraining = (overrides = {}) =>
@@ -26,7 +27,7 @@ describe('Training Entity', () => {
             description: new TrainingDescription('Una descripción válida'),
             date: new TrainingDate('01/06/2027'),
             status: new TrainingStatus(
-                new TrainingStatusId('123456'),
+                new TrainingStatusId('123e4567-e89b-12d3-a456-426614174010'),
                 new TrainingStatusStatus('active')
             ),
             location: new TrainingLocation('Bogotá'),
@@ -137,7 +138,35 @@ describe('Training Entity', () => {
         })
     })
 
-    describe('Test Status', () => {})
+    describe('Test Status', () => {
+        it('Should be valid status', () => {
+            const id = generateUUID()
+            const status = new TrainingStatus(
+                new TrainingStatusId(id),
+                new TrainingStatusStatus('active')
+            )
+
+            expect(status.id.value).toBe(id)
+            expect(status.status?.value).toBe('active')
+        })
+
+        it('Should be status undefined if passed void', () => {
+            const id = generateUUID()
+            const status = new TrainingStatus(new TrainingStatusId(id))
+
+            expect(status.id.value).toBe(id)
+            expect(status.status?.value).toBe(undefined)
+        })
+
+        it('Id should be a valid UUID', () => {
+            const id = 'gsgdsgdsfgfdshd'
+            expect(() => {
+                new TrainingStatus(new TrainingStatusId(id))
+            }).toThrow(
+                'TrainingStatusId: <gsgdsgdsfgfdshd> is not a valid UUID'
+            )
+        })
+    })
 
     describe('Test Location', () => {})
 
@@ -164,7 +193,10 @@ describe('Training Entity', () => {
                 id: '123e4567-e89b-12d3-a456-426614174000',
                 title: 'Test Training',
                 capacity: 30,
-                status: { id: '123456', name: 'active' },
+                status: {
+                    id: '123e4567-e89b-12d3-a456-426614174010',
+                    name: 'active',
+                },
                 type: { id: '1234567', name: 'workshop', slug: 'workshop' },
             })
         })
@@ -173,10 +205,12 @@ describe('Training Entity', () => {
             expect(
                 () =>
                     new TrainingStatus(
-                        new TrainingStatusId('123456'),
+                        new TrainingStatusId(
+                            '123e4567-e89b-12d3-a456-426614174010'
+                        ),
                         new TrainingStatusStatus('') // ← esto debe explotar
                     )
-            ).toThrow('Training status not valid')
+            ).toThrow('Training status is required')
         })
 
         it('should handle null type.slug gracefully', () => {
