@@ -19,354 +19,394 @@ import { TrainingTypeType } from '../value-objects/trainingType/trainingTypeType
 import { TrainingTypeSlug } from '../value-objects/trainingType/trainingTypeSlug.vo'
 import { generateUUID } from '@/lib/shared/insfrastructure/utils/generateUUID'
 
-describe('Training Entity', () => {
-    const makeTraining = (overrides = {}) =>
-        new Training({
-            id: new TrainingId('123e4567-e89b-12d3-a456-426614174000'),
-            title: new TrainingTitle('Test Training'),
-            description: new TrainingDescription('Una descripción válida'),
-            date: new TrainingDate('01/06/2027'),
-            status: new TrainingStatus(
-                new TrainingStatusId('123e4567-e89b-12d3-a456-426614174010'),
-                new TrainingStatusStatus('active')
-            ),
-            location: new TrainingLocation('Bogotá'),
-            slug: new TrainingSlug('test-training'),
-            createdAt: new TrainingCreatedAt('2025-01-01'),
-            startTime: new TrainingStartTime('09:00'),
-            endTime: new TrainingEndTime('11:00'),
-            banner: new TrainingBanner('https://cdn.example.com/banner.jpg'),
-            capacity: new TrainingCapacity(30),
-            type: new TrainingType(
-                new TrainingTypeId('123e4567-e89b-12d3-a456-426614174011'),
-                new TrainingTypeType('workshop'),
-                new TrainingTypeSlug('workshop')
-            ),
-        })
+// ─── Fixtures ────────────────────────────────────────────────────────────────
 
-    it('should create a Training with all properties', () => {
-        const training = makeTraining()
-        expect(training.id.value).toBe('123e4567-e89b-12d3-a456-426614174000')
-        expect(training.title.value).toBe('Test Training')
-        expect(training.capacity.value).toBe(30)
+const FIXTURES = {
+    id: '123e4567-e89b-12d3-a456-426614174000',
+    statusId: '123e4567-e89b-12d3-a456-426614174010',
+    typeId: '123e4567-e89b-12d3-a456-426614174011',
+    title: 'Test Training',
+    description: 'Una descripción válida',
+    date: '01/06/2027',
+    location: 'Bogotá',
+    slug: 'test-training',
+    createdAt: '2025-01-01',
+    startTime: '09:00',
+    endTime: '11:00',
+    banner: 'https://cdn.example.com/banner.jpg',
+    capacity: 30,
+    status: 'active',
+    typeType: 'workshop',
+    typeSlug: 'workshop',
+} as const
+
+// ─── Helpers ─────────────────────────────────────────────────────────────────
+
+const makeFutureDate = (yearsAhead = 1): string => {
+    const d = new Date()
+    const day = String(d.getDate()).padStart(2, '0')
+    const month = String(d.getMonth() + 1).padStart(2, '0')
+    const year = d.getFullYear() + yearsAhead
+    return `${day}/${month}/${year}`
+}
+
+const makeStatus = (id = FIXTURES.statusId, status = FIXTURES.status) =>
+    new TrainingStatus(
+        new TrainingStatusId(id),
+        new TrainingStatusStatus(status)
+    )
+
+const makeType = (
+    id = FIXTURES.typeId,
+    type = FIXTURES.typeType,
+    slug = FIXTURES.typeSlug
+) =>
+    new TrainingType(
+        new TrainingTypeId(id),
+        new TrainingTypeType(type),
+        new TrainingTypeSlug(slug)
+    )
+
+const makeTraining = (
+    overrides: Partial<ConstructorParameters<typeof Training>[0]> = {}
+) =>
+    new Training({
+        id: new TrainingId(FIXTURES.id),
+        title: new TrainingTitle(FIXTURES.title),
+        description: new TrainingDescription(FIXTURES.description),
+        date: new TrainingDate(FIXTURES.date),
+        status: makeStatus(),
+        location: new TrainingLocation(FIXTURES.location),
+        slug: new TrainingSlug(FIXTURES.slug),
+        createdAt: new TrainingCreatedAt(FIXTURES.createdAt),
+        startTime: new TrainingStartTime(FIXTURES.startTime),
+        endTime: new TrainingEndTime(FIXTURES.endTime),
+        banner: new TrainingBanner(FIXTURES.banner),
+        capacity: new TrainingCapacity(FIXTURES.capacity),
+        type: makeType(),
+        ...overrides,
     })
 
-    describe('Test Training title', () => {
-        it('is valid', () => {
-            const title = new TrainingTitle('Test')
-            expect(title.value).toBe('Test')
+// ─── Tests ───────────────────────────────────────────────────────────────────
+
+describe('Training Entity', () => {
+    describe('construction', () => {
+        it('should create a Training with all properties', () => {
+            const training = makeTraining()
+
+            expect(training.id.value).toBe(FIXTURES.id)
+            expect(training.title.value).toBe(FIXTURES.title)
+            expect(training.capacity.value).toBe(FIXTURES.capacity)
         })
-        it('not valid', () => {
+    })
+
+    describe('toPrimitives()', () => {
+        it('should return a plain object with the correct shape', () => {
+            const training = makeTraining()
+
+            expect(training.toPrimitives()).toMatchObject({
+                id: FIXTURES.id,
+                title: FIXTURES.title,
+                capacity: FIXTURES.capacity,
+                status: { id: FIXTURES.statusId, name: FIXTURES.status },
+                type: {
+                    id: FIXTURES.typeId,
+                    name: FIXTURES.typeType,
+                    slug: FIXTURES.typeSlug,
+                },
+            })
+        })
+
+        it('should return null for status.name when status has no value', () => {
+            const training = makeTraining({
+                status: new TrainingStatus(
+                    new TrainingStatusId(FIXTURES.statusId)
+                ),
+            })
+
+            expect(training.toPrimitives().status.name).toBeNull()
+        })
+
+        it('should return null for type.slug when type has no slug', () => {
+            // TrainingTypeSlug validates on construction, so we use a spy to
+            // simulate a slug vo that carries an undefined/null internal value.
+            const slugVo = Object.create(
+                TrainingTypeSlug.prototype
+            ) as TrainingTypeSlug
+            Object.defineProperty(slugVo, 'value', { get: () => null })
+
+            const training = makeTraining({
+                type: new TrainingType(
+                    new TrainingTypeId(FIXTURES.typeId),
+                    new TrainingTypeType(FIXTURES.typeType),
+                    slugVo
+                ),
+            })
+
+            expect(training.toPrimitives().type.slug).toBeNull()
+        })
+    })
+
+    // ── Value object tests ────────────────────────────────────────────────────
+    // Each VO owns its validation; these tests confirm the contract the entity
+    // depends on without re-testing internal VO logic exhaustively.
+
+    describe('TrainingTitle', () => {
+        it('accepts a valid title', () => {
+            expect(new TrainingTitle('Test').value).toBe('Test')
+        })
+
+        it('throws when title is empty', () => {
             expect(() => new TrainingTitle('')).toThrow(
                 'Training title not valid'
             )
         })
-        it('Too short', () => {
+
+        it('throws when title is shorter than 3 characters', () => {
             expect(() => new TrainingTitle('Te')).toThrow(
                 'Training title must be at least 3 characters long'
             )
         })
     })
 
-    describe('Test Description', () => {
-        it('Should be return a valid description', () => {
-            const description = new TrainingDescription('Test description')
-
-            expect(description.value).toBe('Test description')
+    describe('TrainingDescription', () => {
+        it('accepts a valid string', () => {
+            expect(new TrainingDescription('Test description').value).toBe(
+                'Test description'
+            )
         })
 
-        it('Should be return null if passing null', () => {
-            const description = new TrainingDescription(null)
-
-            expect(description.value).toBe(null)
+        it('accepts null and preserves it', () => {
+            expect(new TrainingDescription(null).value).toBeNull()
         })
 
-        it('Should be return error if passing other type (string | null)', () => {
-            expect(() => {
-                //@ts-ignore
-                new TrainingDescription(undefined)
-            }).toThrow(
+        it('throws for types other than string or null', () => {
+            // @ts-ignore – intentional invalid input
+            expect(() => new TrainingDescription(undefined)).toThrow(
                 'Training description type not valid, valid (string | null)'
             )
         })
     })
 
-    describe('Test Date', () => {
-        const day = new Date().getDate()
-        const month = `${new Date().getMonth() + 1}`.padStart(2, '0')
-        const year = new Date().getFullYear() + 1
+    describe('TrainingDate', () => {
+        const futureDate = makeFutureDate(1)
+        const pastDate = makeFutureDate(-5)
 
-        it('Is valid date', () => {
-            const dateFormat = `${day}/${month}/${year}`
-
-            const date = new TrainingDate(dateFormat)
-
-            expect(date.value).toBe(dateFormat)
+        it('accepts a valid future date', () => {
+            expect(new TrainingDate(futureDate).value).toBe(futureDate)
         })
 
-        it('should be return an error if it is passed a type other than string ', () => {
-            expect(() => {
-                //@ts-ignore
-                new TrainingDate(undefined)
-            }).toThrow('Training date is required')
+        it('throws when value is not a string', () => {
+            // @ts-ignore
+            expect(() => new TrainingDate(undefined)).toThrow(
+                'Training date is required'
+            )
         })
 
-        it('Should be return an error if passed a past date', () => {
-            const dateFormat = `${day}/${month}/${year - 5}`
-
-            expect(() => {
-                new TrainingDate(dateFormat)
-            }).toThrow('Training date could not be past')
+        it('throws for a past date', () => {
+            expect(() => new TrainingDate(pastDate)).toThrow(
+                'Training date could not be past'
+            )
         })
 
-        it('Should be return an error if passed a invalid day', () => {
-            expect(() => {
-                new TrainingDate(`40/${month}/${year}`)
-            }).toThrow('Training Date not valid date')
+        it('throws for an invalid day (> 31)', () => {
+            const [, month, year] = futureDate.split('/')
+            expect(() => new TrainingDate(`40/${month}/${year}`)).toThrow(
+                'Training Date not valid date'
+            )
         })
 
-        it('Should be return an error if passed a invalid month', () => {
-            expect(() => {
-                new TrainingDate(`${day}/15/${year}`)
-            }).toThrow('Training Date date range not valid')
+        it('throws for an invalid month (> 12)', () => {
+            const [day, , year] = futureDate.split('/')
+            expect(() => new TrainingDate(`${day}/15/${year}`)).toThrow(
+                'Training Date date range not valid'
+            )
         })
 
-        it('Should be return an error if passed a invalid year', () => {
-            expect(() => {
-                new TrainingDate(`${day}/${month}/999`)
-            }).toThrow('Training Date not valid format')
+        it('throws for a year with fewer than 4 digits', () => {
+            const [day, month] = futureDate.split('/')
+            expect(() => new TrainingDate(`${day}/${month}/999`)).toThrow(
+                'Training Date not valid format'
+            )
         })
     })
 
-    describe('Test Status', () => {
-        it('Should be valid status', () => {
+    describe('TrainingStatus', () => {
+        it('creates a valid status', () => {
             const id = generateUUID()
-            const status = new TrainingStatus(
-                new TrainingStatusId(id),
-                new TrainingStatusStatus('active')
-            )
+            //@ts-ignore
+            const status = makeStatus(id)
 
             expect(status.id.value).toBe(id)
-            expect(status.status?.value).toBe('active')
+            expect(status.status?.value).toBe(FIXTURES.status)
         })
 
-        it('Should be status undefined if passed void', () => {
+        it('allows status to be omitted (undefined)', () => {
             const id = generateUUID()
             const status = new TrainingStatus(new TrainingStatusId(id))
 
             expect(status.id.value).toBe(id)
-            expect(status.status?.value).toBe(undefined)
+            expect(status.status?.value).toBeUndefined()
         })
 
-        it('Id should be a valid UUID', () => {
-            const id = 'gsgdsgdsfgfdshd'
-            expect(() => {
-                new TrainingStatus(new TrainingStatusId(id))
-            }).toThrow(
-                'TrainingStatusId: <gsgdsgdsfgfdshd> is not a valid UUID'
-            )
-        })
-    })
-
-    describe('Test Location', () => {
-        it('Should be valid location', () => {
-            const location = new TrainingLocation('Bogotá')
-
-            expect(location.value).toBe('Bogotá')
-        })
-
-        it('Should be return an error if passed void string', () => {
-            expect(() => {
-                new TrainingLocation('')
-            }).toThrow('Training location is required')
-        })
-
-        it('Should be return an error if passed string < 5 characters long', () => {
-            expect(() => {
-                new TrainingLocation('Cali')
-            }).toThrow('Training location must be at least 5 characters long')
-        })
-    })
-
-    describe('Test Slug', () => {
-        it('Should valid slug', () => {
-            const slug = new TrainingSlug('test-training')
-
-            expect(slug.value).toBe('test-training')
-        })
-
-        it('Should be return an error if passed void string', () => {
-            expect(() => {
-                new TrainingSlug('')
-            }).toThrow('Training type slug is required')
-        })
-
-        it('Should be return an error if passed string < 3 characters long', () => {
-            expect(() => {
-                new TrainingSlug('te')
-            }).toThrow('Training type slug too short')
-        })
-    })
-
-    describe('Test CreatedAt', () => {
-        it('Should be valid', () => {
-            const date = new Date().toISOString()
-            const createdAt = new TrainingCreatedAt(date)
-
-            expect(createdAt.value).toBe(date)
-        })
-
-        it('Should be return an error if passed void string', () => {
-            const date = ''
-
-            expect(() => {
-                new TrainingCreatedAt(date)
-            }).toThrow('Training created at is required')
-        })
-    })
-
-    describe('Test StartTime', () => {
-        it('Should be valid', () => {
-            const startTime = new TrainingStartTime('09:00')
-
-            expect(startTime.value).toBe('09:00')
-        })
-
-        it('Should be return an error if passed not valid format', () => {
-            expect(() => {
-                new TrainingStartTime('9:00')
-            }).toThrow('Training start time not valid format')
-        })
-
-        it('Should be return an error if passed void string', () => {
-            expect(() => {
-                new TrainingStartTime('')
-            }).toThrow('Training start time is required')
-        })
-    })
-
-    describe('Test EndTime', () => {
-        it('Should be valid', () => {
-            const endTime = new TrainingEndTime('09:00')
-
-            expect(endTime.value).toBe('09:00')
-        })
-
-        it('Should be return an error if passed not valid format', () => {
-            expect(() => {
-                new TrainingEndTime('9:00')
-            }).toThrow('Training end time not valid format')
-        })
-
-        it('Should be return an error if passed void string', () => {
-            expect(() => {
-                new TrainingEndTime('')
-            }).toThrow('Training end time is required')
-        })
-    })
-
-    describe('Test Banner', () => {
-        it('Should be valid format', () => {
-            const url = 'https://cdn.example.com/banner.jpg'
-            const banner = new TrainingBanner(url)
-
-            expect(banner.value).toBe(url)
-        })
-
-        it('Should be return an error if passed a void string', () => {
-            const url = ''
-
-            expect(() => {
-                new TrainingBanner(url)
-            }).toThrow('Training banner is required')
-        })
-
-        it('Should be return an error if passed a url not secure', () => {
-            const url = 'http://cdn.example.com/banner.jpg'
-
-            expect(() => {
-                new TrainingBanner(url)
-            }).toThrow('Training banner url not secure')
-        })
-    })
-
-    describe('Test Capacity', () => {
-        it('Should be valid', () => {
-            const capacity = new TrainingCapacity(30)
-
-            expect(capacity.value).toBe(30)
-        })
-
-        it('Should be return an error if passed a number < 0', () => {
-            expect(() => {
-                new TrainingCapacity(-1)
-            }).toThrow('Training capacity must be positive')
-        })
-        it('Should be return an error if passed a invalid capacity', () => {
-            expect(() => {
-                new TrainingCapacity(0)
-            }).toThrow('Training capacity is required')
-        })
-    })
-
-    describe('Test Type', () => {
-        it('Should be a valid type', () => {
-            const id = '123e4567-e89b-12d3-a456-426614174011'
-            const tType = 'Workshop'
-            const slug = 'workshop'
-            const type = new TrainingType(
-                new TrainingTypeId(id),
-                new TrainingTypeType(tType),
-                new TrainingTypeSlug(slug)
-            )
-
-            expect(type.id.value).toBe(id)
-            expect(type.type?.value).toBe(tType)
-            expect(type.slug?.value).toBe(slug)
-        })
-    })
-
-    describe('toPrimitives()', () => {
-        it('should return a plain object with correct shape', () => {
-            const training = makeTraining()
-            const primitives = training.toPrimitives()
-
-            expect(primitives).toMatchObject({
-                id: '123e4567-e89b-12d3-a456-426614174000',
-                title: 'Test Training',
-                capacity: 30,
-                status: {
-                    id: '123e4567-e89b-12d3-a456-426614174010',
-                    name: 'active',
-                },
-                type: {
-                    id: '123e4567-e89b-12d3-a456-426614174011',
-                    name: 'workshop',
-                    slug: 'workshop',
-                },
-            })
-        })
-
-        it('should throw if status is empty', () => {
+        it('throws when status value is empty', () => {
             expect(
                 () =>
                     new TrainingStatus(
-                        new TrainingStatusId(
-                            '123e4567-e89b-12d3-a456-426614174010'
-                        ),
-                        new TrainingStatusStatus('') // ← esto debe explotar
+                        new TrainingStatusId(FIXTURES.statusId),
+                        new TrainingStatusStatus('')
                     )
             ).toThrow('Training status is required')
         })
 
-        it('should handle null type.slug gracefully', () => {
+        it('throws when id is not a valid UUID', () => {
+            const badId = 'not-a-uuid'
+            expect(
+                () => new TrainingStatus(new TrainingStatusId(badId))
+            ).toThrow(`TrainingStatusId: <${badId}> is not a valid UUID`)
+        })
+    })
+
+    describe('TrainingLocation', () => {
+        it('accepts a valid location', () => {
+            expect(new TrainingLocation('Bogotá').value).toBe('Bogotá')
+        })
+
+        it('throws when value is empty', () => {
+            expect(() => new TrainingLocation('')).toThrow(
+                'Training location is required'
+            )
+        })
+
+        it('throws when value is shorter than 5 characters', () => {
+            expect(() => new TrainingLocation('Cali')).toThrow(
+                'Training location must be at least 5 characters long'
+            )
+        })
+    })
+
+    describe('TrainingSlug', () => {
+        it('accepts a valid slug', () => {
+            expect(new TrainingSlug('test-training').value).toBe(
+                'test-training'
+            )
+        })
+
+        it('throws when value is empty', () => {
+            expect(() => new TrainingSlug('')).toThrow(
+                'Training type slug is required'
+            )
+        })
+
+        it('throws when value is shorter than 3 characters', () => {
+            expect(() => new TrainingSlug('te')).toThrow(
+                'Training type slug too short'
+            )
+        })
+    })
+
+    describe('TrainingCreatedAt', () => {
+        it('accepts a valid ISO date string', () => {
+            const iso = new Date().toISOString()
+            expect(new TrainingCreatedAt(iso).value).toBe(iso)
+        })
+
+        it('throws when value is empty', () => {
+            expect(() => new TrainingCreatedAt('')).toThrow(
+                'Training created at is required'
+            )
+        })
+    })
+
+    describe('TrainingStartTime', () => {
+        it('accepts a valid HH:MM time', () => {
+            expect(new TrainingStartTime('09:00').value).toBe('09:00')
+        })
+
+        it('throws for a single-digit hour (wrong format)', () => {
+            expect(() => new TrainingStartTime('9:00')).toThrow(
+                'Training start time not valid format'
+            )
+        })
+
+        it('throws when value is empty', () => {
+            expect(() => new TrainingStartTime('')).toThrow(
+                'Training start time is required'
+            )
+        })
+    })
+
+    describe('TrainingEndTime', () => {
+        it('accepts a valid HH:MM time', () => {
+            expect(new TrainingEndTime('09:00').value).toBe('09:00')
+        })
+
+        it('throws for a single-digit hour (wrong format)', () => {
+            expect(() => new TrainingEndTime('9:00')).toThrow(
+                'Training end time not valid format'
+            )
+        })
+
+        it('throws when value is empty', () => {
+            expect(() => new TrainingEndTime('')).toThrow(
+                'Training end time is required'
+            )
+        })
+    })
+
+    describe('TrainingBanner', () => {
+        it('accepts a valid HTTPS URL', () => {
+            expect(new TrainingBanner(FIXTURES.banner).value).toBe(
+                FIXTURES.banner
+            )
+        })
+
+        it('throws when value is empty', () => {
+            expect(() => new TrainingBanner('')).toThrow(
+                'Training banner is required'
+            )
+        })
+
+        it('throws for a non-HTTPS URL', () => {
+            expect(
+                () => new TrainingBanner('http://cdn.example.com/banner.jpg')
+            ).toThrow('Training banner url not secure')
+        })
+    })
+
+    describe('TrainingCapacity', () => {
+        it('accepts a positive number', () => {
+            expect(new TrainingCapacity(30).value).toBe(30)
+        })
+
+        it('throws for a negative number', () => {
+            expect(() => new TrainingCapacity(-1)).toThrow(
+                'Training capacity must be positive'
+            )
+        })
+
+        it('throws for zero', () => {
+            expect(() => new TrainingCapacity(0)).toThrow(
+                'Training capacity is required'
+            )
+        })
+    })
+
+    describe('TrainingType', () => {
+        it('creates a valid type with id, type and slug', () => {
+            const type = makeType()
+
+            expect(type.id.value).toBe(FIXTURES.typeId)
+            expect(type.type?.value).toBe(FIXTURES.typeType)
+            expect(type.slug?.value).toBe(FIXTURES.typeSlug)
+        })
+
+        it('throws when slug is empty', () => {
             expect(
                 () =>
                     new TrainingType(
-                        new TrainingTypeId(
-                            '123e4567-e89b-12d3-a456-426614174011'
-                        ),
-                        new TrainingTypeType('workshop'),
+                        new TrainingTypeId(FIXTURES.typeId),
+                        new TrainingTypeType(FIXTURES.typeType),
                         new TrainingTypeSlug('')
                     )
             ).toThrow('Training type slug not valid')
