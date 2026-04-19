@@ -290,7 +290,24 @@ describe('Training Entity', () => {
         })
     })
 
-    describe('Test Capacity', () => {})
+    describe('Test Capacity', () => {
+        it('Should be valid', () => {
+            const capacity = new TrainingCapacity(30)
+
+            expect(capacity.value).toBe(30)
+        })
+
+        it('Should be return an error if passed a number < 0', () => {
+            expect(() => {
+                new TrainingCapacity(-1)
+            }).toThrow('Training capacity must be positive')
+        })
+        it('Should be return an error if passed a invalid capacity', () => {
+            expect(() => {
+                new TrainingCapacity(0)
+            }).toThrow('Training capacity is required')
+        })
+    })
 
     describe('Test Type', () => {})
 

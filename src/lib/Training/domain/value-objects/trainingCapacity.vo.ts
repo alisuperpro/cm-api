@@ -8,9 +8,9 @@ export class TrainingCapacity {
 
     private validate() {
         if (!this.value) {
-            throw new Error('Training capacity not valid')
+            throw new Error('Training capacity is required')
         }
-        if (this.value <= 0) {
+        if (this.value < 0) {
             throw new Error('Training capacity must be positive')
         }
     }
