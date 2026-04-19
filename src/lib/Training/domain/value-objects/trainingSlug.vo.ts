@@ -20,7 +20,7 @@ export class TrainingSlug {
 
     private validate(value: string) {
         if (!value) {
-            throw new Error('Training type slug not valid')
+            throw new Error('Training type slug is required')
         }
 
         if (value.length < 3) {

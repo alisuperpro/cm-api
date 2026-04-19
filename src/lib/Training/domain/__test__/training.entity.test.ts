@@ -188,7 +188,25 @@ describe('Training Entity', () => {
         })
     })
 
-    describe('Test Slug', () => {})
+    describe('Test Slug', () => {
+        it('Should valid slug', () => {
+            const slug = new TrainingSlug('test-training')
+
+            expect(slug.value).toBe('test-training')
+        })
+
+        it('Should be return an error if passed void string', () => {
+            expect(() => {
+                new TrainingSlug('')
+            }).toThrow('Training type slug is required')
+        })
+
+        it('Should be return an error if passed string < 3 characters long', () => {
+            expect(() => {
+                new TrainingSlug('te')
+            }).toThrow('Training type slug too short')
+        })
+    })
 
     describe('Test CreatedAt', () => {})
 
