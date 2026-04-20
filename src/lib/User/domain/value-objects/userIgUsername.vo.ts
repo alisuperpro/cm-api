@@ -8,7 +8,7 @@ export class UserIgUsername {
 
     private validate() {
         if (!this.value.startsWith('@')) {
-            console.log('User IG username must start with @')
+            throw new Error('User IG username must start with @')
         }
 
         const usernameWithoutAt = this.value.startsWith('@')
@@ -18,7 +18,7 @@ export class UserIgUsername {
         const igRegex = /^(?!.*\.\.)(?!\.)(?!.*\.$)[a-zA-Z0-9._]{3,30}$/
 
         if (!igRegex.test(usernameWithoutAt)) {
-            console.log(
+            throw new Error(
                 'Invalid IG username format. Must be 3-30 characters, only letters, numbers, dots (.), underscores (_), no consecutive dots, and cannot start or end with a dot.'
             )
         }

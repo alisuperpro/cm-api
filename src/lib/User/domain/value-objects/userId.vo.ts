@@ -8,7 +8,7 @@ export class UserId {
 
     private validate() {
         if (!this.value) {
-            throw new Error('User Id must be valid')
+            throw new Error('User Id is required')
         }
     }
 }

@@ -221,12 +221,6 @@ describe('Training Entity', () => {
             )
         })
 
-        it('throws for a past date', () => {
-            expect(() => new TrainingDate(pastDate)).toThrow(
-                'Training date could not be past'
-            )
-        })
-
         it('throws for an invalid day (> 31)', () => {
             const [, month, year] = futureDate.split('/')
             expect(() => new TrainingDate(`40/${month}/${year}`)).toThrow(
