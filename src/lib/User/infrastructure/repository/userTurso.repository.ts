@@ -72,6 +72,8 @@ export class UserTursoRepository implements UserRepository {
 
         const row: UserTurso = result.rows[0] as unknown as UserTurso
 
+        if (!row) return null
+
         return this.mapToDomain(row)
     }
 
