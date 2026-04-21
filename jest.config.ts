@@ -1,50 +1,35 @@
 import type { Config } from 'jest'
+import { pathsToModuleNameMapper } from 'ts-jest'
 
 const config: Config = {
-    preset: 'ts-jest',
-    testEnvironment: 'node',
-
-    // Resuelve el alias @/ que usas en los imports
-    moduleNameMapper: {
-        '^@/(.*)$': '<rootDir>/src/$1',
-    },
-
-    // Le dice a ts-jest que use tu tsconfig
-    transform: {
-        '^.+\\.tsx?$': [
-            'ts-jest',
-            {
-                tsconfig: './tsconfig.json',
-            },
-        ],
-    },
-
-    // Donde están tus tests
-    testMatch: ['**/__test__/**/*.test.ts', '**/__tests__/**/*.test.ts'],
-
-    // Separación unit / integration (opcional pero recomendado)
     projects: [
         {
             displayName: 'unit',
             preset: 'ts-jest',
             testEnvironment: 'node',
             testMatch: [
-                '<rootDir>/src/**/domain/**/*.test.ts',
-                '<rootDir>/src/**/application/**/*.test.ts',
+                '<rootDir>/src/**/domain/__test__/**/*.test.ts',
+                '<rootDir>/src/**/application/__test__/**/*.test.ts',
             ],
-            moduleNameMapper: { '^@/(.*)$': '<rootDir>/src/$1' },
+            moduleNameMapper: {
+                '^@/(.*)$': '<rootDir>/src/$1', // manual, sin pathsToModuleNameMapper
+            },
             transform: {
-                '^.+\\.tsx?$': ['ts-jest', { tsconfig: './tsconfig.json' }],
+                '^.+\\.ts$': ['ts-jest', { tsconfig: './tsconfig.test.json' }],
             },
         },
         {
             displayName: 'integration',
             preset: 'ts-jest',
             testEnvironment: 'node',
-            testMatch: ['<rootDir>/src/**/infrastructure/**/*.test.ts'],
-            moduleNameMapper: { '^@/(.*)$': '<rootDir>/src/$1' },
+            testMatch: [
+                '<rootDir>/src/**/infrastructure/__test__/**/*.test.ts',
+            ],
+            moduleNameMapper: {
+                '^@/(.*)$': '<rootDir>/src/$1',
+            },
             transform: {
-                '^.+\\.tsx?$': ['ts-jest', { tsconfig: './tsconfig.json' }],
+                '^.+\\.ts$': ['ts-jest', { tsconfig: './tsconfig.test.json' }],
             },
         },
     ],
