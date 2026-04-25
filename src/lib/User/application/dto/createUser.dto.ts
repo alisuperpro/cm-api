@@ -13,4 +13,9 @@ export interface CreateUserDTO {
     gender: string
     countryOfResidence: string
     tiktokUsername: string
+    firstName: string
+    secondName: string
+    thirdName: string
+    lastName: string
+    secondLastName: string
 }

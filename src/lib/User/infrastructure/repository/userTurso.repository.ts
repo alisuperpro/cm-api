@@ -15,6 +15,11 @@ import { TursoDatabase } from '@/lib/shared/insfrastructure/database/turso.db'
 import { UserGender } from '@/lib/User/domain/value-objects/userGender.vo'
 import { UserCountryOfResidence } from '../../domain/value-objects/userCountryOfResidence.vo'
 import { UserTiktokUsername } from '../../domain/value-objects/userTiktokUsername.vo'
+import { UserFirstName } from '../../domain/value-objects/userFirstName.vo'
+import { UserSecondName } from '../../domain/value-objects/userSecondName.vo'
+import { UserThirdName } from '../../domain/value-objects/userThirdName.vo'
+import { UserLastName } from '../../domain/value-objects/userLastName.vo'
+import { UserSecondLastName } from '../../domain/value-objects/userSecondLastName.vo'
 
 type UserTurso = {
     id: string
@@ -31,6 +36,11 @@ type UserTurso = {
     gender: string
     country_of_residence: string
     tiktok_username: string
+    first_name: string
+    second_name: string
+    third_name: string
+    last_name: string
+    second_last_name: string
 }
 
 export class UserTursoRepository implements UserRepository {
@@ -40,8 +50,8 @@ export class UserTursoRepository implements UserRepository {
     async create(user: User): Promise<void> {
         const query = {
             sql: `INSERT INTO ${this.tableName}
-                        (id, full_name, doc_id, email, phone, birthdate, occupation_status, university, how_find_us, disability, ig_username, gender, country_of_residence, tiktok_username)
-                        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+                        (id, full_name, doc_id, email, phone, birthdate, occupation_status, university, how_find_us, disability, ig_username, gender, country_of_residence, tiktok_username, first_name, second_name, third_name, last_name, second_last_name)
+                        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
             args: [
                 user.id.value,
                 user.fullName.value,
@@ -57,6 +67,11 @@ export class UserTursoRepository implements UserRepository {
                 user.gender.value,
                 user.countryOfResidence.value,
                 user.tiktokUsername.value,
+                user.firstName.value,
+                user.secondName.value,
+                user.thirdName.value,
+                user.lastName.value,
+                user.secondLastName.value,
             ],
         }
         await this.db.execute(query)
@@ -104,6 +119,11 @@ export class UserTursoRepository implements UserRepository {
                 user.country_of_residence
             ),
             tiktokUsername: new UserTiktokUsername(user.tiktok_username),
+            firstName: new UserFirstName(user.first_name),
+            secondName: new UserSecondName(user.second_name),
+            thirdName: new UserThirdName(user.third_name),
+            lastName: new UserLastName(user.last_name),
+            secondLastName: new UserSecondLastName(user.second_last_name),
         })
     }
 }

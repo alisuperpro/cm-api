@@ -15,6 +15,11 @@ import { CreateUserDTO } from '@/lib/User/application/dto/createUser.dto'
 import { UserGender } from '@/lib/User/domain/value-objects/userGender.vo'
 import { UserCountryOfResidence } from '../../domain/value-objects/userCountryOfResidence.vo'
 import { UserTiktokUsername } from '../../domain/value-objects/userTiktokUsername.vo'
+import { UserFirstName } from '../../domain/value-objects/userFirstName.vo'
+import { UserSecondName } from '../../domain/value-objects/userSecondName.vo'
+import { UserThirdName } from '../../domain/value-objects/userThirdName.vo'
+import { UserLastName } from '../../domain/value-objects/userLastName.vo'
+import { UserSecondLastName } from '../../domain/value-objects/userSecondLastName.vo'
 
 export class UserCreate {
     constructor(private repository: UserRepository) {}
@@ -37,6 +42,11 @@ export class UserCreate {
                 dto.countryOfResidence
             ),
             tiktokUsername: new UserTiktokUsername(dto.tiktokUsername),
+            firstName: new UserFirstName(dto.firstName),
+            secondName: new UserSecondName(dto.secondName),
+            thirdName: new UserThirdName(dto.thirdName),
+            lastName: new UserLastName(dto.lastName),
+            secondLastName: new UserSecondLastName(dto.secondLastName),
         })
 
         return await this.repository.create(user)

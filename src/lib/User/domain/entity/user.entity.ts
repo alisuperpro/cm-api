@@ -12,6 +12,11 @@ import { UserUniversity } from '@/lib/User/domain/value-objects/userUniversity.v
 import { UserGender } from '../value-objects/userGender.vo'
 import { UserCountryOfResidence } from '../value-objects/userCountryOfResidence.vo'
 import { UserTiktokUsername } from '../value-objects/userTiktokUsername.vo'
+import { UserFirstName } from '../value-objects/userFirstName.vo'
+import { UserSecondName } from '../value-objects/userSecondName.vo'
+import { UserThirdName } from '../value-objects/userThirdName.vo'
+import { UserLastName } from '../value-objects/userLastName.vo'
+import { UserSecondLastName } from '../value-objects/userSecondLastName.vo'
 
 export interface IUser {
     id: UserId
@@ -28,6 +33,11 @@ export interface IUser {
     gender: UserGender
     countryOfResidence: UserCountryOfResidence
     tiktokUsername: UserTiktokUsername
+    firstName: UserFirstName
+    secondName: UserSecondName
+    thirdName: UserThirdName
+    lastName: UserLastName
+    secondLastName: UserSecondLastName
 }
 
 export class User {
@@ -45,6 +55,11 @@ export class User {
     public readonly gender: UserGender
     public readonly countryOfResidence: UserCountryOfResidence
     public readonly tiktokUsername: UserTiktokUsername
+    public readonly firstName: UserFirstName
+    public readonly secondName: UserSecondName
+    public readonly thirdName: UserThirdName
+    public readonly lastName: UserLastName
+    public readonly secondLastName: UserSecondLastName
 
     constructor(user: IUser) {
         this.id = user.id
@@ -61,5 +76,34 @@ export class User {
         this.gender = user.gender
         this.countryOfResidence = user.countryOfResidence
         this.tiktokUsername = user.tiktokUsername
+        this.firstName = user.firstName
+        this.secondName = user.secondName
+        this.thirdName = user.thirdName
+        this.lastName = user.lastName
+        this.secondLastName = user.secondLastName
+    }
+
+    toPrimitives() {
+        return {
+            id: this.id.value,
+            fullName: this.fullName.value,
+            docId: this.docId.value,
+            email: this.email.value,
+            phone: this.phone.value,
+            birthDate: this.birthDate.value,
+            occupationStatus: this.occupationStatus.value,
+            university: this.university.value,
+            howFindUs: this.howFindUs.value,
+            disability: this.disability.value,
+            igUsername: this.igUsername.value,
+            gender: this.gender.value,
+            countryOfResidence: this.countryOfResidence.value,
+            tiktokUsername: this.tiktokUsername.value,
+            firstName: this.firstName.value,
+            secondName: this.secondName.value,
+            thirdName: this.thirdName,
+            lastName: this.lastName.value,
+            secondLastName: this.secondLastName,
+        }
     }
 }

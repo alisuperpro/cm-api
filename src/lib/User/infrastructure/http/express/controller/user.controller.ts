@@ -10,7 +10,9 @@ export class UserController {
     }
 
     async getAll(req: Request, res: Response) {
-        const users = await serviceContainer.user.getAll.run()
+        const data = await serviceContainer.user.getAll.run()
+
+        const users = data.map((user) => user.toPrimitives())
 
         return res.status(200).json({
             data: users,
@@ -24,7 +26,7 @@ export class UserController {
             })
 
             return res.status(200).json({
-                data: user,
+                data: user.toPrimitives(),
             })
         } catch (err) {
             if (err instanceof UserNotFoundError) {
