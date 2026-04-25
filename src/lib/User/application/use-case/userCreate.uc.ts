@@ -12,24 +12,32 @@ import { UserOccupationStatus } from '@/lib/User/domain/value-objects/userOccupa
 import { UserPhone } from '@/lib/User/domain/value-objects/userPhone.vo'
 import { UserUniversity } from '@/lib/User/domain/value-objects/userUniversity.vo'
 import { CreateUserDTO } from '@/lib/User/application/dto/createUser.dto'
+import { UserGender } from '@/lib/User/domain/value-objects/userGender.vo'
+import { UserCountryOfResidence } from '../../domain/value-objects/userCountryOfResidence.vo'
+import { UserTiktokUsername } from '../../domain/value-objects/userTiktokUsername.vo'
 
 export class UserCreate {
     constructor(private repository: UserRepository) {}
 
     async run(dto: CreateUserDTO) {
-        const user = new User(
-            new UserId(dto.id),
-            new UserFullName(dto.fullName),
-            new UserDocId(dto.docId),
-            new UserEmail(dto.email),
-            new UserPhone(dto.phone),
-            new UserBirthDate(dto.birthDate),
-            new UserOccupationStatus(dto.occupationStatus),
-            new UserUniversity(dto.university),
-            new UserHowFindUs(dto.howFindUs),
-            new UserDisability(dto.disability),
-            new UserIgUsername(dto.igUsername)
-        )
+        const user = new User({
+            id: new UserId(dto.id),
+            fullName: new UserFullName(dto.fullName),
+            docId: new UserDocId(dto.docId),
+            email: new UserEmail(dto.email),
+            phone: new UserPhone(dto.phone),
+            birthDate: new UserBirthDate(dto.birthDate),
+            occupationStatus: new UserOccupationStatus(dto.occupationStatus),
+            university: new UserUniversity(dto.university),
+            howFindUs: new UserHowFindUs(dto.howFindUs),
+            disability: new UserDisability(dto.disability),
+            igUsername: new UserIgUsername(dto.igUsername),
+            gender: new UserGender(dto.gender),
+            countryOfResidence: new UserCountryOfResidence(
+                dto.countryOfResidence
+            ),
+            tiktokUsername: new UserTiktokUsername(dto.tiktokUsername),
+        })
 
         return await this.repository.create(user)
     }
