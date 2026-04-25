@@ -8,8 +8,8 @@ export class UserCountryOfResidence {
     }
 
     private validate() {
-        if (!this.value) {
+        /*  if (!this.value) {
             throw new Error('User country of residence is required')
-        }
+        } */
     }
 }

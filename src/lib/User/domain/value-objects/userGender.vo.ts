@@ -8,8 +8,8 @@ export class UserGender {
     }
 
     private validate() {
-        if (!this.value) {
+        /* if (!this.value) {
             throw new Error('User gender is required')
-        }
+        } */
     }
 }

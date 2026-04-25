@@ -8,8 +8,8 @@ export class UserTiktokUsername {
     }
 
     private validate() {
-        if (!this.value) {
+        /* if (!this.value) {
             throw new Error('User tiktok usernmae is required')
-        }
+        } */
     }
 }
