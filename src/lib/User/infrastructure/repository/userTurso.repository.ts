@@ -12,6 +12,9 @@ import { UserHowFindUs } from '@/lib/User/domain/value-objects/userHowFindUs.vo'
 import { UserDisability } from '@/lib/User/domain/value-objects/userDisability.vo'
 import { UserIgUsername } from '@/lib/User/domain/value-objects/userIgUsername.vo'
 import { TursoDatabase } from '@/lib/shared/insfrastructure/database/turso.db'
+import { UserGender } from '@/lib/User/domain/value-objects/userGender.vo'
+import { UserCountryOfResidence } from '../../domain/value-objects/userCountryOfResidence.vo'
+import { UserTiktokUsername } from '../../domain/value-objects/userTiktokUsername.vo'
 
 type UserTurso = {
     id: string
@@ -25,6 +28,9 @@ type UserTurso = {
     how_find_us: string
     disability: string
     ig_username: string
+    gender: string
+    country_of_residence: string
+    tiktok_username: string
 }
 
 export class UserTursoRepository implements UserRepository {
@@ -34,8 +40,8 @@ export class UserTursoRepository implements UserRepository {
     async create(user: User): Promise<void> {
         const query = {
             sql: `INSERT INTO ${this.tableName}
-                        (id, full_name, doc_id, email, phone, birthdate, occupation_status, university, how_find_us, disability, ig_username)
-                        VALUES (?,?,?,?,?,?,?,?,?,?,?)`,
+                        (id, full_name, doc_id, email, phone, birthdate, occupation_status, university, how_find_us, disability, ig_username, gender, country_of_residence, tiktok_username)
+                        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
             args: [
                 user.id.value,
                 user.fullName.value,
@@ -48,6 +54,9 @@ export class UserTursoRepository implements UserRepository {
                 user.howFindUs.value,
                 user.disability.value,
                 user.igUsername.value,
+                user.gender.value,
+                user.countryOfResidence.value,
+                user.tiktokUsername.value,
             ],
         }
         await this.db.execute(query)
@@ -78,18 +87,23 @@ export class UserTursoRepository implements UserRepository {
     }
 
     private mapToDomain(user: UserTurso): User {
-        return new User(
-            new UserId(user.id),
-            new UserFullName(user.full_name),
-            new UserDocId(user.doc_id),
-            new UserEmail(user.email),
-            new UserPhone(user.phone),
-            new UserBirthDate(user.birthdate),
-            new UserOccupationStatus(user.occupation_status),
-            new UserUniversity(user.university),
-            new UserHowFindUs(user.how_find_us),
-            new UserDisability(user.disability),
-            new UserIgUsername(user.ig_username)
-        )
+        return new User({
+            id: new UserId(user.id),
+            fullName: new UserFullName(user.full_name),
+            docId: new UserDocId(user.doc_id),
+            email: new UserEmail(user.email),
+            phone: new UserPhone(user.phone),
+            birthDate: new UserBirthDate(user.birthdate),
+            occupationStatus: new UserOccupationStatus(user.occupation_status),
+            university: new UserUniversity(user.university),
+            howFindUs: new UserHowFindUs(user.how_find_us),
+            disability: new UserDisability(user.disability),
+            igUsername: new UserIgUsername(user.ig_username),
+            gender: new UserGender(user.gender),
+            countryOfResidence: new UserCountryOfResidence(
+                user.country_of_residence
+            ),
+            tiktokUsername: new UserTiktokUsername(user.tiktok_username),
+        })
     }
 }

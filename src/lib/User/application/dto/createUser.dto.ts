@@ -10,4 +10,7 @@ export interface CreateUserDTO {
     howFindUs: string
     disability: string
     igUsername: string
+    gender: string
+    countryOfResidence: string
+    tiktokUsername: string
 }

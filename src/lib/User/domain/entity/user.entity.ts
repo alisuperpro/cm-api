@@ -9,6 +9,26 @@ import { UserIgUsername } from '@/lib/User/domain/value-objects/userIgUsername.v
 import { UserOccupationStatus } from '@/lib/User/domain/value-objects/userOccupationStatus.vo'
 import { UserPhone } from '@/lib/User/domain/value-objects/userPhone.vo'
 import { UserUniversity } from '@/lib/User/domain/value-objects/userUniversity.vo'
+import { UserGender } from '../value-objects/userGender.vo'
+import { UserCountryOfResidence } from '../value-objects/userCountryOfResidence.vo'
+import { UserTiktokUsername } from '../value-objects/userTiktokUsername.vo'
+
+export interface IUser {
+    id: UserId
+    fullName: UserFullName
+    docId: UserDocId
+    email: UserEmail
+    phone: UserPhone
+    birthDate: UserBirthDate
+    occupationStatus: UserOccupationStatus
+    university: UserUniversity
+    howFindUs: UserHowFindUs
+    disability: UserDisability
+    igUsername: UserIgUsername
+    gender: UserGender
+    countryOfResidence: UserCountryOfResidence
+    tiktokUsername: UserTiktokUsername
+}
 
 export class User {
     public readonly id: UserId
@@ -22,30 +42,24 @@ export class User {
     public readonly howFindUs: UserHowFindUs
     public readonly disability: UserDisability
     public readonly igUsername: UserIgUsername
+    public readonly gender: UserGender
+    public readonly countryOfResidence: UserCountryOfResidence
+    public readonly tiktokUsername: UserTiktokUsername
 
-    constructor(
-        id: UserId,
-        fullName: UserFullName,
-        docId: UserDocId,
-        email: UserEmail,
-        phone: UserPhone,
-        birthDate: UserBirthDate,
-        occupationStatus: UserOccupationStatus,
-        university: UserUniversity,
-        howFindUs: UserHowFindUs,
-        disability: UserDisability,
-        igUsername: UserIgUsername
-    ) {
-        this.id = id
-        this.fullName = fullName
-        this.docId = docId
-        this.email = email
-        this.phone = phone
-        this.birthDate = birthDate
-        this.occupationStatus = occupationStatus
-        this.university = university
-        this.howFindUs = howFindUs
-        this.disability = disability
-        this.igUsername = igUsername
+    constructor(user: IUser) {
+        this.id = user.id
+        this.fullName = user.fullName
+        this.docId = user.docId
+        this.email = user.email
+        this.phone = user.phone
+        this.birthDate = user.birthDate
+        this.occupationStatus = user.occupationStatus
+        this.university = user.university
+        this.howFindUs = user.howFindUs
+        this.disability = user.disability
+        this.igUsername = user.igUsername
+        this.gender = user.gender
+        this.countryOfResidence = user.countryOfResidence
+        this.tiktokUsername = user.tiktokUsername
     }
 }
