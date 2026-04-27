@@ -10,6 +10,14 @@ import { UserUniversity } from '@/lib/User/domain/value-objects/userUniversity.v
 import { UserHowFindUs } from '@/lib/User/domain/value-objects/userHowFindUs.vo'
 import { UserDisability } from '@/lib/User/domain/value-objects/userDisability.vo'
 import { UserIgUsername } from '@/lib/User/domain/value-objects/userIgUsername.vo'
+import { UserGender } from '@/lib/User/domain/value-objects/userGender.vo'
+import { UserCountryOfResidence } from '@/lib/User/domain/value-objects/userCountryOfResidence.vo'
+import { UserTiktokUsername } from '@/lib/User/domain/value-objects/userTiktokUsername.vo'
+import { UserFirstName } from '@/lib/User/domain/value-objects/userFirstName.vo'
+import { UserSecondName } from '@/lib/User/domain/value-objects/userSecondName.vo'
+import { UserThirdName } from '@/lib/User/domain/value-objects/userThirdName.vo'
+import { UserLastName } from '@/lib/User/domain/value-objects/userLastName.vo'
+import { UserSecondLastName } from '@/lib/User/domain/value-objects/userSecondLastName.vo'
 
 // ─── Fixtures ────────────────────────────────────────────────────────────────
 
@@ -25,42 +33,80 @@ const FIXTURES = {
     howFindUs: 'Instagram',
     disability: 'none',
     igUsername: '@johndoe',
+    gender: 'male',
+    countryOfResidence: 'Colombia',
+    tiktokUsername: '@johndoe',
+    firstName: 'John',
+    secondName: 'William',
+    thirdName: 'Andrew',
+    lastName: 'Doe',
+    secondLastName: 'Smith',
 } as const
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
-type UserOverrides = {
-    id?: UserId
-    fullName?: UserFullName
-    docId?: UserDocId
-    email?: UserEmail
-    phone?: UserPhone
-    birthDate?: UserBirthDate
-    occupationStatus?: UserOccupationStatus
-    university?: UserUniversity
-    howFindUs?: UserHowFindUs
-    disability?: UserDisability
-    igUsername?: UserIgUsername
-}
+
+type UserOverrides = Partial<{
+    id: UserId
+    fullName: UserFullName
+    docId: UserDocId
+    email: UserEmail
+    phone: UserPhone
+    birthDate: UserBirthDate
+    occupationStatus: UserOccupationStatus
+    university: UserUniversity
+    howFindUs: UserHowFindUs
+    disability: UserDisability
+    igUsername: UserIgUsername
+    gender: UserGender
+    countryOfResidence: UserCountryOfResidence
+    tiktokUsername: UserTiktokUsername
+    firstName: UserFirstName
+    secondName: UserSecondName
+    thirdName: UserThirdName
+    lastName: UserLastName
+    secondLastName: UserSecondLastName
+}>
 
 const makeUser = (overrides: UserOverrides = {}) =>
-    new User(
-        overrides.id ?? new UserId(FIXTURES.id),
-        overrides.fullName ?? new UserFullName(FIXTURES.fullName),
-        overrides.docId ?? new UserDocId(FIXTURES.docId),
-        overrides.email ?? new UserEmail(FIXTURES.email),
-        overrides.phone ?? new UserPhone(FIXTURES.phone),
-        overrides.birthDate ?? new UserBirthDate(FIXTURES.birthDate),
-        overrides.occupationStatus ??
+    new User({
+        id: overrides.id ?? new UserId(FIXTURES.id),
+        fullName: overrides.fullName ?? new UserFullName(FIXTURES.fullName),
+        docId: overrides.docId ?? new UserDocId(FIXTURES.docId),
+        email: overrides.email ?? new UserEmail(FIXTURES.email),
+        phone: overrides.phone ?? new UserPhone(FIXTURES.phone),
+        birthDate: overrides.birthDate ?? new UserBirthDate(FIXTURES.birthDate),
+        occupationStatus:
+            overrides.occupationStatus ??
             new UserOccupationStatus(FIXTURES.occupationStatus),
-        overrides.university ?? new UserUniversity(FIXTURES.university),
-        overrides.howFindUs ?? new UserHowFindUs(FIXTURES.howFindUs),
-        overrides.disability ?? new UserDisability(FIXTURES.disability),
-        overrides.igUsername ?? new UserIgUsername(FIXTURES.igUsername)
-    )
+        university:
+            overrides.university ?? new UserUniversity(FIXTURES.university),
+        howFindUs: overrides.howFindUs ?? new UserHowFindUs(FIXTURES.howFindUs),
+        disability:
+            overrides.disability ?? new UserDisability(FIXTURES.disability),
+        igUsername:
+            overrides.igUsername ?? new UserIgUsername(FIXTURES.igUsername),
+        gender: overrides.gender ?? new UserGender(FIXTURES.gender),
+        countryOfResidence:
+            overrides.countryOfResidence ??
+            new UserCountryOfResidence(FIXTURES.countryOfResidence),
+        tiktokUsername:
+            overrides.tiktokUsername ??
+            new UserTiktokUsername(FIXTURES.tiktokUsername),
+        firstName: overrides.firstName ?? new UserFirstName(FIXTURES.firstName),
+        secondName:
+            overrides.secondName ?? new UserSecondName(FIXTURES.secondName),
+        thirdName: overrides.thirdName ?? new UserThirdName(FIXTURES.thirdName),
+        lastName: overrides.lastName ?? new UserLastName(FIXTURES.lastName),
+        secondLastName:
+            overrides.secondLastName ??
+            new UserSecondLastName(FIXTURES.secondLastName),
+    })
 
 // ─── Tests ───────────────────────────────────────────────────────────────────
 
 describe('User Entity', () => {
+    // ── Construction ──────────────────────────────────────────────────────────
+
     describe('construction', () => {
         it('should create a User with all properties', () => {
             const user = makeUser()
@@ -71,13 +117,66 @@ describe('User Entity', () => {
             expect(user.email.value).toBe(FIXTURES.email)
             expect(user.phone.value).toBe(FIXTURES.phone)
             expect(user.birthDate.value).toBe(FIXTURES.birthDate)
+            expect(user.occupationStatus.value).toBe(FIXTURES.occupationStatus)
+            expect(user.university.value).toBe(FIXTURES.university)
+            expect(user.howFindUs.value).toBe(FIXTURES.howFindUs)
+            expect(user.disability.value).toBe(FIXTURES.disability)
+            expect(user.igUsername.value).toBe(FIXTURES.igUsername)
+            expect(user.gender.value).toBe(FIXTURES.gender)
+            expect(user.countryOfResidence.value).toBe(
+                FIXTURES.countryOfResidence
+            )
+            expect(user.tiktokUsername.value).toBe(FIXTURES.tiktokUsername)
+            expect(user.firstName.value).toBe(FIXTURES.firstName)
+            expect(user.secondName.value).toBe(FIXTURES.secondName)
+            expect(user.thirdName.value).toBe(FIXTURES.thirdName)
+            expect(user.lastName.value).toBe(FIXTURES.lastName)
+            expect(user.secondLastName.value).toBe(FIXTURES.secondLastName)
+        })
+    })
+
+    // ── toPrimitives ──────────────────────────────────────────────────────────
+
+    describe('toPrimitives', () => {
+        it('should return a plain object with all primitive values', () => {
+            const primitives = makeUser().toPrimitives()
+
+            expect(primitives).toEqual({
+                id: FIXTURES.id,
+                fullName: FIXTURES.fullName,
+                docId: FIXTURES.docId,
+                email: FIXTURES.email,
+                phone: FIXTURES.phone,
+                birthDate: FIXTURES.birthDate,
+                occupationStatus: FIXTURES.occupationStatus,
+                university: FIXTURES.university,
+                howFindUs: FIXTURES.howFindUs,
+                disability: FIXTURES.disability,
+                igUsername: FIXTURES.igUsername,
+                gender: FIXTURES.gender,
+                countryOfResidence: FIXTURES.countryOfResidence,
+                tiktokUsername: FIXTURES.tiktokUsername,
+                firstName: FIXTURES.firstName,
+                secondName: FIXTURES.secondName,
+                thirdName: FIXTURES.thirdName,
+                lastName: FIXTURES.lastName,
+                secondLastName: FIXTURES.secondLastName,
+            })
+        })
+
+        it('should return plain strings, not VO instances', () => {
+            const primitives = makeUser().toPrimitives()
+
+            Object.values(primitives).forEach((value) => {
+                expect(typeof value).toBe('string')
+            })
         })
     })
 
     // ── Value Objects ─────────────────────────────────────────────────────────
 
     describe('UserId', () => {
-        it('accepts a valid id', () => {
+        it('accepts a valid UUID', () => {
             expect(new UserId(FIXTURES.id).value).toBe(FIXTURES.id)
         })
 
@@ -113,7 +212,7 @@ describe('User Entity', () => {
             expect(new UserDocId('123456789').value).toBe('123456789')
         })
 
-        it('accepts the minimum valid value (10000)', () => {
+        it('accepts the minimum valid value (100000)', () => {
             expect(new UserDocId('100000').value).toBe('100000')
         })
 
@@ -124,19 +223,34 @@ describe('User Entity', () => {
         })
 
         it('throws when numeric value is less than 10000', () => {
-            // 6 chars but value < 10_000
             expect(() => new UserDocId('009999')).toThrow(
                 'User document id must be greather than 10000'
             )
         })
     })
 
+    describe('UserEmail', () => {
+        it('accepts a valid email', () => {
+            expect(new UserEmail('user@example.com').value).toBe(
+                'user@example.com'
+            )
+        })
+
+        it('throws for an email without @', () => {
+            expect(() => new UserEmail('userexample.com')).toThrow()
+        })
+
+        it('throws when empty', () => {
+            expect(() => new UserEmail('')).toThrow()
+        })
+    })
+
     describe('UserPhone', () => {
-        it('accepts an international format with country code', () => {
+        it('accepts international format with country code', () => {
             expect(new UserPhone('+573001234567').value).toBe('+573001234567')
         })
 
-        it('accepts a national format (10 digits)', () => {
+        it('accepts national format (10 digits)', () => {
             expect(new UserPhone('3001234567').value).toBe('3001234567')
         })
 
@@ -194,30 +308,12 @@ describe('User Entity', () => {
             )
         })
 
-        it('throws for today (not a past date)', () => {
+        it('throws for today (boundary: not strictly past)', () => {
             const today = new Date().toISOString().split('T')[0]
 
             expect(() => new UserBirthDate(today)).toThrow(
                 'User Birth Date can not a future date'
             )
-        })
-    })
-
-    // ── VOs inferidos — ajustar si las validaciones reales difieren ───────────
-
-    describe('UserEmail', () => {
-        it('accepts a valid email', () => {
-            expect(new UserEmail('user@example.com').value).toBe(
-                'user@example.com'
-            )
-        })
-
-        it('throws for an email without @', () => {
-            expect(() => new UserEmail('userexample.com')).toThrow()
-        })
-
-        it('throws when empty', () => {
-            expect(() => new UserEmail('')).toThrow()
         })
     })
 
@@ -270,6 +366,56 @@ describe('User Entity', () => {
 
         it('throws when empty', () => {
             expect(() => new UserIgUsername('')).toThrow()
+        })
+    })
+
+    describe('UserGender', () => {
+        it('accepts a valid gender', () => {
+            expect(new UserGender('male').value).toBe('male')
+        })
+    })
+
+    describe('UserCountryOfResidence', () => {
+        it('accepts a valid country', () => {
+            expect(new UserCountryOfResidence('Colombia').value).toBe(
+                'Colombia'
+            )
+        })
+    })
+
+    describe('UserTiktokUsername', () => {
+        it('accepts a valid TikTok username', () => {
+            expect(new UserTiktokUsername('@johndoe').value).toBe('@johndoe')
+        })
+    })
+
+    describe('UserFirstName', () => {
+        it('accepts a valid first name', () => {
+            expect(new UserFirstName('John').value).toBe('John')
+        })
+    })
+
+    describe('UserSecondName', () => {
+        it('accepts a valid second name', () => {
+            expect(new UserSecondName('William').value).toBe('William')
+        })
+    })
+
+    describe('UserThirdName', () => {
+        it('accepts a valid third name', () => {
+            expect(new UserThirdName('Andrew').value).toBe('Andrew')
+        })
+    })
+
+    describe('UserLastName', () => {
+        it('accepts a valid last name', () => {
+            expect(new UserLastName('Doe').value).toBe('Doe')
+        })
+    })
+
+    describe('UserSecondLastName', () => {
+        it('accepts a valid second last name', () => {
+            expect(new UserSecondLastName('Smith').value).toBe('Smith')
         })
     })
 })

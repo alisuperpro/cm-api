@@ -101,9 +101,9 @@ export class User {
             tiktokUsername: this.tiktokUsername.value,
             firstName: this.firstName.value,
             secondName: this.secondName.value,
-            thirdName: this.thirdName,
+            thirdName: this.thirdName.value,
             lastName: this.lastName.value,
-            secondLastName: this.secondLastName,
+            secondLastName: this.secondLastName.value,
         }
     }
 }
