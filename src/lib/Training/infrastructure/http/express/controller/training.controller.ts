@@ -80,4 +80,23 @@ export class TrainingController {
             url,
         })
     }
+
+    async findBySlug(req: Request, res: Response) {
+        try {
+            const training = await serviceContainer.training.findBySlug.run(
+                req.params.slug.toString()
+            )
+
+            return res.status(200).json({
+                data: training.toPrimitives(),
+            })
+        } catch (err) {
+            if (err instanceof TrainingNotFoundError) {
+                return res.status(404).json({
+                    message: err.message,
+                })
+            }
+            throw err
+        }
+    }
 }

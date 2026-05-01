@@ -163,6 +163,56 @@ export class TrainingTursoRepository implements TrainingRepository {
         )
     }
 
+    async findBySlug(slug: TrainingSlug): Promise<Training | null> {
+        try {
+            const builder = new QueryBuilder(this.tableName)
+
+            builder
+                .select([
+                    'training.id',
+                    'title',
+                    'date',
+                    'location',
+                    'status_id',
+                    'training_status.status AS status_name',
+                    'training.slug AS training_slug',
+                    'training.id AS training_id',
+                    'description',
+                    'created_at',
+                    'start_time',
+                    'end_time',
+                    'banner',
+                    'capacity',
+                    'type',
+                    'training.slug',
+                    'training_type.id AS type_id',
+                    'training_type.type AS type_type',
+                    'training_type.slug AS type_slug',
+                ])
+                .join(
+                    'training_status',
+                    'training.status_id = training_status.id'
+                )
+                .join('training_type', 'training.type_id = training_type.id')
+                .where('training.slug', slug.value)
+
+            const query = {
+                sql: builder.build().sql,
+                args: builder.build().args,
+            }
+
+            const result = await this.db.execute(query)
+            const row = result.rows[0]
+
+            if (!row) return null
+
+            return this.mapToDomain(row as unknown as TrainingTurso)
+        } catch (err) {
+            console.log(err)
+            return null
+        }
+    }
+
     private mapToDomain(row: TrainingTurso): Training {
         return new Training({
             id: new TrainingId(row.id),

@@ -8,8 +8,9 @@ export const trainingRouter = Router()
 
 const trainingController = new TrainingController()
 
-trainingRouter.get('/', checkAuth, trainingController.getAll)
+trainingRouter.get('/', trainingController.getAll)
 trainingRouter.get('/:id', checkId, checkAuth, trainingController.findById)
+trainingRouter.get('/slug/:slug', trainingController.findBySlug)
 
 trainingRouter.post('/', checkAdminAuth, trainingController.create)
 

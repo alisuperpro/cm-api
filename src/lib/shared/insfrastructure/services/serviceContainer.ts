@@ -21,6 +21,7 @@ import { EnrollmentQueryRepositoryImpl } from '@/lib/Enrollment/infrastructure/q
 import { EnrollmentQueryTursoRepository } from '@/lib/Enrollment/infrastructure/repository/enrollment.repository'
 import { TrainingCreate } from '@/lib/Training/application/use-case/trainingCreate.uc'
 import { TrainingFindById } from '@/lib/Training/application/use-case/trainingFindById.uc'
+import { TrainingFindBySlug } from '@/lib/Training/application/use-case/trainingFindBySlug.uc'
 import { TrainingGetAll } from '@/lib/Training/application/use-case/trainingGetAll.uc'
 import { TrainingStatusCreate } from '@/lib/Training/application/use-case/trainingStatus/trainingStatusCreate.uc'
 import { TrainingStatusGetAll } from '@/lib/Training/application/use-case/trainingStatus/trainingStatusGetAll.uc'
@@ -54,6 +55,7 @@ export const serviceContainer = {
         create: new TrainingCreate(trainingRepository),
         getAll: new TrainingGetAll(trainingRepository),
         findById: new TrainingFindById(trainingRepository),
+        findBySlug: new TrainingFindBySlug(trainingRepository),
     },
     adminUser: {
         create: new AdminUserCreate(adminUserRepository),
