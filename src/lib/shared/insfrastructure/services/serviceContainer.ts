@@ -19,21 +19,16 @@ import { EnrollmentUpdateIsArrived } from '@/lib/Enrollment/application/use-case
 import { EnrollmentUpdatePayConfirmed } from '@/lib/Enrollment/application/use-cases/enrollmentUpdatePayConfirmed.uc'
 import { EnrollmentQueryRepositoryImpl } from '@/lib/Enrollment/infrastructure/query/enrollmentQuery.repository'
 import { EnrollmentQueryTursoRepository } from '@/lib/Enrollment/infrastructure/repository/enrollment.repository'
-import { TrainingCreate } from '@/lib/Training/application/use-case/trainingCreate.uc'
-import { TrainingFindById } from '@/lib/Training/application/use-case/trainingFindById.uc'
-import { TrainingFindBySlug } from '@/lib/Training/application/use-case/trainingFindBySlug.uc'
-import { TrainingGetAll } from '@/lib/Training/application/use-case/trainingGetAll.uc'
 import { TrainingStatusCreate } from '@/lib/Training/application/use-case/trainingStatus/trainingStatusCreate.uc'
 import { TrainingStatusGetAll } from '@/lib/Training/application/use-case/trainingStatus/trainingStatusGetAll.uc'
 import { TrainingTypeCreate } from '@/lib/Training/application/use-case/trainingType/trainingTypeCreate.uc'
 import { TrainingTypeGetAll } from '@/lib/Training/application/use-case/trainingType/trainingTypeGetAll.uc'
 import { TrainingStatusTursoRepository } from '@/lib/Training/infrastructure/repository/trainingStatus.repository'
-import { TrainingTursoRepository } from '@/lib/Training/infrastructure/repository/trainingTurso.repository'
 import { TrainingTypeTursoRepository } from '@/lib/Training/infrastructure/repository/trainingType.repository'
 
 import { userServices } from './user.services'
+import { trainingServices } from './training.services'
 
-const trainingRepository = new TrainingTursoRepository()
 const adminUserRepository = new AdminUserTursoRepository()
 const trainingStatusRepository = new TrainingStatusTursoRepository()
 const TrainingTypeRepository = new TrainingTypeTursoRepository()
@@ -47,10 +42,7 @@ export const serviceContainer = {
         ...userServices,
     },
     training: {
-        create: new TrainingCreate(trainingRepository),
-        getAll: new TrainingGetAll(trainingRepository),
-        findById: new TrainingFindById(trainingRepository),
-        findBySlug: new TrainingFindBySlug(trainingRepository),
+        ...trainingServices,
     },
     adminUser: {
         create: new AdminUserCreate(adminUserRepository),
