@@ -1,8 +1,3 @@
-import { AdminUserCreate } from '@/lib/AdminUser/application/use-case/adminUserCreate.uc'
-import { AdminUserFindById } from '@/lib/AdminUser/application/use-case/adminUserFindById.uc'
-import { AdminUserGetAll } from '@/lib/AdminUser/application/use-case/adminUserGetAll.uc'
-import { AdminUserUpdateNotoficationToken } from '@/lib/AdminUser/application/use-case/adminUserUpdateNotificationToken.uc'
-import { AdminUserTursoRepository } from '@/lib/AdminUser/infrastructure/repository/adminUserTurso.repository'
 import { EmailSystemCreate } from '@/lib/Email/application/use-case/emailSystemCreate.uc'
 import { EmailSystemFindById } from '@/lib/Email/application/use-case/emailSystemFindById.uc'
 import { EmailSystemGetAll } from '@/lib/Email/application/use-case/emailSystemGetAll.uc'
@@ -28,8 +23,8 @@ import { TrainingTypeTursoRepository } from '@/lib/Training/infrastructure/repos
 
 import { userServices } from './user.services'
 import { trainingServices } from './training.services'
+import { adminUserServices } from './adminUser.services'
 
-const adminUserRepository = new AdminUserTursoRepository()
 const trainingStatusRepository = new TrainingStatusTursoRepository()
 const TrainingTypeRepository = new TrainingTypeTursoRepository()
 const enrollmentRepository = new EnrollmentQueryTursoRepository()
@@ -45,12 +40,7 @@ export const serviceContainer = {
         ...trainingServices,
     },
     adminUser: {
-        create: new AdminUserCreate(adminUserRepository),
-        getAll: new AdminUserGetAll(adminUserRepository),
-        findById: new AdminUserFindById(adminUserRepository),
-        updateNotificationToken: new AdminUserUpdateNotoficationToken(
-            adminUserRepository
-        ),
+        ...adminUserServices,
     },
     trainingStatus: {
         create: new TrainingStatusCreate(trainingStatusRepository),
