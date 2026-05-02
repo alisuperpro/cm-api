@@ -14,18 +14,15 @@ import { EnrollmentUpdateIsArrived } from '@/lib/Enrollment/application/use-case
 import { EnrollmentUpdatePayConfirmed } from '@/lib/Enrollment/application/use-cases/enrollmentUpdatePayConfirmed.uc'
 import { EnrollmentQueryRepositoryImpl } from '@/lib/Enrollment/infrastructure/query/enrollmentQuery.repository'
 import { EnrollmentQueryTursoRepository } from '@/lib/Enrollment/infrastructure/repository/enrollment.repository'
-import { TrainingStatusCreate } from '@/lib/Training/application/use-case/trainingStatus/trainingStatusCreate.uc'
-import { TrainingStatusGetAll } from '@/lib/Training/application/use-case/trainingStatus/trainingStatusGetAll.uc'
 import { TrainingTypeCreate } from '@/lib/Training/application/use-case/trainingType/trainingTypeCreate.uc'
 import { TrainingTypeGetAll } from '@/lib/Training/application/use-case/trainingType/trainingTypeGetAll.uc'
-import { TrainingStatusTursoRepository } from '@/lib/Training/infrastructure/repository/trainingStatus.repository'
 import { TrainingTypeTursoRepository } from '@/lib/Training/infrastructure/repository/trainingType.repository'
 
 import { userServices } from './user.services'
 import { trainingServices } from './training.services'
 import { adminUserServices } from './adminUser.services'
+import { trainingStatusServices } from './trainingStatus.services'
 
-const trainingStatusRepository = new TrainingStatusTursoRepository()
 const TrainingTypeRepository = new TrainingTypeTursoRepository()
 const enrollmentRepository = new EnrollmentQueryTursoRepository()
 const enrollmentQueryRepository = new EnrollmentQueryRepositoryImpl()
@@ -43,8 +40,7 @@ export const serviceContainer = {
         ...adminUserServices,
     },
     trainingStatus: {
-        create: new TrainingStatusCreate(trainingStatusRepository),
-        getAll: new TrainingStatusGetAll(trainingStatusRepository),
+        ...trainingStatusServices,
     },
     trainingType: {
         create: new TrainingTypeCreate(TrainingTypeRepository),
