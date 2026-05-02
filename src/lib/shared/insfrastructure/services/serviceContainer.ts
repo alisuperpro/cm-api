@@ -12,6 +12,7 @@ import { adminUserServices } from './adminUser.services'
 import { trainingStatusServices } from './trainingStatus.services'
 import { trainingTypeServices } from './trainingType.services'
 import { enrollmentServices } from './enrollment.services'
+import { emailSystemServices } from './emailSystem.services'
 
 const emailSystemRepository = new EmailSystemTursoRepository()
 const emailTemplateRepository = new EmailTemplateTursoRepository()
@@ -36,9 +37,7 @@ export const serviceContainer = {
         ...enrollmentServices,
     },
     emailSystem: {
-        create: new EmailSystemCreate(emailSystemRepository),
-        getAll: new EmailSystemGetAll(emailSystemRepository),
-        findById: new EmailSystemFindById(emailSystemRepository),
+        ...emailSystemServices,
     },
     emailTemplate: {
         create: new EmailTemplateCreate(emailTemplateRepository),
