@@ -2,6 +2,9 @@ import { NextFunction, Request, Response } from 'express'
 import { serviceContainer } from '@/lib/shared/insfrastructure/services/serviceContainer'
 import { UserNotFoundError } from '@/lib/User/domain/errors/userNotFoundError.error'
 import { UserPhoneExistsError } from '@/lib/User/domain/errors/userPhoneExistsError.error'
+import { UserDocIdExistsError } from '@/lib/User/domain/errors/userDocIdExistsError.error'
+import { UserIgUsernameExistsError } from '@/lib/User/domain/errors/userIgUsernameExistsError.error'
+import { UserTiktokUsernameExistsError } from '@/lib/User/domain/errors/userTiktokUsernameError.error'
 
 export class UserController {
     async create(req: Request, res: Response, next: NextFunction) {
@@ -11,6 +14,24 @@ export class UserController {
             return res.status(201).send()
         } catch (err) {
             if (err instanceof UserPhoneExistsError) {
+                return res.status(403).json({
+                    message: err.message,
+                })
+            }
+
+            if (err instanceof UserDocIdExistsError) {
+                return res.status(403).json({
+                    message: err.message,
+                })
+            }
+
+            if (err instanceof UserIgUsernameExistsError) {
+                return res.status(403).json({
+                    message: err.message,
+                })
+            }
+
+            if (err instanceof UserTiktokUsernameExistsError) {
                 return res.status(403).json({
                     message: err.message,
                 })
