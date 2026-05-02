@@ -30,12 +30,9 @@ import { TrainingTypeGetAll } from '@/lib/Training/application/use-case/training
 import { TrainingStatusTursoRepository } from '@/lib/Training/infrastructure/repository/trainingStatus.repository'
 import { TrainingTursoRepository } from '@/lib/Training/infrastructure/repository/trainingTurso.repository'
 import { TrainingTypeTursoRepository } from '@/lib/Training/infrastructure/repository/trainingType.repository'
-import { UserCreate } from '@/lib/User/application/use-case/userCreate.uc'
-import { UserFindById } from '@/lib/User/application/use-case/userFindById.uc'
-import { UserGetAll } from '@/lib/User/application/use-case/userGetAll.uc'
-import { UserTursoRepository } from '@/lib/User/infrastructure/repository/userTurso.repository'
 
-const userRepository = new UserTursoRepository()
+import { userServices } from './user.services'
+
 const trainingRepository = new TrainingTursoRepository()
 const adminUserRepository = new AdminUserTursoRepository()
 const trainingStatusRepository = new TrainingStatusTursoRepository()
@@ -47,9 +44,7 @@ const emailTemplateRepository = new EmailTemplateTursoRepository()
 
 export const serviceContainer = {
     user: {
-        create: new UserCreate(userRepository),
-        getAll: new UserGetAll(userRepository),
-        findById: new UserFindById(userRepository),
+        ...userServices,
     },
     training: {
         create: new TrainingCreate(trainingRepository),
