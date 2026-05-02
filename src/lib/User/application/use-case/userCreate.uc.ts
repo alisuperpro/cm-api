@@ -22,6 +22,10 @@ import { UserLastName } from '../../domain/value-objects/userLastName.vo'
 import { UserSecondLastName } from '../../domain/value-objects/userSecondLastName.vo'
 import { UserPhoneExistsError } from '../../domain/errors/userPhoneExistsError.error'
 import { UserDocIdExistsError } from '../../domain/errors/userDocIdExistsError.error'
+import { email } from 'zod'
+import { UserEmailExistsError } from '../../domain/errors/userEmailExistsError.error'
+import { UserIgUsernameExistsError } from '../../domain/errors/userIgUsernameExistsError.error'
+import { UserTiktokUsernameExistsError } from '../../domain/errors/userTiktokUsernameError.error'
 
 export class UserCreate {
     constructor(private repository: UserRepository) {}
@@ -41,6 +45,33 @@ export class UserCreate {
 
         if (isDocIdExists) {
             throw new UserDocIdExistsError('User docId already use')
+        }
+
+        const isEmailExists = await this.repository.findByEmail(
+            new UserEmail(dto.email)
+        )
+
+        if (isEmailExists) {
+            throw new UserEmailExistsError('User email already use')
+        }
+
+        const isIgUsernameExists = await this.repository.findByIgUsername(
+            new UserIgUsername(dto.igUsername)
+        )
+
+        if (isIgUsernameExists) {
+            throw new UserIgUsernameExistsError('User ig username already use')
+        }
+
+        const isTiktokUsernameExists =
+            await this.repository.findByTiktokUsername(
+                new UserTiktokUsername(dto.tiktokUsername)
+            )
+
+        if (isTiktokUsernameExists) {
+            throw new UserTiktokUsernameExistsError(
+                'User tiktok username already use'
+            )
         }
 
         const user = new User({

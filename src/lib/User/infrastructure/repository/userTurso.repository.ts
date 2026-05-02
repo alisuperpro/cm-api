@@ -131,6 +131,53 @@ export class UserTursoRepository implements UserRepository {
         return this.mapToDomain(row)
     }
 
+    async findByEmail(email: UserEmail): Promise<User | null> {
+        const query = {
+            sql: `SELECT * FROM ${this.tableName} WHERE email = ?`,
+            args: [email.value],
+        }
+
+        const result = await this.db.execute(query)
+
+        const row: UserTurso = result.rows[0] as unknown as UserTurso
+
+        if (!row) return null
+
+        return this.mapToDomain(row)
+    }
+
+    async findByIgUsername(igUsername: UserIgUsername): Promise<User | null> {
+        const query = {
+            sql: `SELECT * FROM ${this.tableName} WHERE ig_username = ?`,
+            args: [igUsername.value],
+        }
+
+        const result = await this.db.execute(query)
+
+        const row: UserTurso = result.rows[0] as unknown as UserTurso
+
+        if (!row) return null
+
+        return this.mapToDomain(row)
+    }
+
+    async findByTiktokUsername(
+        tiktokUsername: UserTiktokUsername
+    ): Promise<User | null> {
+        const query = {
+            sql: `SELECT * FROM ${this.tableName} WHERE tiktok_username = ?`,
+            args: [tiktokUsername.value],
+        }
+
+        const result = await this.db.execute(query)
+
+        const row: UserTurso = result.rows[0] as unknown as UserTurso
+
+        if (!row) return null
+
+        return this.mapToDomain(row)
+    }
+
     private mapToDomain(user: UserTurso): User {
         return new User({
             id: new UserId(user.id),
