@@ -1,12 +1,22 @@
-import { Request, Response } from 'express'
+import { NextFunction, Request, Response } from 'express'
 import { serviceContainer } from '@/lib/shared/insfrastructure/services/serviceContainer'
 import { UserNotFoundError } from '@/lib/User/domain/errors/userNotFoundError.error'
+import { UserPhoneExistsError } from '@/lib/User/domain/errors/userPhoneExistsError.error'
 
 export class UserController {
-    async create(req: Request, res: Response) {
-        await serviceContainer.user.create.run(req.body)
+    async create(req: Request, res: Response, next: NextFunction) {
+        try {
+            await serviceContainer.user.create.run(req.body)
 
-        return res.status(201).send()
+            return res.status(201).send()
+        } catch (err) {
+            if (err instanceof UserPhoneExistsError) {
+                return res.status(403).json({
+                    message: err.message,
+                })
+            }
+            next(err)
+        }
     }
 
     async getAll(req: Request, res: Response) {
@@ -19,7 +29,7 @@ export class UserController {
         })
     }
 
-    async findById(req: Request, res: Response) {
+    async findById(req: Request, res: Response, next: NextFunction) {
         try {
             const user = await serviceContainer.user.findById.run({
                 id: req.params.id.toString(),
@@ -33,7 +43,7 @@ export class UserController {
                 return res.status(404).json({ message: err.message })
             }
 
-            throw err
+            next(err)
         }
     }
 }

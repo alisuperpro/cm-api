@@ -101,6 +101,21 @@ export class UserTursoRepository implements UserRepository {
         return this.mapToDomain(row)
     }
 
+    async findByPhone(phone: UserPhone): Promise<User | null> {
+        const query = {
+            sql: `SELECT * FROM ${this.tableName} WHERE phone = ?`,
+            args: [phone.value],
+        }
+
+        const result = await this.db.execute(query)
+
+        const row: UserTurso = result.rows[0] as unknown as UserTurso
+
+        if (!row) return null
+
+        return this.mapToDomain(row)
+    }
+
     private mapToDomain(user: UserTurso): User {
         return new User({
             id: new UserId(user.id),

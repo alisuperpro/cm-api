@@ -20,11 +20,20 @@ import { UserSecondName } from '../../domain/value-objects/userSecondName.vo'
 import { UserThirdName } from '../../domain/value-objects/userThirdName.vo'
 import { UserLastName } from '../../domain/value-objects/userLastName.vo'
 import { UserSecondLastName } from '../../domain/value-objects/userSecondLastName.vo'
+import { UserPhoneExistsError } from '../../domain/errors/userPhoneExistsError.error'
 
 export class UserCreate {
     constructor(private repository: UserRepository) {}
 
     async run(dto: CreateUserDTO) {
+        const isPhoneExists = await this.repository.findByPhone(
+            new UserPhone(dto.phone)
+        )
+
+        if (isPhoneExists) {
+            throw new UserPhoneExistsError('User phone already use')
+        }
+
         const user = new User({
             id: new UserId(dto.id),
             fullName: new UserFullName(dto.fullName),
