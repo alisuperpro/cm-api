@@ -1,4 +1,5 @@
 import { UserCreate } from '@/lib/User/application/use-case/userCreate.uc'
+import { UserFindByDocId } from '@/lib/User/application/use-case/userFindByDocId.uc'
 import { UserFindById } from '@/lib/User/application/use-case/userFindById.uc'
 import { UserFindByPhone } from '@/lib/User/application/use-case/userFindByPhone.uc'
 import { UserGetAll } from '@/lib/User/application/use-case/userGetAll.uc'
@@ -11,4 +12,5 @@ export const userServices = {
     getAll: new UserGetAll(userRepository),
     findById: new UserFindById(userRepository),
     findByPhone: new UserFindByPhone(userRepository),
+    findByDocId: new UserFindByDocId(userRepository),
 }

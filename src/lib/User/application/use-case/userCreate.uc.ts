@@ -21,6 +21,7 @@ import { UserThirdName } from '../../domain/value-objects/userThirdName.vo'
 import { UserLastName } from '../../domain/value-objects/userLastName.vo'
 import { UserSecondLastName } from '../../domain/value-objects/userSecondLastName.vo'
 import { UserPhoneExistsError } from '../../domain/errors/userPhoneExistsError.error'
+import { UserDocIdExistsError } from '../../domain/errors/userDocIdExistsError.error'
 
 export class UserCreate {
     constructor(private repository: UserRepository) {}
@@ -32,6 +33,14 @@ export class UserCreate {
 
         if (isPhoneExists) {
             throw new UserPhoneExistsError('User phone already use')
+        }
+
+        const isDocIdExists = await this.repository.findByDocId(
+            new UserDocId(dto.docId)
+        )
+
+        if (isDocIdExists) {
+            throw new UserDocIdExistsError('User docId already use')
         }
 
         const user = new User({
