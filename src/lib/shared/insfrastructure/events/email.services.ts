@@ -19,6 +19,7 @@ const renderTemplate = (html: string, context: object) => {
 const EVENT_TO_TEMPLATE_MAP: Record<string, string> = {
     payConfirmed: 'payment-confirmation-email',
     userRemoveForTraining: 'removal-notification-email',
+    userRegisteredOnTraining: 'userRegisteredOnTraining',
 }
 
 const BUSINESS_DATA = {
@@ -43,6 +44,9 @@ class EmailService {
         )
         appEventEmitter.on('userContact', (data) =>
             this.handlerUserContact('userContact', data)
+        )
+        appEventEmitter.on('userRegisteredOnTraining', (data) =>
+            this.processEvent('userRegisteredOnTraining', data)
         )
         logger.info('[Email Service] Event listeners initialized')
     }
@@ -144,7 +148,6 @@ class EmailService {
             return {
                 ...baseContext,
                 training: { ...training, date: formatDate(training.date) },
-                training_banner_url: `https://cachemarketing.net/images/banners/${training.slug}.png`,
             }
         }
 
@@ -153,6 +156,13 @@ class EmailService {
                 ...baseContext,
                 training: { ...training, date: formatDate(training.date) },
                 reason: payload.reason,
+            }
+        }
+
+        if (eventName === 'userRegisteredOnTraining') {
+            return {
+                ...baseContext,
+                training: { ...training, date: formatDate(training.date) },
             }
         }
 
@@ -165,7 +175,7 @@ class EmailService {
 
         try {
             const data = await this.fetchUserAndTraining(
-                payload.id,
+                payload.userId,
                 payload.trainingId
             )
             if (!data) return

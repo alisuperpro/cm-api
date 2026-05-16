@@ -1,3 +1,4 @@
+import logger from '@/utils/logger'
 import { EmailSystemModel } from '../model/emailSystem.model'
 import { decrypt } from '../utils/crypto'
 import { createDynamicTransporter } from './transporte'
@@ -39,14 +40,14 @@ export const sendEmail = async ({
         to,
         subject,
         html: template,
+        context,
     }
-
     try {
         const info = await transporter.sendMail(mailOptions)
-        console.log('Email enviado: ' + info.messageId)
+        logger.info('Email enviado: ' + info.messageId)
         return info
     } catch (error) {
-        console.error('Error enviando email:', error)
+        logger.warn('Error enviando email:', error)
         throw error
     }
 }

@@ -44,6 +44,7 @@ export class EnrollmentController {
             appEventEmitter.emit('userRegisteredOnTraining', {
                 userId: req.body.userId,
                 trainingId: req.body.trainingId,
+                configId: '465a827f-cd27-4896-a241-1b65ee25de35',
             })
 
             return res.status(201).send()
@@ -141,7 +142,7 @@ export class EnrollmentController {
         })
 
         appEventEmitter.emit('payConfirmed', {
-            id: userId.toString(),
+            userId: userId.toString(),
             trainingId: trainingId.toString(),
             configId: '465a827f-cd27-4896-a241-1b65ee25de35',
         })

@@ -1,11 +1,11 @@
 // types/events.types.ts
 import { UserType } from './user.types'
-import { Training, TrainingUser } from './training.types'
+import { TrainingUser } from './training.types'
 
 export interface EventMap {
     // Eventos de entrenamiento
     payConfirmed: {
-        id: string
+        userId: string
         trainingId: string
         configId: string
     }
@@ -19,6 +19,7 @@ export interface EventMap {
         trainingId: string
         userId: string
         registrationData?: Partial<TrainingUser>
+        configId: string
     }
     userArrivedToTraining: {
         trainingId: string
