@@ -137,20 +137,39 @@ export class EnrollmentController {
             const { userId, trainingId } = req.params
             const { payConfirmed } = req.body
 
+            if (payConfirmed === undefined || payConfirmed === null) {
+                return res
+                    .status(400)
+                    .json({ error: 'Missing payConfirmed field' })
+            }
+
+            const payConfirmedBool =
+                typeof payConfirmed === 'string'
+                    ? payConfirmed === 'true'
+                    : Boolean(payConfirmed)
+
             await serviceContainer.enrollment.updatePayConfirmed.run({
                 userId: userId.toString(),
                 trainingId: trainingId.toString(),
-                payConfirmed,
+                payConfirmed: payConfirmedBool,
             })
 
-            appEventEmitter.emit('payConfirmed', {
-                userId: userId.toString(),
-                trainingId: trainingId.toString(),
-                configId: '465a827f-cd27-4896-a241-1b65ee25de35',
-            })
+            if (payConfirmedBool) {
+                appEventEmitter.emit('payConfirmed', {
+                    userId: userId.toString(),
+                    trainingId: trainingId.toString(),
+                    configId: '465a827f-cd27-4896-a241-1b65ee25de35',
+                })
+
+                logger.info('payConfirmed event emitted', {
+                    userId,
+                    trainingId,
+                })
+            }
 
             return res.status(201).send()
         } catch (err) {
+            logger.error('updatePayConfirmed error', { err })
             next(err)
         }
     }
