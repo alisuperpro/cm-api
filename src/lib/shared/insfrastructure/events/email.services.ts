@@ -145,6 +145,7 @@ class EmailService {
         }
 
         if (eventName === 'payConfirmed') {
+            logger.info(eventName)
             return {
                 ...baseContext,
                 training: { ...training, date: formatDate(training.date) },
