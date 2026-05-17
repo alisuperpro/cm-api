@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express'
 import { serviceContainer } from '../../../../../shared/insfrastructure/services/serviceContainer'
 import { generateUUID } from '../../../../../shared/insfrastructure/utils/generateUUID'
 import { getPresignedUrl, uploadFile } from '../../../../../../services/s3'
-import { appEventEmitter } from '../../../../../shared/insfrastructure/events/eventEmitter'
+import { appEventEmitter } from '@/lib/shared/insfrastructure/events/eventEmitter'
 import logger from '@/utils/logger'
 
 export class EnrollmentController {

@@ -7,8 +7,8 @@ import { clerkMiddleware } from '@clerk/express'
 import fileUpload from 'express-fileupload'
 import { TursoDatabase } from '@/lib/shared/insfrastructure/database/turso.db'
 import { apiRouter } from '@/lib/shared/insfrastructure/http/routes/api.routes'
-import { adminNotificationService } from '@/lib/shared/insfrastructure/events/adminNotification.event'
-import { emailService } from '@/lib/shared/insfrastructure/events/email.services'
+import logger from '@/utils/logger'
+import { appEventEmitter } from '@/lib/shared/insfrastructure/events/eventEmitter'
 
 const app = express()
 
@@ -58,10 +58,25 @@ app.use((err: unknown, req: Request, res: Response, next: NextFunction) => {
     return res.status(500).json({ message: 'Something went wrong' })
 })
 
-TursoDatabase.getInstance().initialize()
+async function bootstrap() {
+    await TursoDatabase.getInstance().initialize()
 
-emailService
-adminNotificationService
+    // Inicializar servicios de eventos después de la DB
+    const { emailService } =
+        await import('@/lib/shared/insfrastructure/events/email.services')
+    const { adminNotificationService } =
+        await import('@/lib/shared/insfrastructure/events/adminNotification.event')
+
+    logger.info('Event listeners registered', {
+        payConfirmed: appEventEmitter.listenerCount('payConfirmed'),
+    })
+
+    app.listen(process.env.PORT, () => {
+        logger.info(`Server running on port ${process.env.PORT}`)
+    })
+}
+
+bootstrap()
 
 app.get('/', (req: Request, res: Response) => {
     res.send('hello world')
