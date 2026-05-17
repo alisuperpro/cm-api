@@ -131,23 +131,27 @@ export class EnrollmentController {
         return res.status(201).send()
     }
 
-    async updatePayConfirmed(req: Request, res: Response) {
-        const { userId, trainingId } = req.params
-        const { payConfirmed } = req.body
+    async updatePayConfirmed(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { userId, trainingId } = req.params
+            const { payConfirmed } = req.body
 
-        await serviceContainer.enrollment.updatePayConfirmed.run({
-            userId: userId.toString(),
-            trainingId: trainingId.toString(),
-            payConfirmed,
-        })
+            await serviceContainer.enrollment.updatePayConfirmed.run({
+                userId: userId.toString(),
+                trainingId: trainingId.toString(),
+                payConfirmed,
+            })
 
-        appEventEmitter.emit('payConfirmed', {
-            userId: userId.toString(),
-            trainingId: trainingId.toString(),
-            configId: '465a827f-cd27-4896-a241-1b65ee25de35',
-        })
+            appEventEmitter.emit('payConfirmed', {
+                userId: userId.toString(),
+                trainingId: trainingId.toString(),
+                configId: '465a827f-cd27-4896-a241-1b65ee25de35',
+            })
 
-        return res.status(201).send()
+            return res.status(201).send()
+        } catch (err) {
+            next(err)
+        }
     }
 
     async updateCertificateReceived(req: Request, res: Response) {
