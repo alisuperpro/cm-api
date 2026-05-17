@@ -40,7 +40,6 @@ export const sendEmail = async ({
         to,
         subject,
         html: template,
-        context,
     }
     try {
         const info = await transporter.sendMail(mailOptions)

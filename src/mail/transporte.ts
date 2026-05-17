@@ -1,7 +1,5 @@
 import nodemailer from 'nodemailer'
-import path from 'path'
 
-// Definimos la interfaz para la configuración dinámica
 export interface EmailConfig {
     host: string
     port: number
@@ -24,23 +22,6 @@ export const createDynamicTransporter = async (config: EmailConfig) => {
         },
         connectionTimeout: 60000,
     })
-
-    // Configuración de Handlebars (import dinámico)
-    const hbs = (await import('nodemailer-express-handlebars')).default
-
-    transporter.use(
-        'compile',
-        hbs({
-            viewEngine: {
-                layoutsDir: path.join(process.cwd(), 'src/templates/layouts'),
-                partialsDir: path.join(process.cwd(), 'src/templates/partials'),
-                extname: '.hbs',
-                defaultLayout: 'main',
-            },
-            viewPath: path.join(process.cwd(), 'src/templates'),
-            extName: '.hbs',
-        })
-    )
 
     return transporter
 }
