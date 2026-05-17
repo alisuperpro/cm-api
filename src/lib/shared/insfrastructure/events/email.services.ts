@@ -1,6 +1,6 @@
 import { appEventEmitter } from './eventEmitter'
 import Handlebars from 'handlebars'
-import dotenv, { config } from 'dotenv'
+import dotenv from 'dotenv'
 import logger from '../../../../utils/logger'
 import { serviceContainer } from '../services/serviceContainer'
 import { UserType } from '../../../../types/user.types'
@@ -182,7 +182,6 @@ class EmailService {
 
             const context = this.prepareContext(eventName, data, payload)
 
-            // Reutilizamos la lógica de envío dinámico para no repetir código
             await this.sendCustomEmail(
                 data.user.email,
                 templateSlug,
