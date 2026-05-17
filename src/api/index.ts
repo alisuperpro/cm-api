@@ -61,11 +61,16 @@ app.use((err: unknown, req: Request, res: Response, next: NextFunction) => {
 async function bootstrap() {
     await TursoDatabase.getInstance().initialize()
 
-    // Inicializar servicios de eventos después de la DB
-    const { emailService } =
-        await import('@/lib/shared/insfrastructure/events/email.services')
-    const { adminNotificationService } =
-        await import('@/lib/shared/insfrastructure/events/adminNotification.event')
+    try {
+        const { emailService } =
+            await import('@/lib/shared/insfrastructure/events/email.services')
+        const { adminNotificationService } =
+            await import('@/lib/shared/insfrastructure/events/adminNotification.event')
+
+        logger.info('Email service loaded', { emailService: !!emailService })
+    } catch (err) {
+        logger.error('Failed to load email service', { err }) // ← aquí puede estar el bug
+    }
 
     logger.info('Event listeners registered', {
         payConfirmed: appEventEmitter.listenerCount('payConfirmed'),
