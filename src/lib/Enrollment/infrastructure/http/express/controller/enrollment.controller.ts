@@ -3,6 +3,7 @@ import { serviceContainer } from '../../../../../shared/insfrastructure/services
 import { generateUUID } from '../../../../../shared/insfrastructure/utils/generateUUID'
 import { getPresignedUrl, uploadFile } from '../../../../../../services/s3'
 import { appEventEmitter } from '../../../../../shared/insfrastructure/events/eventEmitter'
+import logger from '@/utils/logger'
 
 export class EnrollmentController {
     async create(req: Request, res: Response, next: NextFunction) {

@@ -172,16 +172,26 @@ class EmailService {
 
     private async processEvent(eventName: string, payload: any): Promise<void> {
         const templateSlug = EVENT_TO_TEMPLATE_MAP[eventName]
-        if (!templateSlug) return
+        logger.info(
+            `[Email Service] Procesando evento ${eventName} para slug ${templateSlug}`
+        )
 
         try {
             const data = await this.fetchUserAndTraining(
                 payload.userId,
                 payload.trainingId
             )
-            if (!data) return
+            if (!data) {
+                logger.warn(
+                    `[Email Service] Detenido: No se encontró usuario (${payload.userId}) o entrenamiento (${payload.trainingId})`
+                )
+                return
+            }
 
             const context = this.prepareContext(eventName, data, payload)
+            logger.info(
+                `[Email Service] Contexto preparado. Enviando email a ${data.user.email}`
+            )
 
             await this.sendCustomEmail(
                 data.user.email,
@@ -191,7 +201,7 @@ class EmailService {
             )
         } catch (error) {
             logger.error(
-                `[Email Service] Error processing ${eventName}:`,
+                `[Email Service] Error crítico procesando ${eventName}:`,
                 error
             )
         }
