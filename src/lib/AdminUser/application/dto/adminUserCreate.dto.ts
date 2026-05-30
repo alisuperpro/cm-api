@@ -6,4 +6,5 @@ export interface AdminUserDTO {
     position: string
     state: string
     email: string
+    docId: string
 }

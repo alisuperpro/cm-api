@@ -5,6 +5,7 @@ import { AdminUserRole } from '@/lib/AdminUser/domain/value-objects/adminUserRol
 import { AdminUserPosition } from '../value-objects/adminUserPosition.vo'
 import { AdminUserState } from '../value-objects/adminUserState.vo'
 import { AdminUserEmail } from '../value-objects/adminUserEmail.vo'
+import { AdminUserDocId } from '../value-objects/adminUserDocId.vo'
 
 export interface IAdminUser {
     id: AdminUserId
@@ -14,6 +15,7 @@ export interface IAdminUser {
     position: AdminUserPosition
     state: AdminUserState
     email: AdminUserEmail
+    docId: AdminUserDocId
 }
 
 export class AdminUser {
@@ -24,6 +26,8 @@ export class AdminUser {
     position: AdminUserPosition
     state: AdminUserState
     email: AdminUserEmail
+    docId: AdminUserDocId
+
     constructor(adminUser: IAdminUser) {
         this.id = adminUser.id
         this.notificationToken = adminUser.notificationToken
@@ -32,6 +36,7 @@ export class AdminUser {
         this.position = adminUser.position
         this.state = adminUser.state
         this.email = adminUser.email
+        this.docId = adminUser.docId
     }
 
     toPrimitives() {
@@ -43,6 +48,7 @@ export class AdminUser {
             position: this.position.value,
             state: this.state.value,
             email: this.email.value,
+            docId: this.docId.value,
         }
     }
 }

@@ -8,6 +8,7 @@ import { AdminUserRole } from '@/lib/AdminUser/domain/value-objects/adminUserRol
 import { AdminUserPosition } from '../../domain/value-objects/adminUserPosition.vo'
 import { AdminUserState } from '../../domain/value-objects/adminUserState.vo'
 import { AdminUserEmail } from '../../domain/value-objects/adminUserEmail.vo'
+import { AdminUserDocId } from '../../domain/value-objects/adminUserDocId.vo'
 
 type AdminUserTurso = {
     id: string
@@ -17,6 +18,7 @@ type AdminUserTurso = {
     position: string
     state: string
     email: string
+    doc_id: string
 }
 
 export class AdminUserTursoRepository implements AdminUserRepository {
@@ -82,6 +84,7 @@ export class AdminUserTursoRepository implements AdminUserRepository {
             position: new AdminUserPosition(adminUser.position),
             state: new AdminUserState(adminUser.state),
             email: new AdminUserEmail(adminUser.email),
+            docId: new AdminUserDocId(adminUser.doc_id),
         })
     }
 }

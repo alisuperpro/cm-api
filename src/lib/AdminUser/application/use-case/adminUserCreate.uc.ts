@@ -6,6 +6,7 @@ import { AdminUserNotificationToken } from '@/lib/AdminUser/domain/value-objects
 import { AdminUserRole } from '@/lib/AdminUser/domain/value-objects/adminUserRole.vo'
 import { AdminUserDTO } from '@/lib/AdminUser/application/dto/adminUserCreate.dto'
 import { AdminUserPosition } from '../../domain/value-objects/adminUserPosition.vo'
+import { AdminUserDocId } from '../../domain/value-objects/adminUserDocId.vo'
 
 export class AdminUserCreate {
     constructor(private repository: AdminUserRepository) {}
@@ -21,6 +22,7 @@ export class AdminUserCreate {
             position: new AdminUserPosition(adminUser.position),
             state: new AdminUserPosition(adminUser.state),
             email: new AdminUserPosition(adminUser.email),
+            docId: new AdminUserDocId(adminUser.docId),
         })
 
         return await this.repository.create(adminUserObject)
