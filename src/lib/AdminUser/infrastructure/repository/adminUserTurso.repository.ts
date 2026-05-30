@@ -5,12 +5,18 @@ import { AdminUserId } from '@/lib/AdminUser/domain/value-objects/adminUserId.vo
 import { AdminUserName } from '@/lib/AdminUser/domain/value-objects/adminUserName.vo'
 import { AdminUserNotificationToken } from '@/lib/AdminUser/domain/value-objects/adminUserNotificationToken.vo'
 import { AdminUserRole } from '@/lib/AdminUser/domain/value-objects/adminUserRole.vo'
+import { AdminUserPosition } from '../../domain/value-objects/adminUserPosition.vo'
+import { AdminUserState } from '../../domain/value-objects/adminUserState.vo'
+import { AdminUserEmail } from '../../domain/value-objects/adminUserEmail.vo'
 
 type AdminUserTurso = {
     id: string
     notification_token: string
     role: string
     name: string
+    position: string
+    state: string
+    email: string
 }
 
 export class AdminUserTursoRepository implements AdminUserRepository {
@@ -19,11 +25,14 @@ export class AdminUserTursoRepository implements AdminUserRepository {
 
     async create(adminUser: AdminUser): Promise<void> {
         await this.db.execute({
-            sql: `INSERT INTO ${this.tableName} (id, role, name) VALUES (?,?,?)`,
+            sql: `INSERT INTO ${this.tableName} (id, role, name, position, state, email) VALUES (?,?,?,?,?,?)`,
             args: [
                 adminUser.id.value,
                 adminUser.role.value,
                 adminUser.name.value,
+                adminUser.position.value,
+                adminUser.state.value,
+                adminUser.email.value,
             ],
         })
     }
@@ -70,6 +79,9 @@ export class AdminUserTursoRepository implements AdminUserRepository {
                 adminUser.notification_token
             ),
             role: new AdminUserRole(adminUser.role),
+            position: new AdminUserPosition(adminUser.position),
+            state: new AdminUserState(adminUser.state),
+            email: new AdminUserEmail(adminUser.email),
         })
     }
 }
