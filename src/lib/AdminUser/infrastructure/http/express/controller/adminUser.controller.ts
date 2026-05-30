@@ -32,7 +32,7 @@ export class AdminUserController {
             )
 
             return res.status(200).json({
-                data: adminUser,
+                data: adminUser.toPrimitives(),
             })
         } catch (err) {
             if (err instanceof AdminUserNotFoundError) {

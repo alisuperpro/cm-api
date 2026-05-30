@@ -8,12 +8,7 @@ export const adminUserRouter = Router()
 const adminUserController = new AdminUserController()
 
 adminUserRouter.get('/', checkAdminAuth, adminUserController.getAll)
-adminUserRouter.get(
-    '/:id',
-    checkAdminAuth,
-    checkId,
-    adminUserController.findById
-)
+adminUserRouter.get('/:id', checkId, adminUserController.findById)
 
 adminUserRouter.post('/', checkAdminAuth, adminUserController.create)
 

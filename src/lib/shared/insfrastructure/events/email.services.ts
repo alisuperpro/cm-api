@@ -5,7 +5,7 @@ import logger from '../../../../utils/logger'
 import { serviceContainer } from '../services/serviceContainer'
 import { UserType } from '../../../../types/user.types'
 import { sendEmail } from '../../../../mail/mailer.service'
-import { formatDate } from '../utils/formatDate'
+import { formatDate, formatHours } from '../utils/formatDate'
 
 dotenv.config({
     quiet: true,
@@ -144,30 +144,16 @@ class EmailService {
             business_email: BUSINESS_DATA.email,
         }
 
-        if (eventName === 'payConfirmed') {
-            logger.info(eventName)
-            return {
-                ...baseContext,
-                training: { ...training, date: formatDate(training.date) },
-            }
+        return {
+            ...baseContext,
+            training: {
+                ...training,
+                date: formatDate(training.date),
+                startTime: formatHours(training.startTime),
+                endTime: formatHours(training.endTime),
+            },
+            reason: payload.reason,
         }
-
-        if (eventName === 'userRemoveForTraining') {
-            return {
-                ...baseContext,
-                training: { ...training, date: formatDate(training.date) },
-                reason: payload.reason,
-            }
-        }
-
-        if (eventName === 'userRegisteredOnTraining') {
-            return {
-                ...baseContext,
-                training: { ...training, date: formatDate(training.date) },
-            }
-        }
-
-        return baseContext
     }
 
     private async processEvent(eventName: string, payload: any): Promise<void> {
