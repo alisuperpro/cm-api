@@ -18,4 +18,5 @@ export interface CreateUserDTO {
     thirdName: string
     lastName: string
     secondLastName: string
+    needHelp: string
 }

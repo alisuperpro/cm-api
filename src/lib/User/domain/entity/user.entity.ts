@@ -17,6 +17,7 @@ import { UserSecondName } from '../value-objects/userSecondName.vo'
 import { UserThirdName } from '../value-objects/userThirdName.vo'
 import { UserLastName } from '../value-objects/userLastName.vo'
 import { UserSecondLastName } from '../value-objects/userSecondLastName.vo'
+import { UserNeedHelp } from '../value-objects/userNeedHelp.vo'
 
 export interface IUser {
     id: UserId
@@ -38,6 +39,7 @@ export interface IUser {
     thirdName: UserThirdName
     lastName: UserLastName
     secondLastName: UserSecondLastName
+    needHelp: UserNeedHelp
 }
 
 export class User {
@@ -60,7 +62,7 @@ export class User {
     public readonly thirdName: UserThirdName
     public readonly lastName: UserLastName
     public readonly secondLastName: UserSecondLastName
-
+    public readonly needHelp: UserNeedHelp
     constructor(user: IUser) {
         this.id = user.id
         this.fullName = user.fullName
@@ -81,6 +83,7 @@ export class User {
         this.thirdName = user.thirdName
         this.lastName = user.lastName
         this.secondLastName = user.secondLastName
+        this.needHelp = user.needHelp
     }
 
     toPrimitives() {
@@ -104,6 +107,7 @@ export class User {
             thirdName: this.thirdName.value,
             lastName: this.lastName.value,
             secondLastName: this.secondLastName.value,
+            needHelp: this.needHelp.value,
         }
     }
 }

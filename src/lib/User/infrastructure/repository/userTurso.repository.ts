@@ -20,6 +20,7 @@ import { UserSecondName } from '../../domain/value-objects/userSecondName.vo'
 import { UserThirdName } from '../../domain/value-objects/userThirdName.vo'
 import { UserLastName } from '../../domain/value-objects/userLastName.vo'
 import { UserSecondLastName } from '../../domain/value-objects/userSecondLastName.vo'
+import { UserNeedHelp } from '../../domain/value-objects/userNeedHelp.vo'
 
 type UserTurso = {
     id: string
@@ -41,6 +42,7 @@ type UserTurso = {
     third_name: string
     last_name: string
     second_last_name: string
+    need_help: string
 }
 
 export class UserTursoRepository implements UserRepository {
@@ -50,8 +52,8 @@ export class UserTursoRepository implements UserRepository {
     async create(user: User): Promise<void> {
         const query = {
             sql: `INSERT INTO ${this.tableName}
-                        (id, full_name, doc_id, email, phone, birthdate, occupation_status, university, how_find_us, disability, ig_username, gender, country_of_residence, tiktok_username, first_name, second_name, third_name, last_name, second_last_name)
-                        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+                        (id, full_name, doc_id, email, phone, birthdate, occupation_status, university, how_find_us, disability, ig_username, gender, country_of_residence, tiktok_username, first_name, second_name, third_name, last_name, second_last_name, need_help)
+                        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
             args: [
                 user.id.value,
                 user.fullName.value,
@@ -72,6 +74,7 @@ export class UserTursoRepository implements UserRepository {
                 user.thirdName.value,
                 user.lastName.value,
                 user.secondLastName.value,
+                user.needHelp.value,
             ],
         }
         await this.db.execute(query)
@@ -201,6 +204,7 @@ export class UserTursoRepository implements UserRepository {
             thirdName: new UserThirdName(user.third_name),
             lastName: new UserLastName(user.last_name),
             secondLastName: new UserSecondLastName(user.second_last_name),
+            needHelp: new UserNeedHelp(user.need_help),
         })
     }
 }

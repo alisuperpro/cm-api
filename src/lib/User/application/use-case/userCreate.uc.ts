@@ -25,6 +25,7 @@ import { UserDocIdExistsError } from '../../domain/errors/userDocIdExistsError.e
 import { UserEmailExistsError } from '../../domain/errors/userEmailExistsError.error'
 import { UserIgUsernameExistsError } from '../../domain/errors/userIgUsernameExistsError.error'
 import { UserTiktokUsernameExistsError } from '../../domain/errors/userTiktokUsernameError.error'
+import { UserNeedHelp } from '../../domain/value-objects/userNeedHelp.vo'
 
 export class UserCreate {
     constructor(private repository: UserRepository) {}
@@ -95,6 +96,7 @@ export class UserCreate {
             thirdName: new UserThirdName(dto.thirdName),
             lastName: new UserLastName(dto.lastName),
             secondLastName: new UserSecondLastName(dto.secondLastName),
+            needHelp: new UserNeedHelp(dto.needHelp),
         })
 
         return await this.repository.create(user)
