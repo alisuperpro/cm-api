@@ -18,6 +18,7 @@ import { UserSecondName } from '@/lib/User/domain/value-objects/userSecondName.v
 import { UserThirdName } from '@/lib/User/domain/value-objects/userThirdName.vo'
 import { UserLastName } from '@/lib/User/domain/value-objects/userLastName.vo'
 import { UserSecondLastName } from '@/lib/User/domain/value-objects/userSecondLastName.vo'
+import { UserNeedHelp } from '../value-objects/userNeedHelp.vo'
 
 // ─── Fixtures ────────────────────────────────────────────────────────────────
 
@@ -41,6 +42,7 @@ const FIXTURES = {
     thirdName: 'Andrew',
     lastName: 'Doe',
     secondLastName: 'Smith',
+    needHelp: 'No',
 } as const
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -100,6 +102,7 @@ const makeUser = (overrides: UserOverrides = {}) =>
         secondLastName:
             overrides.secondLastName ??
             new UserSecondLastName(FIXTURES.secondLastName),
+        needHelp: new UserNeedHelp(FIXTURES.needHelp),
     })
 
 // ─── Tests ───────────────────────────────────────────────────────────────────
