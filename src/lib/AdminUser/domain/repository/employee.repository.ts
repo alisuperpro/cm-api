@@ -1,4 +1,4 @@
-import { Employee } from '@/lib/AdminUser/domain/entity/adminUser.entity'
+import { Employee } from '@/lib/AdminUser/domain/entity/employee.entity'
 import { EmployeeId } from '@/lib/AdminUser/domain/value-objects/employeeId.vo'
 import { EmployeeNotificationToken } from '@/lib/AdminUser/domain/value-objects/employeeNotificationToken.vo'
 
