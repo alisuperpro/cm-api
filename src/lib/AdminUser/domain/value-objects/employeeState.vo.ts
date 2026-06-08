@@ -1,4 +1,4 @@
-export class AdminUserEmail {
+export class EmployeeState {
     value: string
 
     constructor(value: string) {

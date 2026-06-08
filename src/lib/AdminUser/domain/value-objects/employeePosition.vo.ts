@@ -1,4 +1,4 @@
-export class AdminUserDocId {
+export class EmployeePosition {
     value: string
 
     constructor(value: string) {

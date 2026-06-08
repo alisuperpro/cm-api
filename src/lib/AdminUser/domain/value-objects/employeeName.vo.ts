@@ -1,4 +1,4 @@
-export class AdminUserRole {
+export class EmployeeName {
     value: string
 
     constructor(value: string) {
@@ -8,7 +8,7 @@ export class AdminUserRole {
 
     private validate() {
         if (!this.value) {
-            throw new Error('Admin user role not valid')
+            throw new Error('Employee name not valid')
         }
     }
 }

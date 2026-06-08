@@ -1,42 +1,42 @@
-import { AdminUserId } from '@/lib/AdminUser/domain/value-objects/adminUserId.vo'
-import { AdminUserName } from '@/lib/AdminUser/domain/value-objects/adminUserName.vo'
-import { AdminUserNotificationToken } from '@/lib/AdminUser/domain/value-objects/adminUserNotificationToken.vo'
-import { AdminUserRole } from '@/lib/AdminUser/domain/value-objects/adminUserRole.vo'
-import { AdminUserPosition } from '../value-objects/adminUserPosition.vo'
-import { AdminUserState } from '../value-objects/adminUserState.vo'
-import { AdminUserEmail } from '../value-objects/adminUserEmail.vo'
-import { AdminUserDocId } from '../value-objects/adminUserDocId.vo'
+import { EmployeeId } from '@/lib/AdminUser/domain/value-objects/employeeId.vo'
+import { EmployeeName } from '@/lib/AdminUser/domain/value-objects/employeeName.vo'
+import { EmployeeNotificationToken } from '@/lib/AdminUser/domain/value-objects/employeeNotificationToken.vo'
+import { EmployeeRole } from '@/lib/AdminUser/domain/value-objects/employeeRole.vo'
+import { EmployeePosition } from '@/lib/AdminUser/domain/value-objects/employeePosition.vo'
+import { EmployeeState } from '@/lib/AdminUser/domain/value-objects/employeeState.vo'
+import { EmployeeEmail } from '@/lib/AdminUser/domain/value-objects/employeeEmail.vo'
+import { EmployeeDocId } from '@/lib/AdminUser/domain/value-objects/employeeDocId.vo'
 
-export interface IAdminUser {
-    id: AdminUserId
-    notificationToken: AdminUserNotificationToken
-    role: AdminUserRole
-    name: AdminUserName
-    position: AdminUserPosition
-    state: AdminUserState
-    email: AdminUserEmail
-    docId: AdminUserDocId
+export interface IEmployee {
+    id: EmployeeId
+    notificationToken: EmployeeNotificationToken
+    role: EmployeeRole
+    name: EmployeeName
+    position: EmployeePosition
+    state: EmployeeState
+    email: EmployeeEmail
+    docId: EmployeeDocId
 }
 
-export class AdminUser {
-    id: AdminUserId
-    notificationToken: AdminUserNotificationToken
-    role: AdminUserRole
-    name: AdminUserName
-    position: AdminUserPosition
-    state: AdminUserState
-    email: AdminUserEmail
-    docId: AdminUserDocId
+export class Employee {
+    id: EmployeeId
+    notificationToken: EmployeeNotificationToken
+    role: EmployeeRole
+    name: EmployeeName
+    position: EmployeePosition
+    state: EmployeeState
+    email: EmployeeEmail
+    docId: EmployeeDocId
 
-    constructor(adminUser: IAdminUser) {
-        this.id = adminUser.id
-        this.notificationToken = adminUser.notificationToken
-        this.role = adminUser.role
-        this.name = adminUser.name
-        this.position = adminUser.position
-        this.state = adminUser.state
-        this.email = adminUser.email
-        this.docId = adminUser.docId
+    constructor(employee: IEmployee) {
+        this.id = employee.id
+        this.notificationToken = employee.notificationToken
+        this.role = employee.role
+        this.name = employee.name
+        this.position = employee.position
+        this.state = employee.state
+        this.email = employee.email
+        this.docId = employee.docId
     }
 
     toPrimitives() {

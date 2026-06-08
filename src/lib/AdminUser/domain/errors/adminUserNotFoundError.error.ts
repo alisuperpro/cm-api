@@ -1,1 +1,1 @@
-export class AdminUserNotFoundError extends Error {}
+export class EmployeeNotFoundError extends Error {}

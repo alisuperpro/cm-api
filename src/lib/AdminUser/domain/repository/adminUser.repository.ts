@@ -1,13 +1,13 @@
-import { AdminUser } from '@/lib/AdminUser/domain/entity/adminUser.entity'
-import { AdminUserId } from '@/lib/AdminUser/domain/value-objects/adminUserId.vo'
-import { AdminUserNotificationToken } from '@/lib/AdminUser/domain/value-objects/adminUserNotificationToken.vo'
+import { Employee } from '@/lib/AdminUser/domain/entity/adminUser.entity'
+import { EmployeeId } from '@/lib/AdminUser/domain/value-objects/employeeId.vo'
+import { EmployeeNotificationToken } from '@/lib/AdminUser/domain/value-objects/employeeNotificationToken.vo'
 
-export interface AdminUserRepository {
-    create(adminUser: AdminUser): Promise<void>
-    getAll(): Promise<AdminUser[]>
-    findById(id: AdminUserId): Promise<AdminUser | null>
+export interface EmployeeRepository {
+    create(employee: Employee): Promise<void>
+    getAll(): Promise<Employee[]>
+    findById(id: EmployeeId): Promise<Employee | null>
     updateNotificatonToken(
-        id: AdminUserId,
-        token: AdminUserNotificationToken
+        id: EmployeeId,
+        token: EmployeeNotificationToken
     ): Promise<void>
 }

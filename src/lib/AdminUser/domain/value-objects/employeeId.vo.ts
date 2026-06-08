@@ -1,4 +1,4 @@
-export class AdminUserNotificationToken {
+export class EmployeeId {
     value: string
 
     constructor(value: string) {
@@ -8,7 +8,7 @@ export class AdminUserNotificationToken {
 
     private validate() {
         if (!this.value) {
-            throw new Error('Admin user notification token not valid')
+            throw new Error('Employee id not valid')
         }
     }
 }
