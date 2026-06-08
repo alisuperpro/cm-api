@@ -1,8 +1,8 @@
-import { EmployeeCreate } from '@/lib/AdminUser/application/use-case/employeeCreate.uc'
-import { EmployeeFindById } from '@/lib/AdminUser/application/use-case/employeeFindById.uc'
-import { EmployeeGetAll } from '@/lib/AdminUser/application/use-case/employeeGetAll.uc'
-import { EmployeeUpdateNotoficationToken } from '@/lib/AdminUser/application/use-case/employeeUpdateNotificationToken.uc'
-import { EmployeeTursoRepository } from '@/lib/AdminUser/infrastructure/repository/employeeTurso.repository'
+import { EmployeeCreate } from '@/lib/Employee/application/use-case/employeeCreate.uc'
+import { EmployeeFindById } from '@/lib/Employee/application/use-case/employeeFindById.uc'
+import { EmployeeGetAll } from '@/lib/Employee/application/use-case/employeeGetAll.uc'
+import { EmployeeUpdateNotoficationToken } from '@/lib/Employee/application/use-case/employeeUpdateNotificationToken.uc'
+import { EmployeeTursoRepository } from '@/lib/Employee/infrastructure/repository/employeeTurso.repository'
 
 const employeeRepository = new EmployeeTursoRepository()
 

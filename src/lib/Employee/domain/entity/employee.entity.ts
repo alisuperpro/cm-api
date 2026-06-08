@@ -1,11 +1,11 @@
-import { EmployeeId } from '@/lib/AdminUser/domain/value-objects/employeeId.vo'
-import { EmployeeName } from '@/lib/AdminUser/domain/value-objects/employeeName.vo'
-import { EmployeeNotificationToken } from '@/lib/AdminUser/domain/value-objects/employeeNotificationToken.vo'
-import { EmployeeRole } from '@/lib/AdminUser/domain/value-objects/employeeRole.vo'
-import { EmployeePosition } from '@/lib/AdminUser/domain/value-objects/employeePosition.vo'
-import { EmployeeState } from '@/lib/AdminUser/domain/value-objects/employeeState.vo'
-import { EmployeeEmail } from '@/lib/AdminUser/domain/value-objects/employeeEmail.vo'
-import { EmployeeDocId } from '@/lib/AdminUser/domain/value-objects/employeeDocId.vo'
+import { EmployeeId } from '@/lib/Employee/domain/value-objects/employeeId.vo'
+import { EmployeeName } from '@/lib/Employee/domain/value-objects/employeeName.vo'
+import { EmployeeNotificationToken } from '@/lib/Employee/domain/value-objects/employeeNotificationToken.vo'
+import { EmployeeRole } from '@/lib/Employee/domain/value-objects/employeeRole.vo'
+import { EmployeePosition } from '@/lib/Employee/domain/value-objects/employeePosition.vo'
+import { EmployeeState } from '@/lib/Employee/domain/value-objects/employeeState.vo'
+import { EmployeeEmail } from '@/lib/Employee/domain/value-objects/employeeEmail.vo'
+import { EmployeeDocId } from '@/lib/Employee/domain/value-objects/employeeDocId.vo'
 
 export interface IEmployee {
     id: EmployeeId

@@ -1,6 +1,6 @@
-import { EmployeeNotFoundError } from '@/lib/AdminUser/domain/errors/employeeNotFoundError.error'
-import { EmployeeRepository } from '@/lib/AdminUser/domain/repository/employee.repository'
-import { EmployeeId } from '@/lib/AdminUser/domain/value-objects/employeeId.vo'
+import { EmployeeNotFoundError } from '@/lib/Employee/domain/errors/employeeNotFoundError.error'
+import { EmployeeRepository } from '@/lib/Employee/domain/repository/employee.repository'
+import { EmployeeId } from '@/lib/Employee/domain/value-objects/employeeId.vo'
 
 export class EmployeeFindById {
     constructor(private repository: EmployeeRepository) {}

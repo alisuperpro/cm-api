@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import { serviceContainer } from '@/lib/shared/insfrastructure/services/serviceContainer'
-import { EmployeeNotFoundError } from '@/lib/AdminUser/domain/errors/employeeNotFoundError.error'
+import { EmployeeNotFoundError } from '@/lib/Employee/domain/errors/employeeNotFoundError.error'
 
 export class EmployeeController {
     async create(req: Request, res: Response, next: NextFunction) {

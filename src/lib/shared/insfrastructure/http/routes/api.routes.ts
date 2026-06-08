@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import { userRouter } from '../../../../User/infrastructure/http/express/routes/user.routes'
 import { trainingRouter } from '../../../../Training/infrastructure/http/express/routes/training.routes'
-import { employeeRouter } from '../../../../AdminUser/infrastructure/http/express/routes/employee.routes'
+import { employeeRouter } from '../../../../Employee/infrastructure/http/express/routes/employee.routes'
 import { trainingStatusRouter } from '../../../../Training/infrastructure/http/express/routes/trainingStatus.routes'
 import { trainingTypeRouter } from '../../../../Training/infrastructure/http/express/routes/trainingType.routes'
 import { trainingUserRouter } from '../../../../Enrollment/infrastructure/http/express/routes/enrollment.routes'
