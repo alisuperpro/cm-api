@@ -1,4 +1,4 @@
-export class AdminUserContactName {
+export class EmployeeContactPhone {
     value: string
 
     constructor(value: string) {
