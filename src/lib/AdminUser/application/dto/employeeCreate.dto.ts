@@ -1,4 +1,4 @@
-export interface AdminUserDTO {
+export interface EmployeeDTO {
     id: string
     notificationToken: string
     role: string
