@@ -25,7 +25,7 @@ class AdminNotificationService {
             this.handleUserRegistered.bind(this)
         )
 
-        logger.info('[Admin Notification Service] Event listeners initialized')
+        logger.info('[Employee Service] Event listeners initialized')
     }
 
     private async handleUserRegistered(payload: {
@@ -35,14 +35,12 @@ class AdminNotificationService {
         const { trainingId, userId } = payload
 
         logger.info(
-            `[Admin Notification Service] Processing userRegisteredOnTraining event for training ${trainingId}`
+            `[Employee Service] Processing userRegisteredOnTraining event for training ${trainingId}`
         )
 
         // Evitar procesamiento concurrente del mismo evento
         if (this.isProcessing) {
-            logger.warn(
-                '[Admin Notification Service] Already processing, skipping...'
-            )
+            logger.warn('[Employee Service] Already processing, skipping...')
             return
         }
 
@@ -54,7 +52,7 @@ class AdminNotificationService {
 
             if (!training) {
                 logger.error(
-                    `[Admin Notification Service] Training ${trainingId} not found`
+                    `[Employee Service] Training ${trainingId} not found`
                 )
                 return
             }
@@ -63,9 +61,7 @@ class AdminNotificationService {
             const admins = await this.getAllAdmins()
 
             if (!admins || admins.length === 0) {
-                logger.warn(
-                    '[Admin Notification Service] No admins found to notify'
-                )
+                logger.warn('[Employee Service] No admins found to notify')
                 return
             }
 
@@ -131,7 +127,7 @@ class AdminNotificationService {
     }
 
     private async getAllAdmins(): Promise<AdminUser[]> {
-        const admins = await serviceContainer.adminUser.getAll.run()
+        const admins = await serviceContainer.employee.getAll.run()
 
         /* 
         if (error) {
@@ -265,7 +261,7 @@ class AdminNotificationService {
     ): Promise<boolean> {
         try {
             const admin = await (
-                await serviceContainer.adminUser.findById.run(adminId)
+                await serviceContainer.employee.findById.run(adminId)
             ).toPrimitives()
 
             /* if (error || !admin) {
@@ -277,7 +273,7 @@ class AdminNotificationService {
 
             if (!admin.notificationToken) {
                 logger.warn(
-                    `[Admin Notification Service] Admin ${adminId} has no notification token`
+                    `[Employee Service] Admin ${adminId} has no notification token`
                 )
                 return false
             }
@@ -291,12 +287,12 @@ class AdminNotificationService {
             })
 
             logger.info(
-                `[Admin Notification Service] Notification sent to admin ${adminId}`
+                `[Employee Service] Notification sent to admin ${adminId}`
             )
             return true
         } catch (error) {
             logger.error(
-                `[Admin Notification Service] Error notifying admin ${adminId}:`,
+                `[Employee Service] Error notifying admin ${adminId}:`,
                 error
             )
             return false
@@ -306,7 +302,7 @@ class AdminNotificationService {
     // Limpiar listeners
     public cleanup(): void {
         appEventEmitter.removeAllListeners('userRegisteredOnTraining')
-        logger.info('[Admin Notification Service] Cleaned up event listeners')
+        logger.info('[Employee Service] Cleaned up event listeners')
     }
 }
 

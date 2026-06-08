@@ -1,6 +1,6 @@
 import { userServices } from './user.services'
 import { trainingServices } from './training.services'
-import { adminUserServices } from './adminUser.services'
+import { employeeServices } from './employee.services'
 import { trainingStatusServices } from './trainingStatus.services'
 import { trainingTypeServices } from './trainingType.services'
 import { enrollmentServices } from './enrollment.services'
@@ -14,8 +14,8 @@ export const serviceContainer = {
     training: {
         ...trainingServices,
     },
-    adminUser: {
-        ...adminUserServices,
+    employee: {
+        ...employeeServices,
     },
     trainingStatus: {
         ...trainingStatusServices,

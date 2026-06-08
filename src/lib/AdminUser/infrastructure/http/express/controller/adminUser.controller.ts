@@ -1,11 +1,11 @@
 import { NextFunction, Request, Response } from 'express'
 import { serviceContainer } from '@/lib/shared/insfrastructure/services/serviceContainer'
-import { AdminUserNotFoundError } from '@/lib/AdminUser/domain/errors/adminUserNotFoundError.error'
+import { EmployeeNotFoundError } from '@/lib/AdminUser/domain/errors/employeeNotFoundError.error'
 
-export class AdminUserController {
+export class EmployeeController {
     async create(req: Request, res: Response, next: NextFunction) {
         try {
-            await serviceContainer.adminUser.create.run(req.body)
+            await serviceContainer.employee.create.run(req.body)
 
             return res.status(201).send()
         } catch (err) {
@@ -15,10 +15,10 @@ export class AdminUserController {
 
     async getAll(req: Request, res: Response, next: NextFunction) {
         try {
-            const adminUsers = await serviceContainer.adminUser.getAll.run()
+            const employees = await serviceContainer.employee.getAll.run()
 
             return res.status(200).json({
-                data: adminUsers,
+                data: employees,
             })
         } catch (err) {
             next(err)
@@ -27,15 +27,15 @@ export class AdminUserController {
 
     async findById(req: Request, res: Response, next: NextFunction) {
         try {
-            const adminUser = await serviceContainer.adminUser.findById.run(
+            const employee = await serviceContainer.employee.findById.run(
                 req.params.id.toString()
             )
 
             return res.status(200).json({
-                data: adminUser.toPrimitives(),
+                data: employee.toPrimitives(),
             })
         } catch (err) {
-            if (err instanceof AdminUserNotFoundError) {
+            if (err instanceof EmployeeNotFoundError) {
                 return res.status(404).json({ message: err.message })
             }
             next(err)
@@ -48,7 +48,7 @@ export class AdminUserController {
         next: NextFunction
     ) {
         try {
-            await serviceContainer.adminUser.updateNotificationToken.run({
+            await serviceContainer.employee.updateNotificationToken.run({
                 id: req.params.id.toString(),
                 token: req.body.token,
             })
