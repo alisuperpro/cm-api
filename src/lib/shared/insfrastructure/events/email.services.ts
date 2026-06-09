@@ -1,10 +1,10 @@
 import { appEventEmitter } from './eventEmitter'
 import Handlebars from 'handlebars'
 import dotenv from 'dotenv'
-import logger from '../../../../utils/logger'
+import logger from '@/lib/shared/insfrastructure/utils/logger'
 import { serviceContainer } from '../services/serviceContainer'
-import { UserType } from '../../../../types/user.types'
-import { sendEmail } from '../../../../mail/mailer.service'
+import { UserType } from '@/lib/shared/insfrastructure/types/user.types'
+import { sendEmail } from '../utils/mailer.service'
 import { formatDate, formatHours } from '../utils/formatDate'
 
 dotenv.config({

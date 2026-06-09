@@ -69,7 +69,8 @@ async function bootstrap() {
 
         logger.info('Email service loaded', { emailService: !!emailService })
     } catch (err) {
-        logger.error('Failed to load email service', { err }) // ← aquí puede estar el bug
+        console.log(err)
+        logger.error('Failed to load email service', { err })
     }
 
     logger.info('Event listeners registered', {

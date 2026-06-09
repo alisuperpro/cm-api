@@ -1,5 +1,5 @@
 import EventEmitter from 'events'
-import { EventMap, EventName } from '../../../../types/events'
+import { EventMap, EventName } from '@/lib/shared/insfrastructure/types/events'
 
 class TypedEventEmitter extends EventEmitter {
     emit<K extends EventName>(event: K, payload: EventMap[K]): boolean {

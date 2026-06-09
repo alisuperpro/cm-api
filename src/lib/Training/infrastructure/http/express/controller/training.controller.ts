@@ -1,7 +1,10 @@
 import { Request, Response } from 'express'
 import { serviceContainer } from '@/lib/shared/insfrastructure/services/serviceContainer'
 import { TrainingNotFoundError } from '@/lib/Training/domain/error/trainingNotFoundError.error'
-import { getPresignedUrl, uploadFile } from '@/services/s3'
+import {
+    getPresignedUrl,
+    uploadFile,
+} from '@/lib/shared/insfrastructure/utils/s3'
 import { S3Client } from '@/lib/shared/insfrastructure/storage/s3Client'
 
 export class TrainingController {

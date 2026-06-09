@@ -1,9 +1,12 @@
 import { Request, Response, NextFunction } from 'express'
 import { serviceContainer } from '../../../../../shared/insfrastructure/services/serviceContainer'
 import { generateUUID } from '../../../../../shared/insfrastructure/utils/generateUUID'
-import { getPresignedUrl, uploadFile } from '../../../../../../services/s3'
+import {
+    getPresignedUrl,
+    uploadFile,
+} from '@/lib/shared/insfrastructure/utils/s3'
 import { appEventEmitter } from '@/lib/shared/insfrastructure/events/eventEmitter'
-import logger from '@/utils/logger'
+import logger from '@/lib/shared/insfrastructure/utils/logger'
 
 export class EnrollmentController {
     async create(req: Request, res: Response, next: NextFunction) {

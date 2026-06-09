@@ -1,5 +1,5 @@
-import logger from '../../../../utils/logger'
-import { sendPushNotification } from '../../../../utils/notification'
+import logger from '@/lib/shared/insfrastructure/utils/logger'
+import { sendPushNotification } from '@/lib/shared/insfrastructure/utils/notification'
 import { serviceContainer } from '../services/serviceContainer'
 import { appEventEmitter } from './eventEmitter'
 
