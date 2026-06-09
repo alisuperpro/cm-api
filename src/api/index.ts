@@ -7,7 +7,7 @@ import { clerkMiddleware } from '@clerk/express'
 import fileUpload from 'express-fileupload'
 import { TursoDatabase } from '@/lib/shared/insfrastructure/database/turso.db'
 import { apiRouter } from '@/lib/shared/insfrastructure/http/routes/api.routes'
-import logger from '@/utils/logger'
+import logger from '@/lib/shared/insfrastructure/utils/logger'
 import { appEventEmitter } from '@/lib/shared/insfrastructure/events/eventEmitter'
 
 const app = express()
