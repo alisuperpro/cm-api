@@ -1,4 +1,4 @@
-import { Request, Response } from 'express'
+/* import { Request, Response } from 'express'
 import { VideoCategoryModel } from '../model/videoCategory.model'
 
 export class VideoCategoryController {
@@ -46,3 +46,4 @@ export class VideoCategoryController {
         })
     }
 }
+ */

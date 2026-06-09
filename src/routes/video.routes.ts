@@ -1,4 +1,4 @@
-import { Router } from 'express'
+/* import { Router } from 'express'
 import { VideoController } from '../controller/video.controller'
 import { checkAuth } from '../middleware/checkAuth.middleware'
 import { checkAdminAuth } from '../middleware/checkAdminAuth.middleware'
@@ -18,3 +18,4 @@ videoRouter.post(
     checkAdminAuth,
     VideoController.uploadThumbnail
 )
+ */

@@ -1,4 +1,4 @@
-import { db } from '../db/db'
+/* import { db } from '../db/db'
 import { randomUUID } from 'node:crypto'
 import { QueryBuilder } from '../utils/queryBuilder'
 
@@ -42,3 +42,4 @@ export class VisibilityTypeModel {
         }
     }
 }
+ */

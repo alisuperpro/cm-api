@@ -1,4 +1,4 @@
-import { Request, Response } from 'express'
+/* import { Request, Response } from 'express'
 import { VisibilityTypeModel } from '../model/visibilityType.model'
 
 export class VisibilityTypeController {
@@ -51,3 +51,4 @@ export class VisibilityTypeController {
         })
     }
 }
+ */

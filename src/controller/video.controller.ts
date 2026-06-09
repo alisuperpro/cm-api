@@ -1,4 +1,4 @@
-import { Request, Response } from 'express'
+/* import { Request, Response } from 'express'
 import { VideoModel } from '../model/video.model'
 import { getPresignedUrl, uploadFile } from '../services/s3'
 
@@ -142,3 +142,4 @@ export class VideoController {
         })
     }
 }
+ */

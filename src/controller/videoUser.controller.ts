@@ -1,4 +1,4 @@
-import { Request, Response } from 'express'
+/* import { Request, Response } from 'express'
 import { VideoUserModel } from '../model/videoUser.model'
 
 export class VideoUserController {
@@ -54,3 +54,4 @@ export class VideoUserController {
         })
     }
 }
+ */
