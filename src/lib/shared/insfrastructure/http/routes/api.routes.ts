@@ -7,6 +7,7 @@ import { trainingTypeRouter } from '../../../../Training/infrastructure/http/exp
 import { trainingUserRouter } from '../../../../Enrollment/infrastructure/http/express/routes/enrollment.routes'
 import { emailSystemRouter } from '../../../../Email/infrastructure/http/express/routes/emailSystem.routes'
 import { emailTemplateRouter } from '../../../../Email/infrastructure/http/express/routes/emailTemplate.routes'
+import { employeeContactRouter } from '@/lib/EmployeeContact/infrastructure/http/express/routes/employeeContact.routes'
 
 export const apiRouter = Router()
 
@@ -18,6 +19,7 @@ apiRouter.use('/training-user', trainingUserRouter)
 apiRouter.use('/employee', employeeRouter)
 apiRouter.use('/email-system', emailSystemRouter)
 apiRouter.use('/email-template', emailTemplateRouter)
+apiRouter.use('/employee-contact', employeeContactRouter)
 //apiRouter.use('/video', videoRouter)
 //apiRouter.use('/video-category', videoCategoryRouter)
 //apiRouter.use('/visibility-type', visibilityTypeRouter)
