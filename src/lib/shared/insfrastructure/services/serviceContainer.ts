@@ -6,6 +6,7 @@ import { trainingTypeServices } from './trainingType.services'
 import { enrollmentServices } from './enrollment.services'
 import { emailSystemServices } from './emailSystem.services'
 import { emailTemplateServices } from './emailTemplate.services'
+import { employeeContactServices } from './employeeContact.services'
 
 export const serviceContainer = {
     user: {
@@ -31,5 +32,8 @@ export const serviceContainer = {
     },
     emailTemplate: {
         ...emailTemplateServices,
+    },
+    employeeContact: {
+        ...employeeContactServices,
     },
 }
