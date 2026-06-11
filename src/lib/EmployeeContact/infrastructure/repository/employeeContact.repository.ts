@@ -12,7 +12,7 @@ interface EmployeeContactTurso {
     employeeId: string
     phone: string
     name: string
-    isPrimary: boolean
+    is_primary: boolean
 }
 
 export class EmployeeContactTursoRepository implements EmployeeContactRepository {
@@ -57,7 +57,7 @@ export class EmployeeContactTursoRepository implements EmployeeContactRepository
             employeeId: new EmployeeContactEmployeeId(contact.employeeId),
             phone: new EmployeeContactPhone(contact.phone),
             name: new EmployeeContactName(contact.name),
-            isPrimary: new EmployeeContactIsPrimary(contact.isPrimary),
+            isPrimary: new EmployeeContactIsPrimary(contact.is_primary),
         })
     }
 }
