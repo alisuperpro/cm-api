@@ -2,12 +2,14 @@ import { EmployeeContactId } from '../value-objects/employeeContactId.vo'
 import { EmployeeContactName } from '../value-objects/employeeContactName.vo'
 import { EmployeeContactPhone } from '../value-objects/employeeContactPhone.vo'
 import { EmployeeContactUserId } from '../value-objects/employeeContactEmployeeId.vo'
+import { EmployeeContactIsPrimary } from '../value-objects/employeeContactIsPrimary.vo'
 
 export interface IEmployeeContact {
     id: EmployeeContactId
     userId: EmployeeContactName
     phone: EmployeeContactPhone
     name: EmployeeContactUserId
+    isPrimary: EmployeeContactIsPrimary
 }
 
 export class EmployeeContact {
@@ -15,12 +17,14 @@ export class EmployeeContact {
     userId: EmployeeContactName
     phone: EmployeeContactPhone
     name: EmployeeContactUserId
+    isPrimary: EmployeeContactIsPrimary
 
     constructor(employeeContact: IEmployeeContact) {
         this.id = employeeContact.id
         this.userId = employeeContact.userId
         this.phone = employeeContact.phone
         this.name = employeeContact.name
+        this.isPrimary = employeeContact.isPrimary
     }
 
     toPrimitives() {
@@ -29,6 +33,7 @@ export class EmployeeContact {
             name: this.name.value,
             userId: this.userId.value,
             phone: this.phone.value,
+            isPrimary: this.isPrimary.value,
         }
     }
 }
