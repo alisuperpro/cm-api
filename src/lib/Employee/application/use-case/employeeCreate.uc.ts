@@ -9,6 +9,7 @@ import { EmployeePosition } from '@/lib/Employee/domain/value-objects/employeePo
 import { EmployeeDocId } from '@/lib/Employee/domain/value-objects/employeeDocId.vo'
 import { EmployeeState } from '@/lib/Employee/domain/value-objects/employeeState.vo'
 import { EmployeeEmail } from '@/lib/Employee/domain/value-objects/employeeEmail.vo'
+import { EmployeePhoto } from '../../domain/value-objects/employeePhoto.vo'
 
 export class EmployeeCreate {
     constructor(private repository: EmployeeRepository) {}
@@ -25,6 +26,7 @@ export class EmployeeCreate {
             state: new EmployeeState(employee.state),
             email: new EmployeeEmail(employee.email),
             docId: new EmployeeDocId(employee.docId),
+            photo: new EmployeePhoto(employee.photo),
         })
 
         return await this.repository.create(employeeObject)

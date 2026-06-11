@@ -7,4 +7,5 @@ export interface EmployeeDTO {
     state: string
     email: string
     docId: string
+    photo: string
 }
