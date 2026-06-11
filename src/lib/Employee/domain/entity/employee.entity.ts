@@ -6,6 +6,7 @@ import { EmployeePosition } from '@/lib/Employee/domain/value-objects/employeePo
 import { EmployeeState } from '@/lib/Employee/domain/value-objects/employeeState.vo'
 import { EmployeeEmail } from '@/lib/Employee/domain/value-objects/employeeEmail.vo'
 import { EmployeeDocId } from '@/lib/Employee/domain/value-objects/employeeDocId.vo'
+import { EmployeePhoto } from '../value-objects/employeePhoto.vo'
 
 export interface IEmployee {
     id: EmployeeId
@@ -16,6 +17,7 @@ export interface IEmployee {
     state: EmployeeState
     email: EmployeeEmail
     docId: EmployeeDocId
+    photo: EmployeePhoto
 }
 
 export class Employee {
@@ -27,6 +29,7 @@ export class Employee {
     state: EmployeeState
     email: EmployeeEmail
     docId: EmployeeDocId
+    photo: EmployeePhoto
 
     constructor(employee: IEmployee) {
         this.id = employee.id
@@ -37,6 +40,7 @@ export class Employee {
         this.state = employee.state
         this.email = employee.email
         this.docId = employee.docId
+        this.photo = employee.photo
     }
 
     toPrimitives() {
@@ -49,6 +53,7 @@ export class Employee {
             state: this.state.value,
             email: this.email.value,
             docId: this.docId.value,
+            photo: this.photo.value,
         }
     }
 }
