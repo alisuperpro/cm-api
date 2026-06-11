@@ -9,6 +9,7 @@ import { EmployeePosition } from '../../domain/value-objects/employeePosition.vo
 import { EmployeeState } from '../../domain/value-objects/employeeState.vo'
 import { EmployeeEmail } from '../../domain/value-objects/employeeEmail.vo'
 import { EmployeeDocId } from '../../domain/value-objects/employeeDocId.vo'
+import { EmployeePhoto } from '../../domain/value-objects/employeePhoto.vo'
 
 type EmployeeTurso = {
     id: string
@@ -19,6 +20,7 @@ type EmployeeTurso = {
     state: string
     email: string
     doc_id: string
+    photo: string
 }
 
 export class EmployeeTursoRepository implements EmployeeRepository {
@@ -27,7 +29,7 @@ export class EmployeeTursoRepository implements EmployeeRepository {
 
     async create(employee: Employee): Promise<void> {
         await this.db.execute({
-            sql: `INSERT INTO ${this.tableName} (id, role, name, position, state, email) VALUES (?,?,?,?,?,?)`,
+            sql: `INSERT INTO ${this.tableName} (id, role, name, position, state, email, doc_id, photo) VALUES (?,?,?,?,?,?,?,?)`,
             args: [
                 employee.id.value,
                 employee.role.value,
@@ -35,6 +37,8 @@ export class EmployeeTursoRepository implements EmployeeRepository {
                 employee.position.value,
                 employee.state.value,
                 employee.email.value,
+                employee.docId.value,
+                employee.photo.value,
             ],
         })
     }
@@ -87,6 +91,7 @@ export class EmployeeTursoRepository implements EmployeeRepository {
             state: new EmployeeState(employee.state),
             email: new EmployeeEmail(employee.email),
             docId: new EmployeeDocId(employee.doc_id),
+            photo: new EmployeePhoto(employee.photo),
         })
     }
 }
