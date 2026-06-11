@@ -59,6 +59,8 @@ export class EmployeeTursoRepository implements EmployeeRepository {
 
         const result = await this.db.execute(query)
 
+        if (result.rows.length <= 0) return null
+
         return this.mapToDomain(result.rows[0] as unknown as EmployeeTurso)
     }
 

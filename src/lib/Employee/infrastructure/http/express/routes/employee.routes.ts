@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { EmployeeController } from '@/lib/Employee/infrastructure/http/express/controller/adminUser.controller'
+import { EmployeeController } from '@/lib/Employee/infrastructure/http/express/controller/employee.controller'
 import { checkAdminAuth } from '@/lib/shared/insfrastructure/http/middleware/checkAdminAuth.middleware'
 import { checkId } from '@/lib/shared/insfrastructure/http/middleware/checkId.middleware'
 
