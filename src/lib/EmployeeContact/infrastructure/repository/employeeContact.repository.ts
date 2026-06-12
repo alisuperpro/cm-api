@@ -9,7 +9,7 @@ import { EmployeeContactIsPrimary } from '../../domain/value-objects/employeeCon
 
 interface EmployeeContactTurso {
     id: string
-    employeeId: string
+    employee_id: string
     phone: string
     name: string
     is_primary: boolean
@@ -54,7 +54,7 @@ export class EmployeeContactTursoRepository implements EmployeeContactRepository
     private mapToDomain(contact: EmployeeContactTurso) {
         return new EmployeeContact({
             id: new EmployeeContactId(contact.id),
-            employeeId: new EmployeeContactEmployeeId(contact.employeeId),
+            employeeId: new EmployeeContactEmployeeId(contact.employee_id),
             phone: new EmployeeContactPhone(contact.phone),
             name: new EmployeeContactName(contact.name),
             isPrimary: new EmployeeContactIsPrimary(contact.is_primary),
