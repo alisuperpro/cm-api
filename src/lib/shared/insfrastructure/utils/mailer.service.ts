@@ -18,7 +18,7 @@ export const sendEmail = async ({
 }) => {
     const emailData = await serviceContainer.emailSystem.findById.run(configId)
     //@ts-ignore
-    const clearPassword = decrypt(emailData[0].password)
+    const clearPassword = decrypt(emailData.password)
 
     const transporter = await createDynamicTransporter({
         host: emailData?.host ?? '',
@@ -30,7 +30,7 @@ export const sendEmail = async ({
 
     const mailOptions = {
         //@ts-ignore
-        from: `"${emailData[0].name}" <${emailData[0].email}>`,
+        from: `"${emailData.name}" <${emailData.email}>`,
         to,
         subject,
         html: template,
