@@ -30,6 +30,7 @@
         "@aws-sdk/s3-request-presigner": "^3.1033.0",
         "@clerk/express": "^2.1.5",
         "@libsql/client": "^0.17.2",
+        "@sentry/node": "^10.58.0",
         "@types/cors": "^2.8.19",
         "@types/express": "^5.0.6",
         "@types/express-fileupload": "^1.5.1",
