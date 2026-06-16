@@ -1,18 +1,17 @@
-import '@/lib/shared/insfrastructure/utils/instrument.mjs'
 import express, { NextFunction, Request, Response } from 'express'
 import cors from 'cors'
 import morgan from 'morgan'
 import dotenv from 'dotenv'
 import { clerkMiddleware } from '@clerk/express'
-import * as Sentry from '@sentry/node'
 import fileUpload from 'express-fileupload'
 import { TursoDatabase } from '@/lib/shared/insfrastructure/database/turso.db'
 import { apiRouter } from '@/lib/shared/insfrastructure/http/routes/api.routes'
 import logger from '@/lib/shared/insfrastructure/utils/logger'
 import { appEventEmitter } from '@/lib/shared/insfrastructure/events/eventEmitter'
+import { SentryErrorHandler } from '@/lib/shared/insfrastructure/monitoring/sentryHandler'
 
 const app = express()
-
+const errorHandler = new SentryErrorHandler()
 const origins = process.env.ACCEPTED_ORIGIN
     ? process.env.ACCEPTED_ORIGIN.split(',').map((o) => o.trim())
     : []
@@ -85,14 +84,12 @@ app.get('/healt', (req: Request, res: Response) => {
 })
 
 app.use('/api', apiRouter)
-Sentry.setupExpressErrorHandler(app)
 
 app.use((err: unknown, req: Request, res: Response, next: NextFunction) => {
     if (err instanceof Error) {
-        console.error(err.stack)
         return res.status(500).json({ message: err.message })
     }
-    console.error(err)
+    errorHandler.captureException(err, new Error('Internal Server Error'))
     return res.status(500).json({ message: 'Something went wrong' })
 })
 
