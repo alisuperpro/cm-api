@@ -7,7 +7,7 @@ import { EnrollmentUserId } from '../value-objects/enrollmentUserId.vo'
 
 export interface EnrollmentRepository {
     save(enrollment: Enrollment): Promise<void>
-    findByTraining(trainingId: string): Promise<Enrollment[]>
+    findByTrainingId(trainingId: string): Promise<Enrollment | null>
     updateIsArrived(
         userId: EnrollmentUserId,
         trainingId: EnrollmentTrainingId,

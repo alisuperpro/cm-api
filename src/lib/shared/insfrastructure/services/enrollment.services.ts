@@ -13,7 +13,7 @@ const enrollmentQueryRepository = new EnrollmentQueryRepositoryImpl()
 
 export const enrollmentServices = {
     create: new EnrollmentCreate(enrollmentRepository),
-    getByTraining: new EnrollmentGetByTraining(enrollmentQueryRepository),
+    getByTrainingId: new EnrollmentGetByTraining(enrollmentQueryRepository),
     getAll: new EnrollmentGetAll(enrollmentQueryRepository),
     getById: new EnrollmentGetById(enrollmentQueryRepository),
     updateIsArrived: new EnrollmentUpdateIsArrived(enrollmentRepository),

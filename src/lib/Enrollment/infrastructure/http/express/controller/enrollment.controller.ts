@@ -61,9 +61,10 @@ export class EnrollmentController {
     }
 
     async getByTrainingId(req: Request, res: Response) {
-        const enrollment = await serviceContainer.enrollment.getByTraining.run(
-            req.params.id.toString()
-        )
+        const enrollment =
+            await serviceContainer.enrollment.getByTrainingId.run(
+                req.params.id.toString()
+            )
 
         return res.status(200).json({
             data: enrollment,

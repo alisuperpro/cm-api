@@ -61,15 +61,13 @@ export class EnrollmentQueryTursoRepository implements EnrollmentRepository {
         await this.db.execute(query)
     }
 
-    async findByTraining(trainingId: string): Promise<Enrollment[]> {
+    async findByTrainingId(trainingId: string): Promise<Enrollment | null> {
         const result = await this.db.execute(
             `SELECT * FROM training_user WHERE training_id = ?`,
             [trainingId]
         )
 
-        return result.rows.map((row) =>
-            this.mapToDomain(row as unknown as EnrollmentTurso)
-        )
+        return this.mapToDomain(result.rows[0] as unknown as EnrollmentTurso)
     }
 
     async updateIsArrived(
