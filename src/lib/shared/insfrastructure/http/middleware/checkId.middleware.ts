@@ -1,16 +1,23 @@
-import '@/lib/shared/insfrastructure/utils/instrument.mjs'
 import { NextFunction, Request, Response } from 'express'
-import * as Sentry from '@sentry/node'
+import { ErrorHandler } from '@/lib/shared/domain/repository/error.repository'
+import { SentryErrorHandler } from '../../monitoring/sentryHandler'
 
-export const checkId = (req: Request, res: Response, next: NextFunction) => {
-    const { id } = req.params
+const errorHandler = new SentryErrorHandler()
+const createCheckId = (errorHandler: ErrorHandler) => {
+    return async (req: Request, res: Response, next: NextFunction) => {
+        const { id } = req.params
 
-    if (!id) {
-        Sentry.captureException(new Error('Error: missing id'))
-        return res.status(400).json({
-            error: 'Error: missing id',
-        })
+        if (!id) {
+            errorHandler.captureException(new Error('Error: missing id'), {
+                path: req.originalUrl,
+            })
+            return res.status(400).json({
+                error: 'Error: missing id',
+            })
+        }
+
+        next()
     }
-
-    next()
 }
+
+export const checkId = createCheckId(errorHandler)
