@@ -7,8 +7,10 @@ import {
 } from '@/lib/shared/insfrastructure/utils/s3'
 import { appEventEmitter } from '@/lib/shared/insfrastructure/events/eventEmitter'
 import logger from '@/lib/shared/insfrastructure/utils/logger'
+import { ErrorHandler } from '@/lib/shared/domain/repository/error.repository'
 
 export class EnrollmentController {
+    constructor(private errorHandler: ErrorHandler) {}
     async create(req: Request, res: Response, next: NextFunction) {
         try {
             const {
@@ -53,6 +55,7 @@ export class EnrollmentController {
 
             return res.status(201).send()
         } catch (err) {
+            this.errorHandler.captureException(err)
             next(err)
         }
     }

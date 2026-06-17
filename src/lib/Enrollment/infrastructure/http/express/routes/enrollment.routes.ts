@@ -5,10 +5,12 @@ import { checkId } from '../../../../../shared/insfrastructure/http/middleware/c
 import { checkAuth } from '../../../../../shared/insfrastructure/http/middleware/checkAuth.middleware'
 import { checkAdminAuth } from '../../../../../shared/insfrastructure/http/middleware/checkAdminAuth.middleware'
 import { checkTrainingId } from '../../../../../shared/insfrastructure/http/middleware/checkTrainingId.middleware'
+import { SentryErrorHandler } from '@/lib/shared/insfrastructure/monitoring/sentryHandler'
 
 export const trainingUserRouter = Router()
+const errorHandler = new SentryErrorHandler()
 
-const enrollmentController = new EnrollmentController()
+const enrollmentController = new EnrollmentController(errorHandler)
 
 trainingUserRouter.get('/', checkProtocolAuth, enrollmentController.getAll)
 trainingUserRouter.get(
