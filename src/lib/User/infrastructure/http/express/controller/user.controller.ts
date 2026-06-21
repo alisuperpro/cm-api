@@ -5,14 +5,17 @@ import { UserPhoneExistsError } from '@/lib/User/domain/errors/userPhoneExistsEr
 import { UserDocIdExistsError } from '@/lib/User/domain/errors/userDocIdExistsError.error'
 import { UserIgUsernameExistsError } from '@/lib/User/domain/errors/userIgUsernameExistsError.error'
 import { UserTiktokUsernameExistsError } from '@/lib/User/domain/errors/userTiktokUsernameError.error'
+import { ErrorHandler } from '@/lib/shared/domain/repository/error.repository'
 
 export class UserController {
+    constructor(private errorHandler: ErrorHandler) {}
     async create(req: Request, res: Response, next: NextFunction) {
         try {
             await serviceContainer.user.create.run(req.body)
 
             return res.status(201).send()
         } catch (err) {
+            this.errorHandler.captureException(err)
             if (err instanceof UserPhoneExistsError) {
                 return res.status(403).json({
                     message: err.message,
@@ -60,6 +63,7 @@ export class UserController {
                 data: user.toPrimitives(),
             })
         } catch (err) {
+            this.errorHandler.captureException(err)
             if (err instanceof UserNotFoundError) {
                 return res.status(404).json({ message: err.message })
             }
