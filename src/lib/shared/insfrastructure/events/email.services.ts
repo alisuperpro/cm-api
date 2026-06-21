@@ -6,6 +6,8 @@ import { serviceContainer } from '../services/serviceContainer'
 import { UserType } from '@/lib/shared/insfrastructure/types/user.types'
 import { sendEmail } from '../utils/mailer.service'
 import { formatDate, formatHours } from '../utils/formatDate'
+import { SentryErrorHandler } from '../monitoring/sentryHandler'
+import { ErrorHandler } from '../../domain/repository/error.repository'
 
 dotenv.config({
     quiet: true,
@@ -31,7 +33,7 @@ class EmailService {
     private readonly MAX_RETRIES = 3
     private readonly RETRY_DELAY = 1000 // ms
 
-    constructor() {
+    constructor(private errorHandler: ErrorHandler) {
         this.setupEventListeners()
     }
 
@@ -96,6 +98,7 @@ class EmailService {
                 `[Email Service] Custom email "${templateSlug}" sent to ${to}`
             )
         } catch (error) {
+            this.errorHandler.captureException(error)
             logger.error(`[Email Service] Error in sendCustomEmail:`, error)
         }
     }
@@ -186,6 +189,7 @@ class EmailService {
                 payload.configId
             )
         } catch (error) {
+            this.errorHandler.captureException(error)
             logger.error(
                 `[Email Service] Error crítico procesando ${eventName}:`,
                 error
@@ -241,6 +245,7 @@ class EmailService {
                 )
                 return this.sendWithRetry(emailData, attempt + 1)
             }
+            this.errorHandler.captureException(error)
             throw error
         }
     }
@@ -252,5 +257,5 @@ class EmailService {
         logger.info('[Email Service] Cleaned up event listeners')
     }
 }
-
-export const emailService = new EmailService()
+const errorHandler = new SentryErrorHandler()
+export const emailService = new EmailService(errorHandler)
